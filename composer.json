@@ -1,5 +1,8 @@
 {
 	"name": "consistence/sentry",
 	"description": "-",
-	"license": "MIT"
+	"license": "MIT",
+	"config": {
+		"bin-dir": "bin"
+	}
 }
