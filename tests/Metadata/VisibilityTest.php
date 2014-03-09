@@ -12,6 +12,11 @@ class VisibilityTest extends \PHPUnit\Framework\TestCase
 		$this->assertInstanceOf(Visibility::class, Visibility::get(Visibility::VISIBILITY_PUBLIC));
 	}
 
+	public function testGetName()
+	{
+		$this->assertSame('public', Visibility::get(Visibility::VISIBILITY_PUBLIC)->getName());
+	}
+
 	public function testLooserOrEqualVisibilityPublic()
 	{
 		$public = Visibility::get(Visibility::VISIBILITY_PUBLIC);
