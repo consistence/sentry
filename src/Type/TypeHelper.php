@@ -17,6 +17,15 @@ class TypeHelper extends \Consistence\ObjectPrototype
 	}
 
 	/**
+	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $propertyMetadata
+	 * @return string
+	 */
+	public static function getRequiredTypeString(PropertyMetadata $propertyMetadata)
+	{
+		return $propertyMetadata->getType() . ($propertyMetadata->isNullable() ? '|null' : '');
+	}
+
+	/**
 	 * @param mixed[] $args
 	 * @return mixed first argument
 	 */
