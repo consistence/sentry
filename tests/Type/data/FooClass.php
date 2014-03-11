@@ -7,4 +7,11 @@ class FooClass extends \Consistence\ObjectPrototype implements \Consistence\Sent
 
 	private $fooProperty;
 
+	private $children;
+
+	public function __construct()
+	{
+		$this->children = [];
+	}
+
 }
