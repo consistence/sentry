@@ -2,6 +2,7 @@
 
 namespace Consistence\Sentry\Metadata;
 
+use Consistence\Type\ArrayType\ArrayType;
 use Consistence\Type\Type;
 
 class PropertyMetadata extends \Consistence\ObjectPrototype
@@ -114,6 +115,33 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 	public function getBidirectionalAssociation()
 	{
 		return $this->bidirectionalAssociation;
+	}
+
+	/**
+	 * Method name is compared case-insensitive to be consistent with PHP behaviour
+	 *
+	 * @param string $methodName
+	 * @param \Consistence\Sentry\Metadata\Visibility $requiredVisibility
+	 * @return \Consistence\Sentry\Metadata\SentryMethod
+	 */
+	public function getSentryMethodByNameAndRequiredVisibility($methodName, Visibility $requiredVisibility)
+	{
+		try {
+			return ArrayType::getValueByCallback(
+				$this->getSentryMethods(),
+				function (SentryMethod $sentryMethod) use ($methodName, $requiredVisibility) {
+					return strcasecmp($sentryMethod->getMethodName(), $methodName) === 0
+						&& $sentryMethod->getMethodVisibility()->isLooserOrEqualTo($requiredVisibility);
+				}
+			);
+		} catch (\Consistence\Type\ArrayType\ElementDoesNotExistException $e) {
+			throw new \Consistence\Sentry\Metadata\MethodNotFoundForPropertyException(
+				$methodName,
+				$this->getClassName(),
+				$this->getName(),
+				$e
+			);
+		}
 	}
 
 }

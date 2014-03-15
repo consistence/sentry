@@ -69,4 +69,77 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 		$this->assertNull($property->getBidirectionalAssociation());
 	}
 
+	public function testGetSentryMethodByNameAndRequiredVisibility()
+	{
+		$sentryIdentificator = new SentryIdentificator('string');
+		$fooMethod = new SentryMethod(
+			new SentryAccess('get'),
+			'fooMethod',
+			Visibility::get(Visibility::VISIBILITY_PUBLIC)
+		);
+		$property = new PropertyMetadata(
+			'fooProperty',
+			'FooClass',
+			'string',
+			$sentryIdentificator,
+			false,
+			[$fooMethod],
+			null
+		);
+
+		$this->assertSame($fooMethod, $property->getSentryMethodByNameAndRequiredVisibility(
+			'fooMethod',
+			Visibility::get(Visibility::VISIBILITY_PRIVATE)
+		));
+	}
+
+	public function testGetSentryMethodByNameAndRequiredVisibilityMethodNotFound()
+	{
+		$property = new PropertyMetadata(
+			'fooProperty',
+			'FooClass',
+			'string',
+			new SentryIdentificator('string'),
+			false,
+			[],
+			null
+		);
+
+		try {
+			$property->getSentryMethodByNameAndRequiredVisibility(
+				'fooMethod',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
+			$this->fail();
+		} catch (\Consistence\Sentry\Metadata\MethodNotFoundForPropertyException $e) {
+			$this->assertSame('FooClass', $e->getClassName());
+			$this->assertSame('fooProperty', $e->getPropertyName());
+			$this->assertSame('fooMethod', $e->getMethodName());
+		}
+	}
+
+	public function testGetSentryMethodByNameAndRequiredVisibilityCaseInsensitive()
+	{
+		$sentryIdentificator = new SentryIdentificator('string');
+		$fooMethod = new SentryMethod(
+			new SentryAccess('get'),
+			'fooMethod',
+			Visibility::get(Visibility::VISIBILITY_PUBLIC)
+		);
+		$property = new PropertyMetadata(
+			'fooProperty',
+			'FooClass',
+			'string',
+			$sentryIdentificator,
+			false,
+			[$fooMethod],
+			null
+		);
+
+		$this->assertSame($fooMethod, $property->getSentryMethodByNameAndRequiredVisibility(
+			'FOOmethod',
+			Visibility::get(Visibility::VISIBILITY_PRIVATE)
+		));
+	}
+
 }
