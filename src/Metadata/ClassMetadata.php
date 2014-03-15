@@ -40,4 +40,23 @@ class ClassMetadata extends \Consistence\ObjectPrototype
 		return $this->properties;
 	}
 
+	/**
+	 * @param string $methodName
+	 * @param \Consistence\Sentry\Metadata\Visibility $requiredVisibility
+	 * @return \Consistence\Sentry\Metadata\SentryMethodSearchResult
+	 */
+	public function getSentryMethodByNameAndRequiredVisibility($methodName, Visibility $requiredVisibility)
+	{
+		foreach ($this->getProperties() as $property) {
+			try {
+				$sentryMethod = $property->getSentryMethodByNameAndRequiredVisibility($methodName, $requiredVisibility);
+				return new SentryMethodSearchResult($sentryMethod, $property);
+			} catch (\Consistence\Sentry\Metadata\MethodNotFoundForPropertyException $e) {
+				// continue
+			}
+		}
+
+		throw new \Consistence\Sentry\Metadata\MethodNotFoundException($methodName, $this->getName());
+	}
+
 }
