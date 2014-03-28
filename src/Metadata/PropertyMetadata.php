@@ -118,6 +118,31 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 	}
 
 	/**
+	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
+	 * @param \Consistence\Sentry\Metadata\Visibility $requiredVisibility
+	 * @return \Consistence\Sentry\Metadata\SentryMethod
+	 */
+	public function getSentryMethodByAccessAndRequiredVisibility(SentryAccess $sentryAccess, Visibility $requiredVisibility)
+	{
+		try {
+			return ArrayType::getValueByCallback(
+				$this->getSentryMethods(),
+				function (SentryMethod $sentryMethod) use ($sentryAccess, $requiredVisibility) {
+					return $sentryMethod->getSentryAccess()->equals($sentryAccess)
+						&& $sentryMethod->getMethodVisibility()->isLooserOrEqualTo($requiredVisibility);
+				}
+			);
+		} catch (\Consistence\Type\ArrayType\ElementDoesNotExistException $e) {
+			throw new \Consistence\Sentry\Metadata\NoSuitableMethodException(
+				$this->getClassName(),
+				$this->getName(),
+				$sentryAccess,
+				$e
+			);
+		}
+	}
+
+	/**
 	 * Method name is compared case-insensitive to be consistent with PHP behaviour
 	 *
 	 * @param string $methodName

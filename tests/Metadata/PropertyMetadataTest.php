@@ -69,6 +69,69 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 		$this->assertNull($property->getBidirectionalAssociation());
 	}
 
+	public function testGetSentryMethodByAccess()
+	{
+		$targetClass = 'BarClass';
+		$sentryIdentificator = new SentryIdentificator($targetClass);
+		$getMethod = new SentryMethod(
+			new SentryAccess('get'),
+			'getFoo',
+			Visibility::get(Visibility::VISIBILITY_PUBLIC)
+		);
+		$setMethod = new SentryMethod(
+			new SentryAccess('set'),
+			'setFoo',
+			Visibility::get(Visibility::VISIBILITY_PUBLIC)
+		);
+		$property = new PropertyMetadata(
+			'fooProperty',
+			'FooClass',
+			$targetClass,
+			$sentryIdentificator,
+			false,
+			[
+				$getMethod,
+				$setMethod,
+			],
+			null
+		);
+
+		$this->assertSame($setMethod, $property->getSentryMethodByAccessAndRequiredVisibility(
+			new SentryAccess('set'),
+			Visibility::get(Visibility::VISIBILITY_PRIVATE)
+		));
+	}
+
+	/**
+	 * @expectedException \Consistence\Sentry\Metadata\NoSuitableMethodException
+	 */
+	public function testGetSentryMethodByAccessNotFound()
+	{
+		$targetClass = 'BarClass';
+		$sentryIdentificator = new SentryIdentificator($targetClass);
+		$setMethod = new SentryMethod(
+			new SentryAccess('set'),
+			'setFoo',
+			Visibility::get(Visibility::VISIBILITY_PRIVATE)
+		);
+		$property = new PropertyMetadata(
+			'fooProperty',
+			'FooClass',
+			$targetClass,
+			$sentryIdentificator,
+			false,
+			[
+				$setMethod,
+			],
+			null
+		);
+
+		$property->getSentryMethodByAccessAndRequiredVisibility(
+			new SentryAccess('set'),
+			Visibility::get(Visibility::VISIBILITY_PUBLIC)
+		);
+	}
+
 	public function testGetSentryMethodByNameAndRequiredVisibility()
 	{
 		$sentryIdentificator = new SentryIdentificator('string');
