@@ -169,4 +169,20 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 		}
 	}
 
+	/**
+	 * @return \Consistence\Sentry\Metadata\SentryAccess[]
+	 */
+	public function getDefinedSentryAccess()
+	{
+		$sentryAccess = [];
+		foreach ($this->getSentryMethods() as $sentryMethod) {
+			$sentryAccessName = $sentryMethod->getSentryAccess()->getName();
+			if (!isset($sentryAccess[$sentryAccessName])) {
+				$sentryAccess[$sentryAccessName] = $sentryMethod->getSentryAccess();
+			}
+		}
+
+		return array_values($sentryAccess);
+	}
+
 }

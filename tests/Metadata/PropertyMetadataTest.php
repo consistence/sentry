@@ -102,9 +102,6 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 		));
 	}
 
-	/**
-	 * @expectedException \Consistence\Sentry\Metadata\NoSuitableMethodException
-	 */
 	public function testGetSentryMethodByAccessNotFound()
 	{
 		$targetClass = 'BarClass';
@@ -125,6 +122,8 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 			],
 			null
 		);
+
+		$this->expectException(\Consistence\Sentry\Metadata\NoSuitableMethodException::class);
 
 		$property->getSentryMethodByAccessAndRequiredVisibility(
 			new SentryAccess('set'),
@@ -203,6 +202,36 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 			'FOOmethod',
 			Visibility::get(Visibility::VISIBILITY_PRIVATE)
 		));
+	}
+
+	public function testGetDefinedSentryAccess()
+	{
+		$targetClass = 'BarClass';
+		$sentryIdentificator = new SentryIdentificator($targetClass);
+		$privateSetMethod = new SentryMethod(
+			new SentryAccess('set'),
+			'setFoo',
+			Visibility::get(Visibility::VISIBILITY_PRIVATE)
+		);
+		$publicSetMethod = new SentryMethod(
+			new SentryAccess('set'),
+			'setFoo',
+			Visibility::get(Visibility::VISIBILITY_PUBLIC)
+		);
+		$property = new PropertyMetadata(
+			'fooProperty',
+			'FooClass',
+			$targetClass,
+			$sentryIdentificator,
+			false,
+			[
+				$privateSetMethod,
+				$publicSetMethod,
+			],
+			null
+		);
+
+		$this->assertEquals([new SentryAccess('set')], $property->getDefinedSentryAccess());
 	}
 
 }
