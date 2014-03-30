@@ -86,4 +86,37 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 		}
 	}
 
+	public function testGetPropertyByName()
+	{
+		$propertyName = 'fooProperty';
+
+		$fooProperty = new PropertyMetadata(
+			$propertyName,
+			'FooClass',
+			'integer',
+			new SentryIdentificator('integer'),
+			false,
+			[],
+			null
+		);
+
+		$classMetadata = new ClassMetadata('FooClass', [$fooProperty]);
+		$this->assertSame($fooProperty, $classMetadata->getPropertyByName($propertyName));
+	}
+
+	public function testGetPropertyByNameNotFound()
+	{
+		$className = 'FooClass';
+		$classMetadata = new ClassMetadata($className, []);
+		$propertyName = 'foo';
+
+		try {
+			$classMetadata->getPropertyByName($propertyName);
+			$this->fail();
+		} catch (\Consistence\Sentry\Metadata\PropertyNotFoundException $e) {
+			$this->assertSame($className, $e->getClassName());
+			$this->assertSame($propertyName, $e->getPropertyName());
+		}
+	}
+
 }

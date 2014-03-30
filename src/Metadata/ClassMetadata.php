@@ -2,6 +2,7 @@
 
 namespace Consistence\Sentry\Metadata;
 
+use Consistence\Type\ArrayType\ArrayType;
 use Consistence\Type\Type;
 
 class ClassMetadata extends \Consistence\ObjectPrototype
@@ -38,6 +39,24 @@ class ClassMetadata extends \Consistence\ObjectPrototype
 	public function getProperties()
 	{
 		return $this->properties;
+	}
+
+	/**
+	 * @param string $propertyName
+	 * @return \Consistence\Sentry\Metadata\PropertyMetadata
+	 */
+	public function getPropertyByName($propertyName)
+	{
+		try {
+			return ArrayType::getValueByCallback(
+				$this->getProperties(),
+				function (PropertyMetadata $propertyMetadata) use ($propertyName) {
+					return $propertyMetadata->getName() === $propertyName;
+				}
+			);
+		} catch (\Consistence\Type\ArrayType\ElementDoesNotExistException $e) {
+			throw new \Consistence\Sentry\Metadata\PropertyNotFoundException($this->getName(), $propertyName, $e);
+		}
 	}
 
 	/**
