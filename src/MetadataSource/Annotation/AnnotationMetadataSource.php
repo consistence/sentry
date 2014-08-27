@@ -133,7 +133,8 @@ class AnnotationMetadataSource extends \Consistence\ObjectPrototype implements \
 	{
 		try {
 			$annotation = $this->annotationProvider->getPropertyAnnotation($propertyReflection, self::IDENTIFICATOR_ANNOTATION);
-			return new SentryIdentificator($annotation->getValue());
+			$sentryIdentificatorString = $propertyReflection->class . SentryIdentificatorParser::SOURCE_CLASS_SEPARATOR . $annotation->getValue();
+			return new SentryIdentificator($sentryIdentificatorString);
 		} catch (\Consistence\Annotation\AnnotationNotFoundException $e) {
 			throw new \Consistence\Sentry\MetadataSource\Annotation\NoSentryIdentificatorException($e);
 		}

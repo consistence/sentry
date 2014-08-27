@@ -24,7 +24,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$className = FooClass::class;
 		$propertyName = 'fooProperty';
 		$classReflection = new ReflectionClass($className);
-		$sentryIdentificator = new SentryIdentificator($type);
+		$sentryIdentificator = new SentryIdentificator($className . '::' . $type);
 
 		$sentryIdentificatorAnnotation = Annotation::createAnnotationWithValue(
 			AnnotationMetadataSource::IDENTIFICATOR_ANNOTATION,
@@ -89,7 +89,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$className = FooClass::class;
 		$propertyName = 'fooProperty';
 		$classReflection = new ReflectionClass($className);
-		$sentryIdentificator = new SentryIdentificator($type);
+		$sentryIdentificator = new SentryIdentificator($className . '::' . $type);
 
 		$sentryIdentificatorAnnotation = Annotation::createAnnotationWithValue(
 			AnnotationMetadataSource::IDENTIFICATOR_ANNOTATION,
@@ -148,7 +148,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$className = FooClass::class;
 		$propertyName = 'fooProperty';
 		$classReflection = new ReflectionClass($className);
-		$sentryIdentificator = new SentryIdentificator($type);
+		$sentryIdentificator = new SentryIdentificator($className . '::' . $type);
 
 		$sentryIdentificatorAnnotation = Annotation::createAnnotationWithValue(
 			AnnotationMetadataSource::IDENTIFICATOR_ANNOTATION,
@@ -207,7 +207,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$className = FooClass::class;
 		$propertyName = 'fooProperty';
 		$classReflection = new ReflectionClass($className);
-		$sentryIdentificator = new SentryIdentificator($type);
+		$sentryIdentificator = new SentryIdentificator($className . '::' . $type);
 
 		$sentryIdentificatorAnnotation = Annotation::createAnnotationWithValue(
 			AnnotationMetadataSource::IDENTIFICATOR_ANNOTATION,
@@ -344,7 +344,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 	public function testNoSentryFound()
 	{
 		$classReflection = new ReflectionClass(FooClass::class);
-		$sentryIdentificator = new SentryIdentificator('Foo\Bar');
+		$sentryIdentificator = new SentryIdentificator(FooClass::class . '::Foo\Bar');
 
 		$sentryFactory = $this->createMock(SentryFactory::class);
 		$sentryFactory
