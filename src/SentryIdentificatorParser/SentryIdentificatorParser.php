@@ -14,6 +14,9 @@ class SentryIdentificatorParser extends \Consistence\ObjectPrototype
 	const MATCH_TYPE = 'type';
 	const MATCH_MANY = 'many';
 	const MATCH_NULLABLE = 'nullable';
+	const MATCH_SOURCE_CLASS = 'sourceClass';
+
+	const SOURCE_CLASS_SEPARATOR = '::';
 
 	/**
 	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
@@ -23,10 +26,11 @@ class SentryIdentificatorParser extends \Consistence\ObjectPrototype
 	{
 		$pattern
 			= '~^'
-			. '\\\?(?P<' . self::MATCH_TYPE . '>(?:\\\?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)+)'
-			. '(?P<' . self::MATCH_MANY . '>\[\])?'
+			. '(\\\?(?P<' . self::MATCH_SOURCE_CLASS . '>(?:\\\?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)++)' . self::SOURCE_CLASS_SEPARATOR . ')?'
+			. '\\\?(?P<' . self::MATCH_TYPE . '>(?:\\\?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)++)'
+			. '(?P<' . self::MATCH_MANY . '>\[\])*'
 			. '(?:\|(?P<' . self::MATCH_NULLABLE . '>(?:null)|(?:NULL)))?'
-			. '~';
+			. '(\s|$)~';
 		$matches = RegExp::match($sentryIdentificator->getId(), $pattern);
 		if (count($matches) === 0) {
 			throw new \Consistence\Sentry\SentryIdentificatorParser\PatternDoesNotMatchException($sentryIdentificator);
@@ -36,7 +40,8 @@ class SentryIdentificatorParser extends \Consistence\ObjectPrototype
 			$sentryIdentificator,
 			$matches[self::MATCH_TYPE],
 			isset($matches[self::MATCH_MANY]) && $matches[self::MATCH_MANY] !== '',
-			isset($matches[self::MATCH_NULLABLE]) && $matches[self::MATCH_NULLABLE] !== ''
+			isset($matches[self::MATCH_NULLABLE]) && $matches[self::MATCH_NULLABLE] !== '',
+			(isset($matches[self::MATCH_SOURCE_CLASS]) && $matches[self::MATCH_SOURCE_CLASS] !== '') ? $matches[self::MATCH_SOURCE_CLASS] : null
 		);
 	}
 

@@ -13,21 +13,37 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	public function matchesProvider()
 	{
 		return [
-			[new SentryIdentificator('string'), 'string', false, false],
-			[new SentryIdentificator('string[]'), 'string', true, false],
-			[new SentryIdentificator('string|NULL'), 'string', false, true],
-			[new SentryIdentificator('string|null'), 'string', false, true],
-			[new SentryIdentificator('string[]|NULL'), 'string', true, true],
-			[new SentryIdentificator('string[]|null'), 'string', true, true],
-			[new SentryIdentificator('Foo'), 'Foo', false, false],
-			[new SentryIdentificator('\Foo'), 'Foo', false, false],
-			[new SentryIdentificator('Foo\Bar'), 'Foo\Bar', false, false],
-			[new SentryIdentificator('\Foo\Bar'), 'Foo\Bar', false, false],
-			[new SentryIdentificator('\Foo\Bar[]'), 'Foo\Bar', true, false],
-			[new SentryIdentificator('\Foo\Bar[]|null'), 'Foo\Bar', true, true],
-			[new SentryIdentificator('\Foo\Bar foobar'), 'Foo\Bar', false, false],
-			[new SentryIdentificator('\Foo\Bar nullable'), 'Foo\Bar', false, false],
-			[new SentryIdentificator('\Collection of \Foo\Bar'), 'Collection', false, false],
+			[new SentryIdentificator('string'), 'string', false, false, null],
+			[new SentryIdentificator('string[]'), 'string', true, false, null],
+			[new SentryIdentificator('string|NULL'), 'string', false, true, null],
+			[new SentryIdentificator('string|null'), 'string', false, true, null],
+			[new SentryIdentificator('string[]|NULL'), 'string', true, true, null],
+			[new SentryIdentificator('string[]|null'), 'string', true, true, null],
+			[new SentryIdentificator('string[][]'), 'string', true, false, null],
+			[new SentryIdentificator('string[][]|null'), 'string', true, true, null],
+			[new SentryIdentificator('Foo'), 'Foo', false, false, null],
+			[new SentryIdentificator('\Foo'), 'Foo', false, false, null],
+			[new SentryIdentificator('Foo\Bar'), 'Foo\Bar', false, false, null],
+			[new SentryIdentificator('\Foo\Bar'), 'Foo\Bar', false, false, null],
+			[new SentryIdentificator('\Foo\Bar[]'), 'Foo\Bar', true, false, null],
+			[new SentryIdentificator('\Foo\Bar[]|null'), 'Foo\Bar', true, true, null],
+			[new SentryIdentificator('\Foo\Bar foobar'), 'Foo\Bar', false, false, null],
+			[new SentryIdentificator('\Foo\Bar nullable'), 'Foo\Bar', false, false, null],
+			[new SentryIdentificator('\Collection of \Foo\Bar'), 'Collection', false, false, null],
+			[new SentryIdentificator('Foo::Bar'), 'Bar', false, false, 'Foo'],
+			[new SentryIdentificator('\Foo::\Bar'), 'Bar', false, false, 'Foo'],
+			[new SentryIdentificator('Long\Class\Name\Which\Tests\The\Backtracking\Limit::Bar'), 'Bar', false, false, 'Long\Class\Name\Which\Tests\The\Backtracking\Limit'],
+		];
+	}
+
+	/**
+	 * @return string[][]
+	 */
+	public function doesNotMatchProvider()
+	{
+		return [
+			[''],
+			['Long\Class\Name\Which\Tests\The\Backtracking\Limit::'],
 		];
 	}
 
@@ -38,8 +54,9 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	 * @param string $expectedType
 	 * @param boolean $expectedMany
 	 * @param boolean $expectedNullable
+	 * @param string|null $sourceClass
 	 */
-	public function testMatch(SentryIdentificator $sentryIdentificator, $expectedType, $expectedMany, $expectedNullable)
+	public function testMatch(SentryIdentificator $sentryIdentificator, $expectedType, $expectedMany, $expectedNullable, $sourceClass)
 	{
 		$parser = new SentryIdentificatorParser();
 		$result = $parser->parse($sentryIdentificator);
@@ -48,12 +65,18 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($expectedType, $result->getType());
 		$this->assertSame($expectedMany, $result->isMany());
 		$this->assertSame($expectedNullable, $result->isNullable());
+		$this->assertSame($sourceClass, $result->getSourceClass());
 	}
 
-	public function testDoesNotMatch()
+	/**
+	 * @dataProvider doesNotMatchProvider
+	 *
+	 * @param string $pattern
+	 */
+	public function testDoesNotMatch($pattern)
 	{
 		$parser = new SentryIdentificatorParser();
-		$sentryIdentificator = new SentryIdentificator('');
+		$sentryIdentificator = new SentryIdentificator($pattern);
 		try {
 			$parser->parse($sentryIdentificator);
 			$this->fail();

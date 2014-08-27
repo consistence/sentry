@@ -19,18 +19,23 @@ class SentryIdentificatorParseResult extends \Consistence\ObjectPrototype
 	/** @var boolean */
 	private $nullable;
 
+	/** @var string|null */
+	private $sourceClass;
+
 	/**
 	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
 	 * @param string $type
 	 * @param boolean $many
 	 * @param boolean $nullable
+	 * @param string|null $sourceClass
 	 */
-	public function __construct(SentryIdentificator $sentryIdentificator, $type, $many, $nullable)
+	public function __construct(SentryIdentificator $sentryIdentificator, $type, $many, $nullable, $sourceClass)
 	{
 		$this->sentryIdentificator = $sentryIdentificator;
 		$this->type = $type;
 		$this->many = $many;
 		$this->nullable = $nullable;
+		$this->sourceClass = $sourceClass;
 	}
 
 	/**
@@ -63,6 +68,14 @@ class SentryIdentificatorParseResult extends \Consistence\ObjectPrototype
 	public function isNullable()
 	{
 		return $this->nullable;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getSourceClass()
+	{
+		return $this->sourceClass;
 	}
 
 }
