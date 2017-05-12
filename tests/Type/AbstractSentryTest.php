@@ -72,8 +72,8 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer'),
+			'int',
+			new SentryIdentificator('int'),
 			false,
 			[
 				$getMethod,
@@ -99,8 +99,8 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer'),
+			'int',
+			new SentryIdentificator('int'),
 			false,
 			[
 				$setMethod,
@@ -131,8 +131,8 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer'),
+			'int',
+			new SentryIdentificator('int'),
 			false,
 			[
 				$xxxMethod,
@@ -163,8 +163,8 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer'),
+			'int',
+			new SentryIdentificator('int'),
 			false,
 			[
 				$getMethod,
@@ -174,9 +174,9 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 
 		$method = '
 	/**
-	 * Generated integer getter
+	 * Generated int getter
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getFoo()
 	{
@@ -230,8 +230,8 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer'),
+			'int',
+			new SentryIdentificator('int'),
 			false,
 			[
 				$setMethod,
@@ -241,9 +241,9 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 
 		$method = '
 	/**
-	 * Generated integer setter
+	 * Generated int setter
 	 *
-	 * @param integer $newValue
+	 * @param int $newValue
 	 */
 	public function setFoo($newValue)
 	{
@@ -297,8 +297,8 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer'),
+			'int',
+			new SentryIdentificator('int'),
 			false,
 			[
 				$xxxMethod,

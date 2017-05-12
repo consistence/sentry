@@ -6,7 +6,7 @@ namespace Consistence\Sentry\SentryIdentificatorParser;
 
 use Consistence\Sentry\Metadata\SentryIdentificator;
 
-class PatternDoesNotMatchException extends \Consistence\PhpException implements \Consistence\Sentry\SentryIdentificatorParser\Exception
+class PatternDoesNotMatchException extends \Consistence\PhpException
 {
 
 	/** @var \Consistence\Sentry\Metadata\SentryIdentificator */

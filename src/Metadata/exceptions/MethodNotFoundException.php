@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Consistence\Sentry\Metadata;
 
-class MethodNotFoundException extends \Consistence\PhpException implements \Consistence\Sentry\Metadata\Exception
+class MethodNotFoundException extends \Consistence\PhpException
 {
 
 	/** @var string */

@@ -5,12 +5,10 @@ declare(strict_types = 1);
 namespace Consistence\Sentry\Runtime;
 
 use Closure;
-
 use Consistence\Sentry\Factory\SentryFactory;
 use Consistence\Sentry\Metadata\Visibility;
 use Consistence\Sentry\MetadataSource\MetadataSource;
 use Consistence\Sentry\SentryAware;
-
 use ReflectionClass;
 
 class RuntimeHelper extends \Consistence\ObjectPrototype

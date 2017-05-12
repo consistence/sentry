@@ -10,7 +10,6 @@ use Consistence\Sentry\Factory\SentryFactory;
 use Consistence\Sentry\Metadata\PropertyMetadata;
 use Consistence\Sentry\MetadataSource\MetadataSource;
 use Consistence\Sentry\SentryAware;
-
 use ReflectionClass;
 
 class SentryGenerator extends \Consistence\ObjectPrototype

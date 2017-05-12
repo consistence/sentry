@@ -21,7 +21,7 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 	/** @var \Consistence\Sentry\Metadata\SentryIdentificator */
 	private $sentryIdentificator;
 
-	/** @var boolean */
+	/** @var bool */
 	private $nullable;
 
 	/** @var \Consistence\Sentry\Metadata\SentryMethod[] */
@@ -35,7 +35,7 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 	 * @param string $className
 	 * @param string $type
 	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
-	 * @param boolean $nullable
+	 * @param bool $nullable
 	 * @param \Consistence\Sentry\Metadata\SentryMethod[] $sentryMethods
 	 * @param \Consistence\Sentry\Metadata\BidirectionalAssociation|null $bidirectionalAssociation
 	 */

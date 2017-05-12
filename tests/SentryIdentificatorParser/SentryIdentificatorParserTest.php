@@ -54,8 +54,8 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	 *
 	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
 	 * @param string $expectedType
-	 * @param boolean $expectedMany
-	 * @param boolean $expectedNullable
+	 * @param bool $expectedMany
+	 * @param bool $expectedNullable
 	 * @param string|null $sourceClass
 	 */
 	public function testMatch(

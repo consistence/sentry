@@ -29,8 +29,8 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer'),
+			'int',
+			new SentryIdentificator('int'),
 			false,
 			[
 				$getMethod,
@@ -61,8 +61,8 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer|null'),
+			'int',
+			new SentryIdentificator('int|null'),
 			true,
 			[
 				$getMethod,
@@ -91,8 +91,8 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer'),
+			'int',
+			new SentryIdentificator('int'),
 			false,
 			[
 				$setMethod,
@@ -102,7 +102,7 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$foo = new FooClass();
 
 		$this->expectException(\Consistence\InvalidArgumentTypeException::class);
-		$this->expectExceptionMessage('integer expected, 123 [string] given');
+		$this->expectExceptionMessage('int expected, 123 [string] given');
 
 		$integerSentry->processMethod($propertyMetadata, $foo, $setMethod, ['123']);
 	}
@@ -118,8 +118,8 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer|null'),
+			'int',
+			new SentryIdentificator('int|null'),
 			true,
 			[
 				$setMethod,
@@ -129,7 +129,7 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$foo = new FooClass();
 
 		$this->expectException(\Consistence\InvalidArgumentTypeException::class);
-		$this->expectExceptionMessage('integer|null expected, 123 [string] given');
+		$this->expectExceptionMessage('int|null expected, 123 [string] given');
 
 		$integerSentry->processMethod($propertyMetadata, $foo, $setMethod, ['123']);
 	}
@@ -145,8 +145,8 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer'),
+			'int',
+			new SentryIdentificator('int'),
 			false,
 			[
 				$getMethod,
@@ -156,9 +156,9 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 
 		$method = '
 	/**
-	 * Generated integer getter
+	 * Generated int getter
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getFoo()
 	{
@@ -178,8 +178,8 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer|null'),
+			'int',
+			new SentryIdentificator('int|null'),
 			true,
 			[
 				$getMethod,
@@ -189,9 +189,9 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 
 		$method = '
 	/**
-	 * Generated integer getter
+	 * Generated int getter
 	 *
-	 * @return integer|null
+	 * @return int|null
 	 */
 	public function getFoo()
 	{
@@ -211,8 +211,8 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer'),
+			'int',
+			new SentryIdentificator('int'),
 			false,
 			[
 				$setMethod,
@@ -222,13 +222,13 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 
 		$method = '
 	/**
-	 * Generated integer setter
+	 * Generated int setter
 	 *
-	 * @param integer $newValue
+	 * @param int $newValue
 	 */
 	public function setFoo($newValue)
 	{
-		\Consistence\Type\Type::checkType($newValue, \'integer\');
+		\Consistence\Type\Type::checkType($newValue, \'int\');
 		$this->fooProperty = $newValue;
 	}';
 		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $setMethod));
@@ -245,8 +245,8 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'fooProperty',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer|null'),
+			'int',
+			new SentryIdentificator('int|null'),
 			true,
 			[
 				$setMethod,
@@ -256,13 +256,13 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 
 		$method = '
 	/**
-	 * Generated integer setter
+	 * Generated int setter
 	 *
-	 * @param integer|null $newValue
+	 * @param int|null $newValue
 	 */
 	public function setFoo($newValue)
 	{
-		\Consistence\Type\Type::checkType($newValue, \'integer|null\');
+		\Consistence\Type\Type::checkType($newValue, \'int|null\');
 		$this->fooProperty = $newValue;
 	}';
 		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $setMethod));

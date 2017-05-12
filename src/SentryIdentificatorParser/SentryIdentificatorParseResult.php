@@ -15,10 +15,10 @@ class SentryIdentificatorParseResult extends \Consistence\ObjectPrototype
 	/** @var string */
 	private $type;
 
-	/** @var boolean */
+	/** @var bool */
 	private $many;
 
-	/** @var boolean */
+	/** @var bool */
 	private $nullable;
 
 	/** @var string|null */
@@ -27,8 +27,8 @@ class SentryIdentificatorParseResult extends \Consistence\ObjectPrototype
 	/**
 	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
 	 * @param string $type
-	 * @param boolean $many
-	 * @param boolean $nullable
+	 * @param bool $many
+	 * @param bool $nullable
 	 * @param string|null $sourceClass
 	 */
 	public function __construct(SentryIdentificator $sentryIdentificator, string $type, bool $many, bool $nullable, $sourceClass)

@@ -6,7 +6,7 @@ namespace Consistence\Sentry\Generated;
 
 use Consistence\Sentry\Metadata\ClassMetadata;
 
-class NoMethodsToBeGeneratedException extends \Consistence\PhpException implements \Consistence\Sentry\Generated\Exception
+class NoMethodsToBeGeneratedException extends \Consistence\PhpException
 {
 
 	/** @var \Consistence\Sentry\Metadata\ClassMetadata */

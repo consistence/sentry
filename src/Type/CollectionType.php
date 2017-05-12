@@ -10,7 +10,6 @@ use Consistence\Sentry\Metadata\SentryMethod;
 use Consistence\Sentry\SentryAware;
 use Consistence\Type\ArrayType\ArrayType;
 use Consistence\Type\Type;
-
 use Doctrine\Common\Inflector\Inflector;
 
 class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
@@ -69,7 +68,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
 	 * @param \Consistence\Sentry\SentryAware $object
 	 * @param mixed[] $args
-	 * @return boolean was element really added?
+	 * @return bool was element really added?
 	 */
 	public function add(PropertyMetadata $property, SentryAware $object, array $args): bool
 	{
@@ -86,7 +85,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
 	 * @param \Consistence\Sentry\SentryAware $object
 	 * @param mixed[] $args
-	 * @return boolean was element really removed?
+	 * @return bool was element really removed?
 	 */
 	public function remove(PropertyMetadata $property, SentryAware $object, array $args): bool
 	{
@@ -103,7 +102,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
 	 * @param \Consistence\Sentry\SentryAware $object
 	 * @param mixed[] $args
-	 * @return boolean
+	 * @return bool
 	 */
 	public function contains(PropertyMetadata $property, SentryAware $object, array $args): bool
 	{
@@ -118,7 +117,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * @param mixed[] $collection
 	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
 	 * @param mixed $value
-	 * @return boolean was element really added?
+	 * @return bool was element really added?
 	 */
 	private function addValue(array &$collection, PropertyMetadata $property, $value): bool
 	{
@@ -135,7 +134,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * @param mixed[] $collection
 	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
 	 * @param mixed $value
-	 * @return boolean was element really removed?
+	 * @return bool was element really removed?
 	 */
 	private function removeValue(array &$collection, PropertyMetadata $property, $value): bool
 	{
@@ -188,7 +187,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * Generated ' . $property->getType() . ' collection contains
 	 *
 	 * @param ' . TypeHelper::formatTypeToString($property) . ' $value
-	 * @return boolean
+	 * @return bool
 	 */
 	' . $sentryMethod->getMethodVisibility()->getName() . ' function ' . $sentryMethod->getMethodName() . '($value)
 	{
@@ -204,7 +203,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * Generated ' . $property->getType() . ' collection add
 	 *
 	 * @param ' . TypeHelper::formatTypeToString($property) . ' $newValue
-	 * @return boolean was element really added?
+	 * @return bool was element really added?
 	 */
 	' . $sentryMethod->getMethodVisibility()->getName() . ' function ' . $sentryMethod->getMethodName() . '($newValue)
 	{
@@ -229,7 +228,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * Generated ' . $property->getType() . ' collection remove
 	 *
 	 * @param ' . TypeHelper::formatTypeToString($property) . ' $value
-	 * @return boolean was element really removed?
+	 * @return bool was element really removed?
 	 */
 	' . $sentryMethod->getMethodVisibility()->getName() . ' function ' . $sentryMethod->getMethodName() . '($value)
 	{

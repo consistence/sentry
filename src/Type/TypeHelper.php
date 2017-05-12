@@ -7,7 +7,6 @@ namespace Consistence\Sentry\Type;
 use Consistence\Sentry\Metadata\PropertyMetadata;
 use Consistence\Sentry\Metadata\SentryMethod;
 use Consistence\Sentry\SentryAware;
-
 use ReflectionProperty;
 
 class TypeHelper extends \Consistence\ObjectPrototype
@@ -46,12 +45,12 @@ class TypeHelper extends \Consistence\ObjectPrototype
 	public static function isObjectType(string $type): bool
 	{
 		switch ($type) {
-			case 'integer':
-			case 'string':
-			case 'boolean':
-			case 'float':
 			case 'int':
+			case 'string':
 			case 'bool':
+			case 'float':
+			case 'integer':
+			case 'boolean':
 			case 'array':
 			case 'mixed':
 				return false;

@@ -4,18 +4,18 @@ declare(strict_types = 1);
 
 namespace Consistence\Sentry\Type;
 
-class MissingArgumentException extends \Consistence\PhpException implements \Consistence\Sentry\Type\Exception
+class MissingArgumentException extends \Consistence\PhpException
 {
 
 	/** @var mixed[] */
 	private $args;
 
-	/** @var integer */
+	/** @var int */
 	private $requiredCountOfArguments;
 
 	/**
 	 * @param mixed[] $args
-	 * @param integer $requiredCountOfArguments
+	 * @param int $requiredCountOfArguments
 	 * @param \Throwable|null $previous
 	 */
 	public function __construct(array $args, int $requiredCountOfArguments, \Throwable $previous = null)

@@ -51,11 +51,11 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 
 	public function testCreateScalar()
 	{
-		$sentryIdentificator = new SentryIdentificator('integer');
+		$sentryIdentificator = new SentryIdentificator('int');
 		$property = new PropertyMetadata(
 			'fooProperty',
 			'FooClass',
-			'integer',
+			'int',
 			$sentryIdentificator,
 			false,
 			[],
@@ -64,7 +64,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 
 		$this->assertSame('fooProperty', $property->getName());
 		$this->assertSame('FooClass', $property->getClassName());
-		$this->assertSame('integer', $property->getType());
+		$this->assertSame('int', $property->getType());
 		$this->assertSame($sentryIdentificator, $property->getSentryIdentificator());
 		$this->assertSame(false, $property->isNullable());
 		$this->assertEmpty($property->getSentryMethods());

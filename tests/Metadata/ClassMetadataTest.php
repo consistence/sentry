@@ -13,8 +13,8 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 			new PropertyMetadata(
 				'fooProperty',
 				'FooClass',
-				'integer',
-				new SentryIdentificator('integer'),
+				'int',
+				new SentryIdentificator('int'),
 				false,
 				[],
 				null
@@ -95,8 +95,8 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 		$fooProperty = new PropertyMetadata(
 			$propertyName,
 			'FooClass',
-			'integer',
-			new SentryIdentificator('integer'),
+			'int',
+			new SentryIdentificator('int'),
 			false,
 			[],
 			null

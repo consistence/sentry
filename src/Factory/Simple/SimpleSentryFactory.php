@@ -43,12 +43,12 @@ class SimpleSentryFactory extends \Consistence\ObjectPrototype implements \Consi
 		}
 
 		switch ($sentryIdentificatorParseResult->getType()) {
-			case 'integer':
-			case 'string':
-			case 'boolean':
-			case 'float':
 			case 'int':
+			case 'string':
 			case 'bool':
+			case 'float':
+			case 'integer':
+			case 'boolean':
 			case 'mixed':
 				return ($sentryIdentificatorParseResult->isMany()) ? new CollectionType() : new SimpleType();
 			default:

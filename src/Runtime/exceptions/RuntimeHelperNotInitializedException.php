@@ -7,7 +7,7 @@ namespace Consistence\Sentry\Runtime;
 /**
  * @codeCoverageIgnore used only from static context
  */
-class RuntimeHelperNotInitializedException extends \Consistence\PhpException implements \Consistence\Sentry\Runtime\Exception
+class RuntimeHelperNotInitializedException extends \Consistence\PhpException
 {
 
 	public function __construct(\Throwable $previous = null)

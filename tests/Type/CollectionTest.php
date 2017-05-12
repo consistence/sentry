@@ -334,8 +334,8 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'children',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer[]'),
+			'int',
+			new SentryIdentificator('int[]'),
 			false,
 			[
 				$getMethod,
@@ -345,9 +345,9 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
 		$method = '
 	/**
-	 * Generated integer collection getter
+	 * Generated int collection getter
 	 *
-	 * @return integer[]
+	 * @return int[]
 	 */
 	public function getFoo()
 	{
@@ -367,8 +367,8 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'children',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer[]'),
+			'int',
+			new SentryIdentificator('int[]'),
 			false,
 			[
 				$setMethod,
@@ -378,9 +378,9 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
 		$method = '
 	/**
-	 * Generated integer collection setter
+	 * Generated int collection setter
 	 *
-	 * @param integer[] $newValues
+	 * @param int[] $newValues
 	 */
 	public function setFoo($newValues)
 	{
@@ -388,7 +388,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$collection =& $this->children;
 		$collection = [];
 		foreach ($newValues as $el) {
-			\Consistence\Type\Type::checkType($el, \'integer\');
+			\Consistence\Type\Type::checkType($el, \'int\');
 			if (!\Consistence\Type\ArrayType\ArrayType::containsValue($collection, $el)) {
 				$collection[] = $el;
 			}
@@ -408,8 +408,8 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'children',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer[]'),
+			'int',
+			new SentryIdentificator('int[]'),
 			false,
 			[
 				$containsMethod,
@@ -419,14 +419,14 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
 		$method = '
 	/**
-	 * Generated integer collection contains
+	 * Generated int collection contains
 	 *
-	 * @param integer $value
-	 * @return boolean
+	 * @param int $value
+	 * @return bool
 	 */
 	public function containsFoo($value)
 	{
-		\Consistence\Type\Type::checkType($value, \'integer\');
+		\Consistence\Type\Type::checkType($value, \'int\');
 		return \Consistence\Type\ArrayType\ArrayType::containsValue($this->children, $value);
 	}';
 		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $containsMethod));
@@ -443,8 +443,8 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'children',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer[]'),
+			'int',
+			new SentryIdentificator('int[]'),
 			false,
 			[
 				$addMethod,
@@ -454,14 +454,14 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
 		$method = '
 	/**
-	 * Generated integer collection add
+	 * Generated int collection add
 	 *
-	 * @param integer $newValue
-	 * @return boolean was element really added?
+	 * @param int $newValue
+	 * @return bool was element really added?
 	 */
 	public function addFoo($newValue)
 	{
-		\Consistence\Type\Type::checkType($newValue, \'integer\');
+		\Consistence\Type\Type::checkType($newValue, \'int\');
 		$collection =& $this->children;
 		if (!\Consistence\Type\ArrayType\ArrayType::containsValue($collection, $newValue)) {
 			$collection[] = $newValue;
@@ -485,8 +485,8 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$propertyMetadata = new PropertyMetadata(
 			'children',
 			FooClass::class,
-			'integer',
-			new SentryIdentificator('integer[]'),
+			'int',
+			new SentryIdentificator('int[]'),
 			false,
 			[
 				$removeMethod,
@@ -496,14 +496,14 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
 		$method = '
 	/**
-	 * Generated integer collection remove
+	 * Generated int collection remove
 	 *
-	 * @param integer $value
-	 * @return boolean was element really removed?
+	 * @param int $value
+	 * @return bool was element really removed?
 	 */
 	public function removeFoo($value)
 	{
-		\Consistence\Type\Type::checkType($value, \'integer\');
+		\Consistence\Type\Type::checkType($value, \'int\');
 		return \Consistence\Type\ArrayType\ArrayType::removeValue($this->children, $value);
 	}';
 		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $removeMethod));

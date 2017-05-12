@@ -6,7 +6,7 @@ namespace Consistence\Sentry\MetadataSource;
 
 use ReflectionClass;
 
-class ClassMetadataCouldNotBeCreatedException extends \Consistence\PhpException implements \Consistence\Sentry\MetadataSource\Exception
+class ClassMetadataCouldNotBeCreatedException extends \Consistence\PhpException
 {
 
 	/** @var \ReflectionClass */

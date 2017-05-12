@@ -17,7 +17,6 @@ use Consistence\Sentry\Metadata\Visibility;
 use Consistence\Sentry\SentryAware;
 use Consistence\Sentry\SentryIdentificatorParser\SentryIdentificatorParser;
 use Consistence\Sentry\Type\Sentry;
-
 use ReflectionClass;
 use ReflectionProperty;
 

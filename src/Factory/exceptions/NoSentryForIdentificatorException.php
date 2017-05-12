@@ -6,7 +6,7 @@ namespace Consistence\Sentry\Factory;
 
 use Consistence\Sentry\Metadata\SentryIdentificator;
 
-class NoSentryForIdentificatorException extends \Consistence\PhpException implements \Consistence\Sentry\Factory\Exception
+class NoSentryForIdentificatorException extends \Consistence\PhpException
 {
 
 	/** @var \Consistence\Sentry\Metadata\SentryIdentificator */

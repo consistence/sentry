@@ -11,7 +11,7 @@ class Visibility extends \Consistence\Enum\Enum
 	const VISIBILITY_PROTECTED = 'protected';
 	const VISIBILITY_PRIVATE = 'private';
 
-	/** @var integer[] */
+	/** @var int[] */
 	private static $comparationValues = [
 		self::VISIBILITY_PRIVATE => 1,
 		self::VISIBILITY_PROTECTED => 2,

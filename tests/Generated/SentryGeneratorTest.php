@@ -12,11 +12,9 @@ use Consistence\Sentry\Metadata\SentryIdentificator;
 use Consistence\Sentry\Metadata\SentryMethod;
 use Consistence\Sentry\MetadataSource\MetadataSource;
 use Consistence\Sentry\Type\Sentry;
-
+use ReflectionClass;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\visitor\vfsStreamStructureVisitor;
-
-use ReflectionClass;
 
 class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 {

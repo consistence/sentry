@@ -6,7 +6,7 @@ namespace Consistence\Sentry\Type;
 
 use Consistence\Sentry\Metadata\SentryAccess;
 
-class SentryAccessNotSupportedException extends \Consistence\PhpException implements \Consistence\Sentry\Type\Exception
+class SentryAccessNotSupportedException extends \Consistence\PhpException
 {
 
 	/** @var \Consistence\Sentry\Metadata\SentryAccess */

@@ -31,7 +31,7 @@ class SentryAutoloader extends \Consistence\ObjectPrototype
 	 * @codeCoverageIgnore changes global state via loading classes
 	 *
 	 * @param string $type
-	 * @return boolean was loaded?
+	 * @return bool was loaded?
 	 */
 	public function tryLoad(string $type): bool
 	{
@@ -59,7 +59,7 @@ class SentryAutoloader extends \Consistence\ObjectPrototype
 	/**
 	 * @codeCoverageIgnore changes global state via registering an autoloader
 	 *
-	 * @param boolean $prepend should be set to true in most cases in order to load the generated classes
+	 * @param bool $prepend should be set to true in most cases in order to load the generated classes
 	 */
 	public function register(bool $prepend = true)
 	{
