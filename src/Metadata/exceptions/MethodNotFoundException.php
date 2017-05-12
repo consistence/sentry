@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Metadata;
 
 class MethodNotFoundException extends \Consistence\PhpException implements \Consistence\Sentry\Metadata\Exception
@@ -11,30 +13,19 @@ class MethodNotFoundException extends \Consistence\PhpException implements \Cons
 	/** @var string */
 	private $className;
 
-	/**
-	 * @param string $methodName
-	 * @param string $className
-	 * @param \Exception|null $previous
-	 */
-	public function __construct($methodName, $className, \Exception $previous = null)
+	public function __construct(string $methodName, string $className, \Throwable $previous = null)
 	{
 		parent::__construct(sprintf('Method %s not found on %s', $methodName, $className), $previous);
 		$this->methodName = $methodName;
 		$this->className = $className;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getMethodName()
+	public function getMethodName(): string
 	{
 		return $this->methodName;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getClassName()
+	public function getClassName(): string
 	{
 		return $this->className;
 	}

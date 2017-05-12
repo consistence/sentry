@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\MetadataSource;
 
 use ReflectionClass;
@@ -10,12 +12,7 @@ class ClassMetadataCouldNotBeCreatedException extends \Consistence\PhpException 
 	/** @var \ReflectionClass */
 	private $classReflection;
 
-	/**
-	 * @param \ReflectionClass $classReflection
-	 * @param string $message
-	 * @param \Exception|null $previous
-	 */
-	public function __construct(ReflectionClass $classReflection, $message, \Exception $previous = null)
+	public function __construct(ReflectionClass $classReflection, string $message, \Throwable $previous = null)
 	{
 		parent::__construct(
 			sprintf(
@@ -28,10 +25,7 @@ class ClassMetadataCouldNotBeCreatedException extends \Consistence\PhpException 
 		$this->classReflection = $classReflection;
 	}
 
-	/**
-	 * @return \ReflectionClass
-	 */
-	public function getClassReflection()
+	public function getClassReflection(): ReflectionClass
 	{
 		return $this->classReflection;
 	}

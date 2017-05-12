@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Runtime;
 
 /**
@@ -22,18 +24,12 @@ class RuntimeHelperBridge extends \Consistence\ObjectPrototype
 		throw new \Consistence\StaticClassException();
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Runtime\RuntimeHelper $runtimeHelper
-	 */
 	public static function setHelper(RuntimeHelper $runtimeHelper)
 	{
 		self::$runtimeHelper = $runtimeHelper;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Runtime\RuntimeHelper
-	 */
-	public static function getHelper()
+	public static function getHelper(): RuntimeHelper
 	{
 		if (self::$runtimeHelper === null) {
 			throw new \Consistence\Sentry\Runtime\RuntimeHelperNotInitializedException();

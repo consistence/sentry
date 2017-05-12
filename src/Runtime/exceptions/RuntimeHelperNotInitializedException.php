@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Runtime;
 
 /**
@@ -8,7 +10,7 @@ namespace Consistence\Sentry\Runtime;
 class RuntimeHelperNotInitializedException extends \Consistence\PhpException implements \Consistence\Sentry\Runtime\Exception
 {
 
-	public function __construct(\Exception $previous = null)
+	public function __construct(\Throwable $previous = null)
 	{
 		parent::__construct('Sentry RuntimeHelper not initialized', $previous);
 	}

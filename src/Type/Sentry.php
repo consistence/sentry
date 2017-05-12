@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Type;
 
 use Consistence\Sentry\Metadata\BidirectionalAssociationType;
@@ -36,7 +38,7 @@ interface Sentry
 	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
 	 * @return string
 	 */
-	public function generateMethod(PropertyMetadata $property, SentryMethod $sentryMethod);
+	public function generateMethod(PropertyMetadata $property, SentryMethod $sentryMethod): string;
 
 	/**
 	 * Construct default method name for get set type and given property
@@ -45,7 +47,7 @@ interface Sentry
 	 * @param string $propertyName
 	 * @return string
 	 */
-	public function getDefaultMethodName(SentryAccess $sentryAccess, $propertyName);
+	public function getDefaultMethodName(SentryAccess $sentryAccess, string $propertyName): string;
 
 	/**
 	 * Get types of SentryAccess which are needed to handle the target side of a bidirectional relationship

@@ -1,8 +1,8 @@
 <?php
 
-namespace Consistence\Sentry\Metadata;
+declare(strict_types = 1);
 
-use Consistence\Type\Type;
+namespace Consistence\Sentry\Metadata;
 
 class SentryAccess extends \Consistence\ObjectPrototype
 {
@@ -10,28 +10,17 @@ class SentryAccess extends \Consistence\ObjectPrototype
 	/** @var string */
 	private $name;
 
-	/**
-	 * @param string $name
-	 */
-	public function __construct($name)
+	public function __construct(string $name)
 	{
-		Type::checkType($name, 'string');
 		$this->name = $name;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryAccess $to
-	 * @return boolean
-	 */
-	public function equals(SentryAccess $to)
+	public function equals(SentryAccess $to): bool
 	{
 		return $this->getName() === $to->getName();
 	}

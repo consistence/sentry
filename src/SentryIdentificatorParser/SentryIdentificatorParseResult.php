@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\SentryIdentificatorParser;
 
 use Consistence\Sentry\Metadata\SentryIdentificator;
@@ -29,7 +31,7 @@ class SentryIdentificatorParseResult extends \Consistence\ObjectPrototype
 	 * @param boolean $nullable
 	 * @param string|null $sourceClass
 	 */
-	public function __construct(SentryIdentificator $sentryIdentificator, $type, $many, $nullable, $sourceClass)
+	public function __construct(SentryIdentificator $sentryIdentificator, string $type, bool $many, bool $nullable, $sourceClass)
 	{
 		$this->sentryIdentificator = $sentryIdentificator;
 		$this->type = $type;
@@ -38,34 +40,22 @@ class SentryIdentificatorParseResult extends \Consistence\ObjectPrototype
 		$this->sourceClass = $sourceClass;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\SentryIdentificator
-	 */
-	public function getSentryIdentificator()
+	public function getSentryIdentificator(): SentryIdentificator
 	{
 		return $this->sentryIdentificator;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getType()
+	public function getType(): string
 	{
 		return $this->type;
 	}
 
-	/**
-	 * @return boolean
-	 */
-	public function isMany()
+	public function isMany(): bool
 	{
 		return $this->many;
 	}
 
-	/**
-	 * @return boolean
-	 */
-	public function isNullable()
+	public function isNullable(): bool
 	{
 		return $this->nullable;
 	}

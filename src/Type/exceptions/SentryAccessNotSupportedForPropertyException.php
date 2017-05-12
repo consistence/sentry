@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Type;
 
 use Consistence\Sentry\Metadata\PropertyMetadata;
@@ -17,13 +19,12 @@ class SentryAccessNotSupportedForPropertyException extends \Consistence\PhpExcep
 	/** @var string */
 	private $sentryClassName;
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
-	 * @param string $sentryClassName
-	 * @param \Exception|null $previous
-	 */
-	public function __construct(PropertyMetadata $property, SentryAccess $sentryAccess, $sentryClassName, \Exception $previous = null)
+	public function __construct(
+		PropertyMetadata $property,
+		SentryAccess $sentryAccess,
+		string $sentryClassName,
+		\Throwable $previous = null
+	)
 	{
 		parent::__construct(sprintf(
 			'SentryAccess %s defined on %s::$%s is not supported by %s',
@@ -37,26 +38,17 @@ class SentryAccessNotSupportedForPropertyException extends \Consistence\PhpExcep
 		$this->sentryClassName = $sentryClassName;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\PropertyMetadata
-	 */
-	public function getProperty()
+	public function getProperty(): PropertyMetadata
 	{
 		return $this->property;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\SentryAccess
-	 */
-	public function getSentryAccess()
+	public function getSentryAccess(): SentryAccess
 	{
 		return $this->sentryAccess;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getSentryClassName()
+	public function getSentryClassName(): string
 	{
 		return $this->sentryClassName;
 	}

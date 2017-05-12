@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Type;
 
 use Consistence\Sentry\Metadata\PropertyMetadata;
@@ -387,7 +389,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$collection = [];
 		foreach ($newValues as $el) {
 			\Consistence\Type\Type::checkType($el, \'integer\');
-			if (!\Consistence\Type\ArrayType\ArrayType::inArray($collection, $el)) {
+			if (!\Consistence\Type\ArrayType\ArrayType::containsValue($collection, $el)) {
 				$collection[] = $el;
 			}
 		}
@@ -425,7 +427,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 	public function containsFoo($value)
 	{
 		\Consistence\Type\Type::checkType($value, \'integer\');
-		return \Consistence\Type\ArrayType\ArrayType::inArray($this->children, $value);
+		return \Consistence\Type\ArrayType\ArrayType::containsValue($this->children, $value);
 	}';
 		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $containsMethod));
 	}
@@ -461,7 +463,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 	{
 		\Consistence\Type\Type::checkType($newValue, \'integer\');
 		$collection =& $this->children;
-		if (!\Consistence\Type\ArrayType\ArrayType::inArray($collection, $newValue)) {
+		if (!\Consistence\Type\ArrayType\ArrayType::containsValue($collection, $newValue)) {
 			$collection[] = $newValue;
 
 			return true;

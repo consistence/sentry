@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Type;
 
 use Consistence\Sentry\Metadata\PropertyMetadata;
@@ -16,11 +18,7 @@ class TypeHelper extends \Consistence\ObjectPrototype
 		throw new \Consistence\StaticClassException();
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $propertyMetadata
-	 * @return string
-	 */
-	public static function getRequiredTypeString(PropertyMetadata $propertyMetadata)
+	public static function getRequiredTypeString(PropertyMetadata $propertyMetadata): string
 	{
 		return $propertyMetadata->getType() . ($propertyMetadata->isNullable() ? '|null' : '');
 	}
@@ -38,22 +36,14 @@ class TypeHelper extends \Consistence\ObjectPrototype
 		return $args[0];
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $propertyMetadata
-	 * @return string
-	 */
-	public static function formatTypeToString(PropertyMetadata $propertyMetadata)
+	public static function formatTypeToString(PropertyMetadata $propertyMetadata): string
 	{
 		return (static::isObjectType($propertyMetadata->getType()) ? '\\' : '')
 			. $propertyMetadata->getType()
 			. ($propertyMetadata->isNullable() ? '|null' : '');
 	}
 
-	/**
-	 * @param string $type
-	 * @return boolean
-	 */
-	public static function isObjectType($type)
+	public static function isObjectType(string $type): bool
 	{
 		switch ($type) {
 			case 'integer':
@@ -95,12 +85,7 @@ class TypeHelper extends \Consistence\ObjectPrototype
 		$propertyReflection->setValue($object, $value);
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @return string
-	 */
-	public static function generateGet(PropertyMetadata $property, SentryMethod $sentryMethod)
+	public static function generateGet(PropertyMetadata $property, SentryMethod $sentryMethod): string
 	{
 		return '
 	/**
@@ -114,12 +99,7 @@ class TypeHelper extends \Consistence\ObjectPrototype
 	}';
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @return string
-	 */
-	public static function generateSet(PropertyMetadata $property, SentryMethod $sentryMethod)
+	public static function generateSet(PropertyMetadata $property, SentryMethod $sentryMethod): string
 	{
 		$method = '
 	/**

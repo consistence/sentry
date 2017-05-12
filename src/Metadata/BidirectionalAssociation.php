@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Metadata;
 
 use Consistence\Type\ArrayType\ArrayType;
-use Consistence\Type\Type;
 
 class BidirectionalAssociation extends \Consistence\ObjectPrototype
 {
@@ -27,55 +28,39 @@ class BidirectionalAssociation extends \Consistence\ObjectPrototype
 	 * @param \Consistence\Sentry\Metadata\SentryMethod[] $targetMethods
 	 */
 	public function __construct(
-		$targetClass,
-		$targetProperty,
+		string $targetClass,
+		string $targetProperty,
 		BidirectionalAssociationType $targetType,
 		array $targetMethods
 	)
 	{
-		Type::checkType($targetClass, 'string');
-		Type::checkType($targetProperty, 'string');
 		$this->targetClass = $targetClass;
 		$this->targetProperty = $targetProperty;
 		$this->targetType = $targetType;
 		$this->targetMethods = $targetMethods;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getTargetClass()
+	public function getTargetClass(): string
 	{
 		return $this->targetClass;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getTargetProperty()
+	public function getTargetProperty(): string
 	{
 		return $this->targetProperty;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\BidirectionalAssociationType
-	 */
-	public function getTargetType()
+	public function getTargetType(): BidirectionalAssociationType
 	{
 		return $this->targetType;
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
-	 * @param \Consistence\Sentry\Metadata\Visibility $requiredVisibility
-	 * @return \Consistence\Sentry\Metadata\SentryMethod
-	 */
-	public function getTargetMethodForType(SentryAccess $sentryAccess, Visibility $requiredVisibility)
+	public function getTargetMethodForType(SentryAccess $sentryAccess, Visibility $requiredVisibility): SentryMethod
 	{
 		try {
 			return ArrayType::getValueByCallback(
 				$this->targetMethods,
-				function (SentryMethod $targetMethod) use ($sentryAccess, $requiredVisibility) {
+				function (SentryMethod $targetMethod) use ($sentryAccess, $requiredVisibility): bool {
 					return $targetMethod->getSentryAccess()->equals($sentryAccess)
 						&& $targetMethod->getMethodVisibility()->isLooserOrEqualTo($requiredVisibility);
 				}

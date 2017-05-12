@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Type;
 
 class MissingArgumentException extends \Consistence\PhpException implements \Consistence\Sentry\Type\Exception
@@ -14,9 +16,9 @@ class MissingArgumentException extends \Consistence\PhpException implements \Con
 	/**
 	 * @param mixed[] $args
 	 * @param integer $requiredCountOfArguments
-	 * @param \Exception|null $previous
+	 * @param \Throwable|null $previous
 	 */
-	public function __construct(array $args, $requiredCountOfArguments, \Exception $previous = null)
+	public function __construct(array $args, int $requiredCountOfArguments, \Throwable $previous = null)
 	{
 		parent::__construct(
 			sprintf('Sentry requires at least %d arguments, %d given', $requiredCountOfArguments, count($args)),
@@ -29,15 +31,12 @@ class MissingArgumentException extends \Consistence\PhpException implements \Con
 	/**
 	 * @return mixed[]
 	 */
-	public function getArgs()
+	public function getArgs(): array
 	{
 		return $this->args;
 	}
 
-	/**
-	 * @return integer
-	 */
-	public function getRequiredCountOfArguments()
+	public function getRequiredCountOfArguments(): int
 	{
 		return $this->requiredCountOfArguments;
 	}

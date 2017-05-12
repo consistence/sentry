@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Type;
 
 use Consistence\Sentry\Metadata\SentryAccess;
@@ -13,12 +15,7 @@ class SentryAccessNotSupportedException extends \Consistence\PhpException implem
 	/** @var string */
 	private $sentryClassName;
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
-	 * @param string $sentryClassName
-	 * @param \Exception|null $previous
-	 */
-	public function __construct(SentryAccess $sentryAccess, $sentryClassName, \Exception $previous = null)
+	public function __construct(SentryAccess $sentryAccess, string $sentryClassName, \Throwable $previous = null)
 	{
 		parent::__construct(
 			sprintf('SentryAccess %s is not supported by %s', $sentryAccess->getName(), $sentryClassName),
@@ -28,18 +25,12 @@ class SentryAccessNotSupportedException extends \Consistence\PhpException implem
 		$this->sentryClassName = $sentryClassName;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\SentryAccess
-	 */
-	public function getSentryAccess()
+	public function getSentryAccess(): SentryAccess
 	{
 		return $this->sentryAccess;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getSentryClassName()
+	public function getSentryClassName(): string
 	{
 		return $this->sentryClassName;
 	}

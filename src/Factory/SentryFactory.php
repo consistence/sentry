@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Factory;
 
 use Consistence\Sentry\Metadata\SentryIdentificator;
+use Consistence\Sentry\Type\Sentry;
 
 interface SentryFactory
 {
@@ -12,6 +15,6 @@ interface SentryFactory
 	 * @return \Consistence\Sentry\Type\Sentry
 	 * @throws \Consistence\Sentry\Factory\NoSentryForIdentificatorException
 	 */
-	public function getSentry(SentryIdentificator $sentryIdentificator);
+	public function getSentry(SentryIdentificator $sentryIdentificator): Sentry;
 
 }

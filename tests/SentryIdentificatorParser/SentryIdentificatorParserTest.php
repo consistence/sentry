@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\SentryIdentificatorParser;
 
 use Consistence\Sentry\Metadata\SentryIdentificator;
@@ -10,7 +12,7 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	/**
 	 * @return mixed[][]
 	 */
-	public function matchesProvider()
+	public function matchesProvider(): array
 	{
 		return [
 			[new SentryIdentificator('string'), 'string', false, false, null],
@@ -39,7 +41,7 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	/**
 	 * @return string[][]
 	 */
-	public function doesNotMatchProvider()
+	public function doesNotMatchProvider(): array
 	{
 		return [
 			[''],
@@ -56,7 +58,13 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	 * @param boolean $expectedNullable
 	 * @param string|null $sourceClass
 	 */
-	public function testMatch(SentryIdentificator $sentryIdentificator, $expectedType, $expectedMany, $expectedNullable, $sourceClass)
+	public function testMatch(
+		SentryIdentificator $sentryIdentificator,
+		string $expectedType,
+		bool $expectedMany,
+		bool $expectedNullable,
+		$sourceClass
+	)
 	{
 		$parser = new SentryIdentificatorParser();
 		$result = $parser->parse($sentryIdentificator);
@@ -73,7 +81,7 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	 *
 	 * @param string $pattern
 	 */
-	public function testDoesNotMatch($pattern)
+	public function testDoesNotMatch(string $pattern)
 	{
 		$parser = new SentryIdentificatorParser();
 		$sentryIdentificator = new SentryIdentificator($pattern);

@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Metadata;
 
 use Consistence\Type\ArrayType\ArrayType;
-use Consistence\Type\Type;
 
 class PropertyMetadata extends \Consistence\ObjectPrototype
 {
@@ -39,19 +40,15 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 	 * @param \Consistence\Sentry\Metadata\BidirectionalAssociation|null $bidirectionalAssociation
 	 */
 	public function __construct(
-		$name,
-		$className,
-		$type,
+		string $name,
+		string $className,
+		string $type,
 		SentryIdentificator $sentryIdentificator,
-		$nullable,
+		bool $nullable,
 		array $sentryMethods,
 		BidirectionalAssociation $bidirectionalAssociation = null
 	)
 	{
-		Type::checkType($name, 'string');
-		Type::checkType($className, 'string');
-		Type::checkType($type, 'string');
-		Type::checkType($nullable, 'boolean');
 		$this->name = $name;
 		$this->className = $className;
 		$this->type = $type;
@@ -61,42 +58,27 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 		$this->bidirectionalAssociation = $bidirectionalAssociation;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getClassName()
+	public function getClassName(): string
 	{
 		return $this->className;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getType()
+	public function getType(): string
 	{
 		return $this->type;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\SentryIdentificator
-	 */
-	public function getSentryIdentificator()
+	public function getSentryIdentificator(): SentryIdentificator
 	{
 		return $this->sentryIdentificator;
 	}
 
-	/**
-	 * @return boolean
-	 */
-	public function isNullable()
+	public function isNullable(): bool
 	{
 		return $this->nullable;
 	}
@@ -104,7 +86,7 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 	/**
 	 * @return \Consistence\Sentry\Metadata\SentryMethod[]
 	 */
-	public function getSentryMethods()
+	public function getSentryMethods(): array
 	{
 		return $this->sentryMethods;
 	}
@@ -117,17 +99,15 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 		return $this->bidirectionalAssociation;
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
-	 * @param \Consistence\Sentry\Metadata\Visibility $requiredVisibility
-	 * @return \Consistence\Sentry\Metadata\SentryMethod
-	 */
-	public function getSentryMethodByAccessAndRequiredVisibility(SentryAccess $sentryAccess, Visibility $requiredVisibility)
+	public function getSentryMethodByAccessAndRequiredVisibility(
+		SentryAccess $sentryAccess,
+		Visibility $requiredVisibility
+	): SentryMethod
 	{
 		try {
 			return ArrayType::getValueByCallback(
 				$this->getSentryMethods(),
-				function (SentryMethod $sentryMethod) use ($sentryAccess, $requiredVisibility) {
+				function (SentryMethod $sentryMethod) use ($sentryAccess, $requiredVisibility): bool {
 					return $sentryMethod->getSentryAccess()->equals($sentryAccess)
 						&& $sentryMethod->getMethodVisibility()->isLooserOrEqualTo($requiredVisibility);
 				}
@@ -149,12 +129,15 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 	 * @param \Consistence\Sentry\Metadata\Visibility $requiredVisibility
 	 * @return \Consistence\Sentry\Metadata\SentryMethod
 	 */
-	public function getSentryMethodByNameAndRequiredVisibility($methodName, Visibility $requiredVisibility)
+	public function getSentryMethodByNameAndRequiredVisibility(
+		string $methodName,
+		Visibility $requiredVisibility
+	): SentryMethod
 	{
 		try {
 			return ArrayType::getValueByCallback(
 				$this->getSentryMethods(),
-				function (SentryMethod $sentryMethod) use ($methodName, $requiredVisibility) {
+				function (SentryMethod $sentryMethod) use ($methodName, $requiredVisibility): bool {
 					return strcasecmp($sentryMethod->getMethodName(), $methodName) === 0
 						&& $sentryMethod->getMethodVisibility()->isLooserOrEqualTo($requiredVisibility);
 				}

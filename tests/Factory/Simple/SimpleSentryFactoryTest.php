@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Factory\Simple;
 
 use Consistence\Sentry\Metadata\SentryIdentificator;
@@ -14,7 +16,7 @@ class SimpleSentryFactoryTest extends \PHPUnit\Framework\TestCase
 	/**
 	 * @return mixed[][]
 	 */
-	public function sentryIdentificatorToSentryProvider()
+	public function sentryIdentificatorToSentryProvider(): array
 	{
 		return [
 			[new SentryIdentificator('string'), new SimpleType()],

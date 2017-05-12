@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\MetadataSource\Annotation;
 
 use Consistence\Annotation\Annotation;
@@ -53,11 +55,7 @@ class AnnotationMetadataSource extends \Consistence\ObjectPrototype implements \
 		$this->classMetadata = [];
 	}
 
-	/**
-	 * @param \ReflectionClass $classReflection
-	 * @return \Consistence\Sentry\Metadata\ClassMetadata
-	 */
-	public function getMetadataForClass(ReflectionClass $classReflection)
+	public function getMetadataForClass(ReflectionClass $classReflection): ClassMetadata
 	{
 		if ($classReflection->implementsInterface(SentryAware::class) === false) {
 			throw new \Consistence\Sentry\MetadataSource\ClassMetadataCouldNotBeCreatedException(
@@ -72,11 +70,7 @@ class AnnotationMetadataSource extends \Consistence\ObjectPrototype implements \
 		return $this->classMetadata[$classReflection->getName()];
 	}
 
-	/**
-	 * @param \ReflectionClass $classReflection
-	 * @return \Consistence\Sentry\Metadata\ClassMetadata
-	 */
-	private function createClassMetadata(ReflectionClass $classReflection)
+	private function createClassMetadata(ReflectionClass $classReflection): ClassMetadata
 	{
 		$propertiesMetadata = [];
 		foreach (ClassReflection::getDeclaredProperties($classReflection) as $propertyReflection) {
@@ -93,11 +87,7 @@ class AnnotationMetadataSource extends \Consistence\ObjectPrototype implements \
 		);
 	}
 
-	/**
-	 * @param \ReflectionProperty $propertyReflection
-	 * @return \Consistence\Sentry\Metadata\PropertyMetadata
-	 */
-	private function createPropertyMetadata(ReflectionProperty $propertyReflection)
+	private function createPropertyMetadata(ReflectionProperty $propertyReflection): PropertyMetadata
 	{
 		try {
 			$sentryIdentificator = $this->getSentryIdentificator($propertyReflection);
@@ -125,11 +115,7 @@ class AnnotationMetadataSource extends \Consistence\ObjectPrototype implements \
 		}
 	}
 
-	/**
-	 * @param \ReflectionProperty $propertyReflection
-	 * @return \Consistence\Sentry\Metadata\SentryIdentificator
-	 */
-	private function getSentryIdentificator(ReflectionProperty $propertyReflection)
+	private function getSentryIdentificator(ReflectionProperty $propertyReflection): SentryIdentificator
 	{
 		try {
 			$annotation = $this->annotationProvider->getPropertyAnnotation($propertyReflection, self::IDENTIFICATOR_ANNOTATION);
@@ -172,14 +158,12 @@ class AnnotationMetadataSource extends \Consistence\ObjectPrototype implements \
 		return $sentryMethodsForAccess;
 	}
 
-	/**
-	 * @param string $propertyName
-	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
-	 * @param \Consistence\Sentry\Type\Sentry $sentry
-	 * @param \Consistence\Annotation\Annotation $sentryAccessAnnotation
-	 * @return \Consistence\Sentry\Metadata\SentryMethod
-	 */
-	private function createSentryMethod($propertyName, SentryAccess $sentryAccess, Sentry $sentry, Annotation $sentryAccessAnnotation)
+	private function createSentryMethod(
+		string $propertyName,
+		SentryAccess $sentryAccess,
+		Sentry $sentry,
+		Annotation $sentryAccessAnnotation
+	): SentryMethod
 	{
 		try {
 			$methodName = $sentryAccessAnnotation->getField(self::METHOD_PARAM_NAME)->getValue();

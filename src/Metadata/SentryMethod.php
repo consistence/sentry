@@ -1,8 +1,8 @@
 <?php
 
-namespace Consistence\Sentry\Metadata;
+declare(strict_types = 1);
 
-use Consistence\Type\Type;
+namespace Consistence\Sentry\Metadata;
 
 class SentryMethod extends \Consistence\ObjectPrototype
 {
@@ -16,43 +16,28 @@ class SentryMethod extends \Consistence\ObjectPrototype
 	/** @var \Consistence\Sentry\Metadata\Visibility */
 	private $methodVisibility;
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
-	 * @param string $methodName
-	 * @param \Consistence\Sentry\Metadata\Visibility $methodVisibility
-	 */
 	public function __construct(
 		SentryAccess $sentryAccess,
-		$methodName,
+		string $methodName,
 		Visibility $methodVisibility
 	)
 	{
-		Type::checkType($methodName, 'string');
 		$this->sentryAccess = $sentryAccess;
 		$this->methodName = $methodName;
 		$this->methodVisibility = $methodVisibility;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\SentryAccess
-	 */
-	public function getSentryAccess()
+	public function getSentryAccess(): SentryAccess
 	{
 		return $this->sentryAccess;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getMethodName()
+	public function getMethodName(): string
 	{
 		return $this->methodName;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\Visibility
-	 */
-	public function getMethodVisibility()
+	public function getMethodVisibility(): Visibility
 	{
 		return $this->methodVisibility;
 	}

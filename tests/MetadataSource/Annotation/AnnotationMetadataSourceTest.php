@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\MetadataSource\Annotation;
 
 use Consistence\Annotation\Annotation;
@@ -14,6 +16,7 @@ use Consistence\Sentry\SentryIdentificatorParser\SentryIdentificatorParser;
 use Consistence\Sentry\Type\SimpleType;
 
 use ReflectionClass;
+use ReflectionProperty;
 
 class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 {
@@ -31,7 +34,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 			$type
 		);
 
-		$getAnnotationsCallback = function ($property, $annotationName) {
+		$getAnnotationsCallback = function (ReflectionProperty $property, string $annotationName): array {
 			switch ($annotationName) {
 				case 'get':
 					return [Annotation::createAnnotationWithFields('get', [])];
@@ -96,7 +99,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 			$type
 		);
 
-		$getAnnotationsCallback = function ($property, $annotationName) {
+		$getAnnotationsCallback = function (ReflectionProperty $property, string $annotationName): array {
 			switch ($annotationName) {
 				case 'get':
 					return [Annotation::createAnnotationWithFields('get', [
@@ -155,7 +158,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 			$type
 		);
 
-		$getAnnotationsCallback = function ($property, $annotationName) {
+		$getAnnotationsCallback = function (ReflectionProperty $property, string $annotationName): array {
 			switch ($annotationName) {
 				case 'get':
 					return [Annotation::createAnnotationWithFields('get', [
@@ -214,7 +217,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 			$type
 		);
 
-		$getAnnotationsCallback = function ($property, $annotationName) {
+		$getAnnotationsCallback = function (ReflectionProperty $property, string $annotationName): array {
 			switch ($annotationName) {
 				case 'get':
 					return [

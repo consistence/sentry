@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Type;
 
 use Consistence\Sentry\Metadata\BidirectionalAssociationType;
@@ -52,7 +54,7 @@ abstract class AbstractSentry extends \Consistence\ObjectPrototype implements \C
 	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
 	 * @return string
 	 */
-	public function generateMethod(PropertyMetadata $property, SentryMethod $sentryMethod)
+	public function generateMethod(PropertyMetadata $property, SentryMethod $sentryMethod): string
 	{
 		$this->checkSupportedSentryAccess($property, $sentryMethod->getSentryAccess());
 
@@ -64,20 +66,18 @@ abstract class AbstractSentry extends \Consistence\ObjectPrototype implements \C
 	protected function checkSupportedSentryAccess(PropertyMetadata $property, SentryAccess $requiredSentryAccess)
 	{
 		try {
-			ArrayType::getValueByCallback(static::getSupportedAccess(), function (SentryAccess $sentryAccess) use ($requiredSentryAccess) {
-				return $requiredSentryAccess->equals($sentryAccess);
-			});
+			ArrayType::getValueByCallback(
+				static::getSupportedAccess(),
+				function (SentryAccess $sentryAccess) use ($requiredSentryAccess): bool {
+					return $requiredSentryAccess->equals($sentryAccess);
+				}
+			);
 		} catch (\Consistence\Type\ArrayType\ElementDoesNotExistException $e) {
 			throw new \Consistence\Sentry\Type\SentryAccessNotSupportedForPropertyException($property, $requiredSentryAccess, get_class($this), $e);
 		}
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
-	 * @param string $propertyName
-	 * @return string
-	 */
-	public function getDefaultMethodName(SentryAccess $sentryAccess, $propertyName)
+	public function getDefaultMethodName(SentryAccess $sentryAccess, string $propertyName): string
 	{
 		switch ($sentryAccess->getName()) {
 			case self::GET:
@@ -122,22 +122,12 @@ abstract class AbstractSentry extends \Consistence\ObjectPrototype implements \C
 		TypeHelper::setPropertyValue($property, $object, TypeHelper::getFirstArg($args));
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @return string
-	 */
-	public function generateGet(PropertyMetadata $property, SentryMethod $sentryMethod)
+	public function generateGet(PropertyMetadata $property, SentryMethod $sentryMethod): string
 	{
 		return TypeHelper::generateGet($property, $sentryMethod);
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @return string
-	 */
-	public function generateSet(PropertyMetadata $property, SentryMethod $sentryMethod)
+	public function generateSet(PropertyMetadata $property, SentryMethod $sentryMethod): string
 	{
 		return TypeHelper::generateSet($property, $sentryMethod);
 	}

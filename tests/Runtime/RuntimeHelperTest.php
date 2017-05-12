@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Runtime;
 
 use Consistence\Sentry\Factory\SentryFactory;
@@ -101,7 +103,7 @@ class RuntimeHelperTest extends \PHPUnit\Framework\TestCase
 
 		$runtimeHelper = new RuntimeHelper($metadataSource, $sentryFactory);
 
-		$this->assertSame('test', $runtimeHelper->run($foo, $fooMethod, [$fooParam], function () {
+		$this->assertSame('test', $runtimeHelper->run($foo, $fooMethod, [$fooParam], function (): string {
 			return 'test';
 		}));
 	}
@@ -112,7 +114,7 @@ class RuntimeHelperTest extends \PHPUnit\Framework\TestCase
 		$fooMethod = 'fooMethod';
 		$fooParam = 'test';
 
-		$metadataReturnCallback = function () use ($fooMethod, $foo) {
+		$metadataReturnCallback = function () use ($fooMethod, $foo): ClassMetadata {
 			$classMetadata = $this->createMock(ClassMetadata::class);
 			$classMetadata
 				->expects($this->once())
@@ -138,7 +140,7 @@ class RuntimeHelperTest extends \PHPUnit\Framework\TestCase
 
 		$runtimeHelper = new RuntimeHelper($metadataSource, $sentryFactory);
 
-		$this->assertSame('test', $runtimeHelper->run($foo, $fooMethod, [$fooParam], function () {
+		$this->assertSame('test', $runtimeHelper->run($foo, $fooMethod, [$fooParam], function (): string {
 			return 'test';
 		}));
 	}

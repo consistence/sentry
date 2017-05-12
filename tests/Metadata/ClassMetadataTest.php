@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Metadata;
 
 class ClassMetadataTest extends \PHPUnit\Framework\TestCase
@@ -16,7 +18,7 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 				false,
 				[],
 				null
-			)
+			),
 		];
 
 		$classMetadata = new ClassMetadata(

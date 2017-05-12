@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Generated;
 
 use Closure;
@@ -16,11 +18,7 @@ class SentryAutoloader extends \Consistence\ObjectPrototype
 	/** @var string[] className => fileName */
 	private $classMap;
 
-	/**
-	 * @param \Consistence\Sentry\Generated\SentryGenerator $generator
-	 * @param string $classMapTargetFile
-	 */
-	public function __construct(SentryGenerator $generator, $classMapTargetFile)
+	public function __construct(SentryGenerator $generator, string $classMapTargetFile)
 	{
 		$this->generator = $generator;
 		$this->classMapTargetFile = $classMapTargetFile;
@@ -35,7 +33,7 @@ class SentryAutoloader extends \Consistence\ObjectPrototype
 	 * @param string $type
 	 * @return boolean was loaded?
 	 */
-	public function tryLoad($type)
+	public function tryLoad(string $type): bool
 	{
 		if (!isset($this->classMap[$type])) {
 			return false;
@@ -63,22 +61,19 @@ class SentryAutoloader extends \Consistence\ObjectPrototype
 	 *
 	 * @param boolean $prepend should be set to true in most cases in order to load the generated classes
 	 */
-	public function register($prepend = true)
+	public function register(bool $prepend = true)
 	{
 		if ($this->isClassMapReady()) {
 			$this->loadClassMap();
 		} else {
 			$this->rebuild();
 		}
-		spl_autoload_register(function ($type) {
+		spl_autoload_register(function (string $type): bool {
 			return $this->tryLoad($type);
 		}, true, $prepend);
 	}
 
-	/**
-	 * @return boolean
-	 */
-	public function isClassMapReady()
+	public function isClassMapReady(): bool
 	{
 		return is_file($this->classMapTargetFile);
 	}

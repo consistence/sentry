@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Metadata;
 
 class MethodNotFoundForPropertyException extends \Consistence\PhpException implements \Consistence\Sentry\Metadata\Exception
@@ -14,13 +16,12 @@ class MethodNotFoundForPropertyException extends \Consistence\PhpException imple
 	/** @var string */
 	private $propertyName;
 
-	/**
-	 * @param string $methodName
-	 * @param string $className
-	 * @param string $propertyName
-	 * @param \Exception|null $previous
-	 */
-	public function __construct($methodName, $className, $propertyName, \Exception $previous = null)
+	public function __construct(
+		string $methodName,
+		string $className,
+		string $propertyName,
+		\Throwable $previous = null
+	)
 	{
 		parent::__construct(sprintf(
 			'Method %s not found on %s::$%s',
@@ -33,26 +34,17 @@ class MethodNotFoundForPropertyException extends \Consistence\PhpException imple
 		$this->propertyName = $propertyName;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getMethodName()
+	public function getMethodName(): string
 	{
 		return $this->methodName;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getClassName()
+	public function getClassName(): string
 	{
 		return $this->className;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getPropertyName()
+	public function getPropertyName(): string
 	{
 		return $this->propertyName;
 	}

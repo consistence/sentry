@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Metadata;
 
 use Consistence\Type\ArrayType\ArrayType;
-use Consistence\Type\Type;
 
 class ClassMetadata extends \Consistence\ObjectPrototype
 {
@@ -18,17 +19,13 @@ class ClassMetadata extends \Consistence\ObjectPrototype
 	 * @param string $name
 	 * @param \Consistence\Sentry\Metadata\PropertyMetadata[] $properties
 	 */
-	public function __construct($name, array $properties)
+	public function __construct(string $name, array $properties)
 	{
-		Type::checkType($name, 'string');
 		$this->name = $name;
 		$this->properties = $properties;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}
@@ -36,21 +33,17 @@ class ClassMetadata extends \Consistence\ObjectPrototype
 	/**
 	 * @return \Consistence\Sentry\Metadata\PropertyMetadata[]
 	 */
-	public function getProperties()
+	public function getProperties(): array
 	{
 		return $this->properties;
 	}
 
-	/**
-	 * @param string $propertyName
-	 * @return \Consistence\Sentry\Metadata\PropertyMetadata
-	 */
-	public function getPropertyByName($propertyName)
+	public function getPropertyByName(string $propertyName): PropertyMetadata
 	{
 		try {
 			return ArrayType::getValueByCallback(
 				$this->getProperties(),
-				function (PropertyMetadata $propertyMetadata) use ($propertyName) {
+				function (PropertyMetadata $propertyMetadata) use ($propertyName): bool {
 					return $propertyMetadata->getName() === $propertyName;
 				}
 			);
@@ -59,12 +52,10 @@ class ClassMetadata extends \Consistence\ObjectPrototype
 		}
 	}
 
-	/**
-	 * @param string $methodName
-	 * @param \Consistence\Sentry\Metadata\Visibility $requiredVisibility
-	 * @return \Consistence\Sentry\Metadata\SentryMethodSearchResult
-	 */
-	public function getSentryMethodByNameAndRequiredVisibility($methodName, Visibility $requiredVisibility)
+	public function getSentryMethodByNameAndRequiredVisibility(
+		string $methodName,
+		Visibility $requiredVisibility
+	): SentryMethodSearchResult
 	{
 		foreach ($this->getProperties() as $property) {
 			try {

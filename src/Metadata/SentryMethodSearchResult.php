@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Metadata;
 
 class SentryMethodSearchResult extends \Consistence\ObjectPrototype
@@ -17,18 +19,12 @@ class SentryMethodSearchResult extends \Consistence\ObjectPrototype
 		$this->property = $property;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\SentryMethod
-	 */
-	public function getSentryMethod()
+	public function getSentryMethod(): SentryMethod
 	{
 		return $this->sentryMethod;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\PropertyMetadata
-	 */
-	public function getProperty()
+	public function getProperty(): PropertyMetadata
 	{
 		return $this->property;
 	}

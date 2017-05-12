@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Generated;
 
 use Consistence\ClassFinder\ClassFinder;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Type;
 
 use Consistence\Sentry\Metadata\PropertyMetadata;
@@ -32,12 +34,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 		];
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
-	 * @param string $propertyName
-	 * @return string
-	 */
-	public function getDefaultMethodName(SentryAccess $sentryAccess, $propertyName)
+	public function getDefaultMethodName(SentryAccess $sentryAccess, string $propertyName): string
 	{
 		switch ($sentryAccess->getName()) {
 			case self::ADD:
@@ -74,7 +71,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * @param mixed[] $args
 	 * @return boolean was element really added?
 	 */
-	public function add(PropertyMetadata $property, SentryAware $object, array $args)
+	public function add(PropertyMetadata $property, SentryAware $object, array $args): bool
 	{
 		$value = TypeHelper::getFirstArg($args);
 
@@ -91,7 +88,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * @param mixed[] $args
 	 * @return boolean was element really removed?
 	 */
-	public function remove(PropertyMetadata $property, SentryAware $object, array $args)
+	public function remove(PropertyMetadata $property, SentryAware $object, array $args): bool
 	{
 		$value = TypeHelper::getFirstArg($args);
 
@@ -108,13 +105,13 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * @param mixed[] $args
 	 * @return boolean
 	 */
-	public function contains(PropertyMetadata $property, SentryAware $object, array $args)
+	public function contains(PropertyMetadata $property, SentryAware $object, array $args): bool
 	{
 		$value = TypeHelper::getFirstArg($args);
 		Type::checkType($value, $property->getType());
 		$collection = TypeHelper::getPropertyValue($property, $object);
 
-		return ArrayType::inArray($collection, $value);
+		return ArrayType::containsValue($collection, $value);
 	}
 
 	/**
@@ -123,10 +120,10 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * @param mixed $value
 	 * @return boolean was element really added?
 	 */
-	private function addValue(array &$collection, PropertyMetadata $property, $value)
+	private function addValue(array &$collection, PropertyMetadata $property, $value): bool
 	{
 		Type::checkType($value, $property->getType());
-		if (ArrayType::inArray($collection, $value)) {
+		if (ArrayType::containsValue($collection, $value)) {
 			return false;
 		}
 		$collection[] = $value;
@@ -140,18 +137,13 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	 * @param mixed $value
 	 * @return boolean was element really removed?
 	 */
-	private function removeValue(array &$collection, PropertyMetadata $property, $value)
+	private function removeValue(array &$collection, PropertyMetadata $property, $value): bool
 	{
 		Type::checkType($value, $property->getType());
 		return ArrayType::removeValue($collection, $value);
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @return string
-	 */
-	public function generateGet(PropertyMetadata $property, SentryMethod $sentryMethod)
+	public function generateGet(PropertyMetadata $property, SentryMethod $sentryMethod): string
 	{
 		return '
 	/**
@@ -165,12 +157,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	}';
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @return string
-	 */
-	public function generateSet(PropertyMetadata $property, SentryMethod $sentryMethod)
+	public function generateSet(PropertyMetadata $property, SentryMethod $sentryMethod): string
 	{
 		$method = '
 	/**
@@ -185,7 +172,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 		$collection = [];
 		foreach ($newValues as $el) {
 			\\' . Type::class . '::checkType($el, \'' . $property->getType() . '\');
-			if (!\\' . ArrayType::class . '::inArray($collection, $el)) {
+			if (!\\' . ArrayType::class . '::containsValue($collection, $el)) {
 				$collection[] = $el;
 			}
 		}
@@ -194,12 +181,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 		return $method;
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @return string
-	 */
-	public function generateContains(PropertyMetadata $property, SentryMethod $sentryMethod)
+	public function generateContains(PropertyMetadata $property, SentryMethod $sentryMethod): string
 	{
 		return '
 	/**
@@ -211,16 +193,11 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	' . $sentryMethod->getMethodVisibility()->getName() . ' function ' . $sentryMethod->getMethodName() . '($value)
 	{
 		\\' . Type::class . '::checkType($value, \'' . $property->getType() . '\');
-		return \\' . ArrayType::class . '::inArray($this->' . $property->getName() . ', $value);
+		return \\' . ArrayType::class . '::containsValue($this->' . $property->getName() . ', $value);
 	}';
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @return string
-	 */
-	public function generateAdd(PropertyMetadata $property, SentryMethod $sentryMethod)
+	public function generateAdd(PropertyMetadata $property, SentryMethod $sentryMethod): string
 	{
 		$method = '
 	/**
@@ -233,7 +210,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 	{
 		\\' . Type::class . '::checkType($newValue, \'' . $property->getType() . '\');
 		$collection =& $this->' . $property->getName() . ';
-		if (!\\' . ArrayType::class . '::inArray($collection, $newValue)) {
+		if (!\\' . ArrayType::class . '::containsValue($collection, $newValue)) {
 			$collection[] = $newValue;
 
 			return true;
@@ -245,12 +222,7 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 		return $method;
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @return string
-	 */
-	public function generateRemove(PropertyMetadata $property, SentryMethod $sentryMethod)
+	public function generateRemove(PropertyMetadata $property, SentryMethod $sentryMethod): string
 	{
 		$method = '
 	/**

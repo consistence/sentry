@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Metadata;
 
 class NoSuitableMethodException extends \Consistence\PhpException implements \Consistence\Sentry\Metadata\Exception
@@ -14,13 +16,7 @@ class NoSuitableMethodException extends \Consistence\PhpException implements \Co
 	/** @var \Consistence\Sentry\Metadata\SentryAccess */
 	private $sentryAccess;
 
-	/**
-	 * @param string $className
-	 * @param string $propertyName
-	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
-	 * @param \Exception|null $previous
-	 */
-	public function __construct($className, $propertyName, SentryAccess $sentryAccess, \Exception $previous = null)
+	public function __construct(string $className, string $propertyName, SentryAccess $sentryAccess, \Throwable $previous = null)
 	{
 		parent::__construct(
 			sprintf(
@@ -36,26 +32,17 @@ class NoSuitableMethodException extends \Consistence\PhpException implements \Co
 		$this->sentryAccess = $sentryAccess;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getClassName()
+	public function getClassName(): string
 	{
 		return $this->className;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getPropertyName()
+	public function getPropertyName(): string
 	{
 		return $this->propertyName;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\SentryAccess
-	 */
-	public function getSentryAccess()
+	public function getSentryAccess(): SentryAccess
 	{
 		return $this->sentryAccess;
 	}

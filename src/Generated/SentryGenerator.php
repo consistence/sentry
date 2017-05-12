@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Generated;
 
 use Consistence\ClassFinder\ClassFinder;
@@ -26,17 +28,11 @@ class SentryGenerator extends \Consistence\ObjectPrototype
 	/** @var string */
 	private $targetDirectory;
 
-	/**
-	 * @param \Consistence\ClassFinder\ClassFinder $classFinder
-	 * @param \Consistence\Sentry\MetadataSource\MetadataSource $metadataSource
-	 * @param \Consistence\Sentry\Factory\SentryFactory $sentryFactory
-	 * @param string $targetDirectory
-	 */
 	public function __construct(
 		ClassFinder $classFinder,
 		MetadataSource $metadataSource,
 		SentryFactory $sentryFactory,
-		$targetDirectory
+		string $targetDirectory
 	)
 	{
 		$this->classFinder = $classFinder;
@@ -48,7 +44,7 @@ class SentryGenerator extends \Consistence\ObjectPrototype
 	/**
 	 * @return string[] className(string) => fileName(string)
 	 */
-	public function generateAll()
+	public function generateAll(): array
 	{
 		$classes = $this->classFinder->findByInterface(SentryAware::class);
 		$generated = [];
@@ -68,7 +64,7 @@ class SentryGenerator extends \Consistence\ObjectPrototype
 	 * @param \ReflectionClass $classReflection
 	 * @return string fileName
 	 */
-	public function generateClass(ReflectionClass $classReflection)
+	public function generateClass(ReflectionClass $classReflection): string
 	{
 		$classMetadata = $this->metadataSource->getMetadataForClass($classReflection);
 		$methods = '';
@@ -93,7 +89,7 @@ class SentryGenerator extends \Consistence\ObjectPrototype
 	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $propertyMetadata
 	 * @return string generated content
 	 */
-	private function generateMethods(ReflectionClass $classReflection, PropertyMetadata $propertyMetadata)
+	private function generateMethods(ReflectionClass $classReflection, PropertyMetadata $propertyMetadata): string
 	{
 		$sentryIdentificator = $propertyMetadata->getSentryIdentificator();
 		$sentry = $this->sentryFactory->getSentry($sentryIdentificator);
@@ -112,11 +108,7 @@ class SentryGenerator extends \Consistence\ObjectPrototype
 		return $generatedMethods;
 	}
 
-	/**
-	 * @param string $entityName
-	 * @return string
-	 */
-	private function getFileName($entityName)
+	private function getFileName(string $entityName): string
 	{
 		$name = str_replace('\\', '_', $entityName);
 		$name = $this->targetDirectory . '/' . $name . '.php';

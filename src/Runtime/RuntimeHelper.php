@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Runtime;
 
 use Closure;
@@ -33,7 +35,7 @@ class RuntimeHelper extends \Consistence\ObjectPrototype
 	 * @param \Closure|null $nothingDoneCallback
 	 * @return mixed
 	 */
-	public function run(SentryAware $object, $methodName, array $args, Closure $nothingDoneCallback = null)
+	public function run(SentryAware $object, string $methodName, array $args, Closure $nothingDoneCallback = null)
 	{
 		$searchResult = $this->findMethod(new ReflectionClass($object), $methodName);
 		if ($searchResult === null && $nothingDoneCallback !== null) {
@@ -49,7 +51,7 @@ class RuntimeHelper extends \Consistence\ObjectPrototype
 	 * @param string $methodName
 	 * @return \Consistence\Sentry\Metadata\SentryMethodSearchResult|null
 	 */
-	private function findMethod(ReflectionClass $classReflection, $methodName)
+	private function findMethod(ReflectionClass $classReflection, string $methodName)
 	{
 		try {
 			$classMetadata = $this->metadataSource->getMetadataForClass($classReflection);
@@ -69,7 +71,7 @@ class RuntimeHelper extends \Consistence\ObjectPrototype
 	 * @param string $methodName
 	 * @return \Consistence\Sentry\Metadata\SentryMethodSearchResult|null
 	 */
-	private function findMethodInParentClass(ReflectionClass $classReflection, $methodName)
+	private function findMethodInParentClass(ReflectionClass $classReflection, string $methodName)
 	{
 		$parent = $classReflection->getParentClass();
 		if ($parent !== false && $parent->implementsInterface(SentryAware::class) === true) {

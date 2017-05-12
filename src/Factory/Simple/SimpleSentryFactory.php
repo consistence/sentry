@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Factory\Simple;
 
 use Consistence\Sentry\Metadata\SentryIdentificator;
 use Consistence\Sentry\SentryIdentificatorParser\SentryIdentificatorParser;
 use Consistence\Sentry\Type\CollectionType;
+use Consistence\Sentry\Type\Sentry;
 use Consistence\Sentry\Type\SimpleType;
 
 class SimpleSentryFactory extends \Consistence\ObjectPrototype implements \Consistence\Sentry\Factory\SentryFactory
@@ -22,11 +25,7 @@ class SimpleSentryFactory extends \Consistence\ObjectPrototype implements \Consi
 		$this->sentries = [];
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
-	 * @return \Consistence\Sentry\Type\Sentry
-	 */
-	public function getSentry(SentryIdentificator $sentryIdentificator)
+	public function getSentry(SentryIdentificator $sentryIdentificator): Sentry
 	{
 		if (!isset($this->sentries[$sentryIdentificator->getId()])) {
 			$this->sentries[$sentryIdentificator->getId()] = $this->createSentry($sentryIdentificator);
@@ -35,11 +34,7 @@ class SimpleSentryFactory extends \Consistence\ObjectPrototype implements \Consi
 		return $this->sentries[$sentryIdentificator->getId()];
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
-	 * @return \Consistence\Sentry\Type\Sentry
-	 */
-	private function createSentry(SentryIdentificator $sentryIdentificator)
+	private function createSentry(SentryIdentificator $sentryIdentificator): Sentry
 	{
 		try {
 			$sentryIdentificatorParseResult = $this->sentryIdentificatorParser->parse($sentryIdentificator);

@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\MetadataSource;
+
+use Consistence\Sentry\Metadata\ClassMetadata;
 
 use ReflectionClass;
 
@@ -12,6 +16,6 @@ interface MetadataSource
 	 * @return \Consistence\Sentry\Metadata\ClassMetadata
 	 * @throws \Consistence\Sentry\MetadataSource\ClassMetadataCouldNotBeCreatedException
 	 */
-	public function getMetadataForClass(ReflectionClass $classReflection);
+	public function getMetadataForClass(ReflectionClass $classReflection): ClassMetadata;
 
 }

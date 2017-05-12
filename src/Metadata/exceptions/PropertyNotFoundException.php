@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Metadata;
 
 class PropertyNotFoundException extends \Consistence\PhpException implements \Consistence\Sentry\Metadata\Exception
@@ -14,9 +16,9 @@ class PropertyNotFoundException extends \Consistence\PhpException implements \Co
 	/**
 	 * @param string $className
 	 * @param string|null $propertyName
-	 * @param \Exception|null $previous
+	 * @param \Throwable|null $previous
 	 */
-	public function __construct($className, $propertyName, \Exception $previous = null)
+	public function __construct(string $className, $propertyName, \Throwable $previous = null)
 	{
 		$message = sprintf('Property %s not found on class %s', $propertyName, $className);
 		parent::__construct($message, $previous);
@@ -24,10 +26,7 @@ class PropertyNotFoundException extends \Consistence\PhpException implements \Co
 		$this->propertyName = $propertyName;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getClassName()
+	public function getClassName(): string
 	{
 		return $this->className;
 	}

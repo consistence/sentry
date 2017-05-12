@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\SentryIdentificatorParser;
 
 use Consistence\RegExp\RegExp;
@@ -18,11 +20,7 @@ class SentryIdentificatorParser extends \Consistence\ObjectPrototype
 
 	const SOURCE_CLASS_SEPARATOR = '::';
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
-	 * @return \Consistence\Sentry\SentryIdentificatorParser\SentryIdentificatorParseResult
-	 */
-	public function parse(SentryIdentificator $sentryIdentificator)
+	public function parse(SentryIdentificator $sentryIdentificator): SentryIdentificatorParseResult
 	{
 		$pattern
 			= '~^'

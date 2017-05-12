@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Metadata;
 
 class SentryIdentificator extends \Consistence\ObjectPrototype
@@ -24,11 +26,7 @@ class SentryIdentificator extends \Consistence\ObjectPrototype
 		return $this->id;
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $to
-	 * @return boolean
-	 */
-	public function equals(SentryIdentificator $to)
+	public function equals(SentryIdentificator $to): bool
 	{
 		return $this->getId() === $to->getId();
 	}

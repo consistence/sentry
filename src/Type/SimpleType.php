@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Consistence\Sentry\Type;
 
 use Consistence\Sentry\Metadata\PropertyMetadata;
@@ -22,12 +24,7 @@ class SimpleType extends \Consistence\Sentry\Type\AbstractSentry
 		TypeHelper::setPropertyValue($property, $object, $value);
 	}
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @return string
-	 */
-	public function generateSet(PropertyMetadata $property, SentryMethod $sentryMethod)
+	public function generateSet(PropertyMetadata $property, SentryMethod $sentryMethod): string
 	{
 		$method = '
 	/**

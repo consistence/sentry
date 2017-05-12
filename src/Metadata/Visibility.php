@@ -1,8 +1,8 @@
 <?php
 
-namespace Consistence\Sentry\Metadata;
+declare(strict_types = 1);
 
-use Consistence\Type\Type;
+namespace Consistence\Sentry\Metadata;
 
 class Visibility extends \Consistence\Enum\Enum
 {
@@ -18,19 +18,12 @@ class Visibility extends \Consistence\Enum\Enum
 		self::VISIBILITY_PUBLIC => 3,
 	];
 
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->getValue();
 	}
 
-	/**
-	 * @param static $visibility
-	 * @return boolean
-	 */
-	public function isLooserOrEqualTo(self $visibility)
+	public function isLooserOrEqualTo(self $visibility): bool
 	{
 		return self::$comparationValues[$this->getValue()] >= self::$comparationValues[$visibility->getValue()];
 	}
@@ -42,11 +35,8 @@ class Visibility extends \Consistence\Enum\Enum
 	 * @param string $originClassName
 	 * @return self
 	 */
-	public static function getRequiredVisibility($targetClassName, $originClassName)
+	public static function getRequiredVisibility(string $targetClassName, string $originClassName): self
 	{
-		Type::checkType($targetClassName, 'string');
-		Type::checkType($originClassName, 'string');
-
 		if ($targetClassName === $originClassName) {
 			return self::get(self::VISIBILITY_PRIVATE);
 		}
