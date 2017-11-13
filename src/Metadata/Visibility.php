@@ -19,6 +19,14 @@ class Visibility extends \Consistence\Enum\Enum
 	];
 
 	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->getValue();
+	}
+
+	/**
 	 * @param static $visibility
 	 * @return boolean
 	 */
