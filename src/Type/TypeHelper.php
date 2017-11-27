@@ -6,8 +6,6 @@ namespace Consistence\Sentry\Type;
 
 use Consistence\Sentry\Metadata\PropertyMetadata;
 use Consistence\Sentry\Metadata\SentryMethod;
-use Consistence\Sentry\SentryAware;
-use ReflectionProperty;
 
 class TypeHelper extends \Consistence\ObjectPrototype
 {
@@ -20,19 +18,6 @@ class TypeHelper extends \Consistence\ObjectPrototype
 	public static function getRequiredTypeString(PropertyMetadata $propertyMetadata): string
 	{
 		return $propertyMetadata->getType() . ($propertyMetadata->isNullable() ? '|null' : '');
-	}
-
-	/**
-	 * @param mixed[] $args
-	 * @return mixed first argument
-	 */
-	public static function getFirstArg(array $args)
-	{
-		if (!array_key_exists(0, $args)) {
-			throw new \Consistence\Sentry\Type\MissingArgumentException($args, 1);
-		}
-
-		return $args[0];
 	}
 
 	public static function formatTypeToString(PropertyMetadata $propertyMetadata): string
@@ -57,31 +42,6 @@ class TypeHelper extends \Consistence\ObjectPrototype
 			default:
 				return true;
 		}
-	}
-
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $propertyMetadata
-	 * @param \Consistence\Sentry\SentryAware $object
-	 * @return mixed
-	 */
-	public static function getPropertyValue(PropertyMetadata $propertyMetadata, SentryAware $object)
-	{
-		$propertyReflection = new ReflectionProperty($propertyMetadata->getClassName(), $propertyMetadata->getName());
-		$propertyReflection->setAccessible(true);
-
-		return $propertyReflection->getValue($object);
-	}
-
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $propertyMetadata
-	 * @param \Consistence\Sentry\SentryAware $object
-	 * @param mixed $value
-	 */
-	public static function setPropertyValue(PropertyMetadata $propertyMetadata, SentryAware $object, $value)
-	{
-		$propertyReflection = new ReflectionProperty($propertyMetadata->getClassName(), $propertyMetadata->getName());
-		$propertyReflection->setAccessible(true);
-		$propertyReflection->setValue($object, $value);
 	}
 
 	public static function generateGet(PropertyMetadata $property, SentryMethod $sentryMethod): string

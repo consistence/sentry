@@ -7,7 +7,6 @@ namespace Consistence\Sentry\Type;
 use Consistence\Sentry\Metadata\PropertyMetadata;
 use Consistence\Sentry\Metadata\SentryAccess;
 use Consistence\Sentry\Metadata\SentryMethod;
-use Consistence\Sentry\SentryAware;
 use Consistence\Type\ArrayType\ArrayType;
 use Consistence\Type\Type;
 use Doctrine\Common\Inflector\Inflector;
@@ -45,101 +44,6 @@ class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 			default:
 				return parent::getDefaultMethodName($sentryAccess, $propertyName);
 		}
-	}
-
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\SentryAware $object
-	 * @param mixed[] $args
-	 */
-	public function set(PropertyMetadata $property, SentryAware $object, array $args)
-	{
-		$newValues = TypeHelper::getFirstArg($args);
-		Type::checkType($newValues, 'array');
-
-		$collection = [];
-		foreach ($newValues as $item) {
-			$this->addValue($collection, $property, $item);
-		}
-		TypeHelper::setPropertyValue($property, $object, $collection);
-	}
-
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\SentryAware $object
-	 * @param mixed[] $args
-	 * @return bool was element really added?
-	 */
-	public function add(PropertyMetadata $property, SentryAware $object, array $args): bool
-	{
-		$value = TypeHelper::getFirstArg($args);
-
-		$collection = TypeHelper::getPropertyValue($property, $object);
-		$changed = $this->addValue($collection, $property, $value);
-		TypeHelper::setPropertyValue($property, $object, $collection);
-
-		return $changed;
-	}
-
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\SentryAware $object
-	 * @param mixed[] $args
-	 * @return bool was element really removed?
-	 */
-	public function remove(PropertyMetadata $property, SentryAware $object, array $args): bool
-	{
-		$value = TypeHelper::getFirstArg($args);
-
-		$collection = TypeHelper::getPropertyValue($property, $object);
-		$changed = $this->removeValue($collection, $property, $value);
-		TypeHelper::setPropertyValue($property, $object, $collection);
-
-		return $changed;
-	}
-
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\SentryAware $object
-	 * @param mixed[] $args
-	 * @return bool
-	 */
-	public function contains(PropertyMetadata $property, SentryAware $object, array $args): bool
-	{
-		$value = TypeHelper::getFirstArg($args);
-		Type::checkType($value, $property->getType());
-		$collection = TypeHelper::getPropertyValue($property, $object);
-
-		return ArrayType::containsValue($collection, $value);
-	}
-
-	/**
-	 * @param mixed[] $collection
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param mixed $value
-	 * @return bool was element really added?
-	 */
-	private function addValue(array &$collection, PropertyMetadata $property, $value): bool
-	{
-		Type::checkType($value, $property->getType());
-		if (ArrayType::containsValue($collection, $value)) {
-			return false;
-		}
-		$collection[] = $value;
-
-		return true;
-	}
-
-	/**
-	 * @param mixed[] $collection
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param mixed $value
-	 * @return bool was element really removed?
-	 */
-	private function removeValue(array &$collection, PropertyMetadata $property, $value): bool
-	{
-		Type::checkType($value, $property->getType());
-		return ArrayType::removeValue($collection, $value);
 	}
 
 	public function generateGet(PropertyMetadata $property, SentryMethod $sentryMethod): string

@@ -8,7 +8,6 @@ use Consistence\Sentry\Metadata\BidirectionalAssociationType;
 use Consistence\Sentry\Metadata\PropertyMetadata;
 use Consistence\Sentry\Metadata\SentryAccess;
 use Consistence\Sentry\Metadata\SentryMethod;
-use Consistence\Sentry\SentryAware;
 use Consistence\Type\ArrayType\ArrayType;
 
 /**
@@ -29,22 +28,6 @@ abstract class AbstractSentry extends \Consistence\ObjectPrototype implements \C
 			new SentryAccess(self::GET),
 			new SentryAccess(self::SET),
 		];
-	}
-
-	/**
-	 * Redirects process requests to methods named {sentryAccess}(...)
-	 *
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $propertyMetadata
-	 * @param \Consistence\Sentry\SentryAware $object
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @param mixed[] $args
-	 * @return mixed
-	 */
-	public function processMethod(PropertyMetadata $propertyMetadata, SentryAware $object, SentryMethod $sentryMethod, array $args)
-	{
-		$this->checkSupportedSentryAccess($propertyMetadata, $sentryMethod->getSentryAccess());
-
-		return $this->{lcfirst($sentryMethod->getSentryAccess()->getName())}($propertyMetadata, $object, $args);
 	}
 
 	/**
@@ -99,27 +82,6 @@ abstract class AbstractSentry extends \Consistence\ObjectPrototype implements \C
 	public function getTargetAssociationAccessForAccess(SentryAccess $sentryAccess, BidirectionalAssociationType $bidirectionalAssociationType)
 	{
 		return [];
-	}
-
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\SentryAware $object
-	 * @param mixed[] $args
-	 * @return mixed
-	 */
-	public function get(PropertyMetadata $property, SentryAware $object, array $args)
-	{
-		return TypeHelper::getPropertyValue($property, $object);
-	}
-
-	/**
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\SentryAware $object
-	 * @param mixed[] $args
-	 */
-	public function set(PropertyMetadata $property, SentryAware $object, array $args)
-	{
-		TypeHelper::setPropertyValue($property, $object, TypeHelper::getFirstArg($args));
 	}
 
 	public function generateGet(PropertyMetadata $property, SentryMethod $sentryMethod): string

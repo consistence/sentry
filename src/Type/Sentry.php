@@ -8,7 +8,6 @@ use Consistence\Sentry\Metadata\BidirectionalAssociationType;
 use Consistence\Sentry\Metadata\PropertyMetadata;
 use Consistence\Sentry\Metadata\SentryAccess;
 use Consistence\Sentry\Metadata\SentryMethod;
-use Consistence\Sentry\SentryAware;
 
 interface Sentry
 {
@@ -19,17 +18,6 @@ interface Sentry
 	 * @return \Consistence\Sentry\Metadata\SentryAccess[]
 	 */
 	public function getSupportedAccess();
-
-	/**
-	 * Logic which should be executed while processing SentryMethods in runtime
-	 *
-	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $property
-	 * @param \Consistence\Sentry\SentryAware $object
-	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
-	 * @param mixed[] $args arguments given to called method
-	 * @return mixed
-	 */
-	public function processMethod(PropertyMetadata $property, SentryAware $object, SentryMethod $sentryMethod, array $args);
 
 	/**
 	 * Generate code for a SentryMethod
