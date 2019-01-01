@@ -20,7 +20,7 @@ use ReflectionProperty;
 class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testGet()
+	public function testGet(): void
 	{
 		$type = 'string';
 		$className = FooClass::class;
@@ -85,7 +85,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$this->assertNull($fooPropety->getBidirectionalAssociation());
 	}
 
-	public function testCustomMethodName()
+	public function testCustomMethodName(): void
 	{
 		$type = 'string';
 		$className = FooClass::class;
@@ -144,7 +144,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame('test', $getMethod->getMethodName());
 	}
 
-	public function testCustomMethodVisibility()
+	public function testCustomMethodVisibility(): void
 	{
 		$type = 'string';
 		$className = FooClass::class;
@@ -203,7 +203,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame(Visibility::get(Visibility::VISIBILITY_PRIVATE), $getMethod->getMethodVisibility());
 	}
 
-	public function testGetMultipleMethods()
+	public function testGetMultipleMethods(): void
 	{
 		$type = 'string';
 		$className = FooClass::class;
@@ -270,7 +270,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$this->assertCount(4, $sentryMethods);
 	}
 
-	public function testClassIsNotSentryAware()
+	public function testClassIsNotSentryAware(): void
 	{
 		$sentryFactory = $this->createMock(SentryFactory::class);
 
@@ -288,7 +288,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$metedataSource->getMetadataForClass(new ReflectionClass($this));
 	}
 
-	public function testInvalidSentryIdentificator()
+	public function testInvalidSentryIdentificator(): void
 	{
 		$classReflection = new ReflectionClass(FooClass::class);
 
@@ -316,7 +316,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$this->assertEmpty($classMetadata->getProperties());
 	}
 
-	public function testMissingSentryIdentificator()
+	public function testMissingSentryIdentificator(): void
 	{
 		$classReflection = new ReflectionClass(FooClass::class);
 		$propertyReflection = $classReflection->getProperty('fooProperty');
@@ -343,7 +343,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$this->assertEmpty($classMetadata->getProperties());
 	}
 
-	public function testNoSentryFound()
+	public function testNoSentryFound(): void
 	{
 		$classReflection = new ReflectionClass(FooClass::class);
 		$sentryIdentificator = new SentryIdentificator(FooClass::class . '::Foo\Bar');

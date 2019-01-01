@@ -12,7 +12,7 @@ class NoMethodsToBeGeneratedException extends \Consistence\PhpException
 	/** @var \Consistence\Sentry\Metadata\ClassMetadata */
 	private $classMetadata;
 
-	public function __construct(ClassMetadata $classMetadata, \Throwable $previous = null)
+	public function __construct(ClassMetadata $classMetadata, ?\Throwable $previous = null)
 	{
 		parent::__construct(
 			sprintf('Class %s has no methods to be generated', $classMetadata->getName()),

@@ -24,14 +24,7 @@ class SentryIdentificatorParseResult extends \Consistence\ObjectPrototype
 	/** @var string|null */
 	private $sourceClass;
 
-	/**
-	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
-	 * @param string $type
-	 * @param bool $many
-	 * @param bool $nullable
-	 * @param string|null $sourceClass
-	 */
-	public function __construct(SentryIdentificator $sentryIdentificator, string $type, bool $many, bool $nullable, $sourceClass)
+	public function __construct(SentryIdentificator $sentryIdentificator, string $type, bool $many, bool $nullable, ?string $sourceClass)
 	{
 		$this->sentryIdentificator = $sentryIdentificator;
 		$this->type = $type;
@@ -60,10 +53,7 @@ class SentryIdentificatorParseResult extends \Consistence\ObjectPrototype
 		return $this->nullable;
 	}
 
-	/**
-	 * @return string|null
-	 */
-	public function getSourceClass()
+	public function getSourceClass(): ?string
 	{
 		return $this->sourceClass;
 	}

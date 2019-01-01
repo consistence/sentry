@@ -7,7 +7,7 @@ namespace Consistence\Sentry\Metadata;
 class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testCreate()
+	public function testCreate(): void
 	{
 		$properties = [
 			new PropertyMetadata(
@@ -29,7 +29,7 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($properties, $classMetadata->getProperties());
 	}
 
-	public function testGetSentryMethodByNameAndRequiredVisibility()
+	public function testGetSentryMethodByNameAndRequiredVisibility(): void
 	{
 		$sentryIdentificator = new SentryIdentificator('string');
 		$fooMethod = new SentryMethod(
@@ -60,7 +60,7 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($fooMethod, $searchResult->getSentryMethod());
 	}
 
-	public function testGetSentryMethodByNameAndRequiredVisibilityMethodNotFound()
+	public function testGetSentryMethodByNameAndRequiredVisibilityMethodNotFound(): void
 	{
 		$fooProperty = new PropertyMetadata(
 			'fooProperty',
@@ -88,7 +88,7 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 		}
 	}
 
-	public function testGetPropertyByName()
+	public function testGetPropertyByName(): void
 	{
 		$propertyName = 'fooProperty';
 
@@ -106,7 +106,7 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($fooProperty, $classMetadata->getPropertyByName($propertyName));
 	}
 
-	public function testGetPropertyByNameNotFound()
+	public function testGetPropertyByNameNotFound(): void
 	{
 		$className = 'FooClass';
 		$classMetadata = new ClassMetadata($className, []);

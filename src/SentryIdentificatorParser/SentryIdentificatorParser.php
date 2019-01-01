@@ -13,12 +13,12 @@ use Consistence\Sentry\Metadata\SentryIdentificator;
 class SentryIdentificatorParser extends \Consistence\ObjectPrototype
 {
 
-	const MATCH_TYPE = 'type';
-	const MATCH_MANY = 'many';
-	const MATCH_NULLABLE = 'nullable';
-	const MATCH_SOURCE_CLASS = 'sourceClass';
+	private const MATCH_TYPE = 'type';
+	private const MATCH_MANY = 'many';
+	private const MATCH_NULLABLE = 'nullable';
+	private const MATCH_SOURCE_CLASS = 'sourceClass';
 
-	const SOURCE_CLASS_SEPARATOR = '::';
+	public const SOURCE_CLASS_SEPARATOR = '::';
 
 	public function parse(SentryIdentificator $sentryIdentificator): SentryIdentificatorParseResult
 	{

@@ -40,7 +40,7 @@ class SentryAutoloader extends \Consistence\ObjectPrototype
 		}
 
 		$file = $this->classMap[$type];
-		call_user_func(Closure::bind(function () use ($file) {
+		call_user_func(Closure::bind(function () use ($file): void {
 			require $file;
 		}, null));
 
@@ -50,7 +50,7 @@ class SentryAutoloader extends \Consistence\ObjectPrototype
 	/**
 	 * Regenerate all classes and create new class map
 	 */
-	public function rebuild()
+	public function rebuild(): void
 	{
 		$this->classMap = $this->generator->generateAll();
 		$this->saveClassMap();
@@ -61,7 +61,7 @@ class SentryAutoloader extends \Consistence\ObjectPrototype
 	 *
 	 * @param bool $prepend should be set to true in most cases in order to load the generated classes
 	 */
-	public function register(bool $prepend = true)
+	public function register(bool $prepend = true): void
 	{
 		if ($this->isClassMapReady()) {
 			$this->loadClassMap();
@@ -78,7 +78,7 @@ class SentryAutoloader extends \Consistence\ObjectPrototype
 		return is_file($this->classMapTargetFile);
 	}
 
-	private function saveClassMap()
+	private function saveClassMap(): void
 	{
 		$fileContent = sprintf('<?php return %s;', var_export($this->classMap, true));
 		file_put_contents($this->classMapTargetFile, $fileContent);
@@ -87,7 +87,7 @@ class SentryAutoloader extends \Consistence\ObjectPrototype
 	/**
 	 * @codeCoverageIgnore private method called only from global dependent code
 	 */
-	private function loadClassMap()
+	private function loadClassMap(): void
 	{
 		$this->classMap = require $this->classMapTargetFile;
 	}

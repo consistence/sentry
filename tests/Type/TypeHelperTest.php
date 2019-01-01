@@ -10,7 +10,7 @@ namespace Consistence\Sentry\Type;
 class TypeHelperTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testStaticConstruct()
+	public function testStaticConstruct(): void
 	{
 		$this->expectException(\Consistence\StaticClassException::class);
 

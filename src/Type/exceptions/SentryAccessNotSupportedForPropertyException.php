@@ -23,7 +23,7 @@ class SentryAccessNotSupportedForPropertyException extends \Consistence\PhpExcep
 		PropertyMetadata $property,
 		SentryAccess $sentryAccess,
 		string $sentryClassName,
-		\Throwable $previous = null
+		?\Throwable $previous = null
 	)
 	{
 		parent::__construct(sprintf(

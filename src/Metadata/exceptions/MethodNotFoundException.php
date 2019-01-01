@@ -13,7 +13,7 @@ class MethodNotFoundException extends \Consistence\PhpException
 	/** @var string */
 	private $className;
 
-	public function __construct(string $methodName, string $className, \Throwable $previous = null)
+	public function __construct(string $methodName, string $className, ?\Throwable $previous = null)
 	{
 		parent::__construct(sprintf('Method %s not found on %s', $methodName, $className), $previous);
 		$this->methodName = $methodName;

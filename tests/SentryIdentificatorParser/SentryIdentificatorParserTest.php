@@ -63,8 +63,8 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 		string $expectedType,
 		bool $expectedMany,
 		bool $expectedNullable,
-		$sourceClass
-	)
+		?string $sourceClass
+	): void
 	{
 		$parser = new SentryIdentificatorParser();
 		$result = $parser->parse($sentryIdentificator);
@@ -81,7 +81,7 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	 *
 	 * @param string $pattern
 	 */
-	public function testDoesNotMatch(string $pattern)
+	public function testDoesNotMatch(string $pattern): void
 	{
 		$parser = new SentryIdentificatorParser();
 		$sentryIdentificator = new SentryIdentificator($pattern);

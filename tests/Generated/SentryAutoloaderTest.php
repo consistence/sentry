@@ -9,7 +9,7 @@ use org\bovigo\vfs\vfsStream;
 class SentryAutoloaderTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testRebuild()
+	public function testRebuild(): void
 	{
 		vfsStream::setup('sentry');
 

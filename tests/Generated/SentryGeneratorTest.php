@@ -19,7 +19,7 @@ use org\bovigo\vfs\visitor\vfsStreamStructureVisitor;
 class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testGenerateClass()
+	public function testGenerateClass(): void
 	{
 		vfsStream::setup('sentry');
 
@@ -79,7 +79,7 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 		$this->assertFileExists($fileName);
 	}
 
-	public function testGenerateClassSkipMethodNameCaseInsensitive()
+	public function testGenerateClassSkipMethodNameCaseInsensitive(): void
 	{
 		vfsStream::setup('sentry');
 
@@ -139,7 +139,7 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 		}
 	}
 
-	public function testGenerateClassNoSentryMethods()
+	public function testGenerateClassNoSentryMethods(): void
 	{
 		vfsStream::setup('sentry');
 
@@ -180,7 +180,7 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 		}
 	}
 
-	public function testGenerateAll()
+	public function testGenerateAll(): void
 	{
 		vfsStream::setup('sentry');
 
@@ -248,7 +248,7 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 		$this->assertTrue(isset($structure['sentry']['Consistence_Sentry_Generated_FooClass.php']));
 	}
 
-	public function testGenerateAllNoMethods()
+	public function testGenerateAllNoMethods(): void
 	{
 		vfsStream::setup('sentry');
 

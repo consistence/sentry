@@ -23,12 +23,12 @@ use ReflectionProperty;
 class AnnotationMetadataSource extends \Consistence\ObjectPrototype implements \Consistence\Sentry\MetadataSource\MetadataSource
 {
 
-	const IDENTIFICATOR_ANNOTATION = 'var';
+	public const IDENTIFICATOR_ANNOTATION = 'var';
 
-	const METHOD_PARAM_NAME = 'name';
-	const METHOD_PARAM_VISIBILITY = 'visibility';
+	public const METHOD_PARAM_NAME = 'name';
+	public const METHOD_PARAM_VISIBILITY = 'visibility';
 
-	const DEFAULT_VISIBILITY = Visibility::VISIBILITY_PUBLIC;
+	public const DEFAULT_VISIBILITY = Visibility::VISIBILITY_PUBLIC;
 
 	/** @var \Consistence\Sentry\Factory\SentryFactory */
 	private $sentryFactory;
@@ -130,7 +130,7 @@ class AnnotationMetadataSource extends \Consistence\ObjectPrototype implements \
 	 * @param \Consistence\Sentry\Type\Sentry $sentry
 	 * @return \Consistence\Sentry\Metadata\SentryMethod[]
 	 */
-	private function createSentryMethods(ReflectionProperty $propertyReflection, Sentry $sentry)
+	private function createSentryMethods(ReflectionProperty $propertyReflection, Sentry $sentry): array
 	{
 		$sentryMethods = [];
 		foreach ($sentry->getSupportedAccess() as $sentryAccess) {
@@ -146,7 +146,7 @@ class AnnotationMetadataSource extends \Consistence\ObjectPrototype implements \
 	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
 	 * @return \Consistence\Sentry\Metadata\SentryMethod[]
 	 */
-	private function createSentryMethodsForAccess(ReflectionProperty $propertyReflection, Sentry $sentry, SentryAccess $sentryAccess)
+	private function createSentryMethodsForAccess(ReflectionProperty $propertyReflection, Sentry $sentry, SentryAccess $sentryAccess): array
 	{
 		$sentryMethodsForAccess = [];
 		$sentryAccessAnnotations = $this->annotationProvider->getPropertyAnnotations($propertyReflection, $sentryAccess->getName());

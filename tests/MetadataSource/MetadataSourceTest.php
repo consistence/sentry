@@ -9,7 +9,7 @@ use ReflectionClass;
 class MetadataSourceTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testGetSentry()
+	public function testGetSentry(): void
 	{
 		$factory = $this->createMock(MetadataSource::class);
 		$factory
@@ -19,7 +19,7 @@ class MetadataSourceTest extends \PHPUnit\Framework\TestCase
 		$factory->getMetadataForClass(new ReflectionClass(FooClass::class));
 	}
 
-	public function testCouldNotBeCreated()
+	public function testCouldNotBeCreated(): void
 	{
 		$classReflection = new ReflectionClass(FooClass::class);
 		$factory = $this->createMock(MetadataSource::class);

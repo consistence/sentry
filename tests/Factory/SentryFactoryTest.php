@@ -9,7 +9,7 @@ use Consistence\Sentry\Metadata\SentryIdentificator;
 class SentryFactoryTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testGetSentry()
+	public function testGetSentry(): void
 	{
 		$factory = $this->createMock(SentryFactory::class);
 		$factory
@@ -19,7 +19,7 @@ class SentryFactoryTest extends \PHPUnit\Framework\TestCase
 		$factory->getSentry(new SentryIdentificator('string'));
 	}
 
-	public function testNoSentry()
+	public function testNoSentry(): void
 	{
 		$sentryIdentificator = new SentryIdentificator('string');
 		$factory = $this->createMock(SentryFactory::class);

@@ -12,7 +12,7 @@ class ClassMetadataCouldNotBeCreatedException extends \Consistence\PhpException
 	/** @var \ReflectionClass */
 	private $classReflection;
 
-	public function __construct(ReflectionClass $classReflection, string $message, \Throwable $previous = null)
+	public function __construct(ReflectionClass $classReflection, string $message, ?\Throwable $previous = null)
 	{
 		parent::__construct(
 			sprintf(

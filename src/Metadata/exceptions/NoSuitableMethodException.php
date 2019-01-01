@@ -16,7 +16,7 @@ class NoSuitableMethodException extends \Consistence\PhpException
 	/** @var \Consistence\Sentry\Metadata\SentryAccess */
 	private $sentryAccess;
 
-	public function __construct(string $className, string $propertyName, SentryAccess $sentryAccess, \Throwable $previous = null)
+	public function __construct(string $className, string $propertyName, SentryAccess $sentryAccess, ?\Throwable $previous = null)
 	{
 		parent::__construct(
 			sprintf(

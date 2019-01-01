@@ -9,7 +9,7 @@ class FooClass extends \Consistence\ObjectPrototype implements \Consistence\Sent
 
 	private $fooProperty;
 
-	private function getSkipProperty()
+	private function getSkipProperty(): void
 	{
 		// empty
 	}

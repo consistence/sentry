@@ -13,7 +13,7 @@ use Consistence\Sentry\Metadata\Visibility;
 class CollectionTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testSupportedAccess()
+	public function testSupportedAccess(): void
 	{
 		$collection = new CollectionType();
 
@@ -26,7 +26,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		], $collection->getSupportedAccess());
 	}
 
-	public function testDefaultMethodNames()
+	public function testDefaultMethodNames(): void
 	{
 		$collection = new CollectionType();
 
@@ -37,7 +37,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame('containsChild', $collection->getDefaultMethodName(new SentryAccess('contains'), 'children'));
 	}
 
-	public function testGenerateGet()
+	public function testGenerateGet(): void
 	{
 		$collection = new CollectionType();
 		$getMethod = new SentryMethod(
@@ -70,7 +70,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $getMethod));
 	}
 
-	public function testGenerateSet()
+	public function testGenerateSet(): void
 	{
 		$collection = new CollectionType();
 		$setMethod = new SentryMethod(
@@ -111,7 +111,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $setMethod));
 	}
 
-	public function testGenerateContains()
+	public function testGenerateContains(): void
 	{
 		$collection = new CollectionType();
 		$containsMethod = new SentryMethod(
@@ -146,7 +146,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $containsMethod));
 	}
 
-	public function testGenerateAdd()
+	public function testGenerateAdd(): void
 	{
 		$collection = new CollectionType();
 		$addMethod = new SentryMethod(
@@ -188,7 +188,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $addMethod));
 	}
 
-	public function testGenerateRemove()
+	public function testGenerateRemove(): void
 	{
 		$collection = new CollectionType();
 		$removeMethod = new SentryMethod(

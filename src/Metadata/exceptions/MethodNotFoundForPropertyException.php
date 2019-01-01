@@ -20,7 +20,7 @@ class MethodNotFoundForPropertyException extends \Consistence\PhpException
 		string $methodName,
 		string $className,
 		string $propertyName,
-		\Throwable $previous = null
+		?\Throwable $previous = null
 	)
 	{
 		parent::__construct(sprintf(

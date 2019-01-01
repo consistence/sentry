@@ -13,7 +13,7 @@ use Consistence\Sentry\Metadata\Visibility;
 class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testGenerateGet()
+	public function testGenerateGet(): void
 	{
 		$integerSentry = new SimpleType();
 		$getMethod = new SentryMethod(
@@ -46,7 +46,7 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $getMethod));
 	}
 
-	public function testGenerateNullableGet()
+	public function testGenerateNullableGet(): void
 	{
 		$integerSentry = new SimpleType();
 		$getMethod = new SentryMethod(
@@ -79,7 +79,7 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $getMethod));
 	}
 
-	public function testGenerateSet()
+	public function testGenerateSet(): void
 	{
 		$integerSentry = new SimpleType();
 		$setMethod = new SentryMethod(
@@ -113,7 +113,7 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $setMethod));
 	}
 
-	public function testGenerateSetNullable()
+	public function testGenerateSetNullable(): void
 	{
 		$integerSentry = new SimpleType();
 		$setMethod = new SentryMethod(

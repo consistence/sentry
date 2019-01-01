@@ -44,20 +44,20 @@ class SimpleSentryFactoryTest extends \PHPUnit\Framework\TestCase
 	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
 	 * @param \Consistence\Sentry\Type\Sentry $sentry
 	 */
-	public function testGetSentry(SentryIdentificator $sentryIdentificator, Sentry $sentry)
+	public function testGetSentry(SentryIdentificator $sentryIdentificator, Sentry $sentry): void
 	{
 		$factory = new SimpleSentryFactory(new SentryIdentificatorParser());
 		$this->assertTrue($factory->getSentry($sentryIdentificator) instanceof $sentry);
 	}
 
-	public function testSameSentryInstance()
+	public function testSameSentryInstance(): void
 	{
 		$factory = new SimpleSentryFactory(new SentryIdentificatorParser());
 		$sentry = $factory->getSentry(new SentryIdentificator('string'));
 		$this->assertSame($sentry, $factory->getSentry(new SentryIdentificator('string')));
 	}
 
-	public function testNoSentry()
+	public function testNoSentry(): void
 	{
 		$factory = new SimpleSentryFactory(new SentryIdentificatorParser());
 
@@ -66,7 +66,7 @@ class SimpleSentryFactoryTest extends \PHPUnit\Framework\TestCase
 		$factory->getSentry(new SentryIdentificator(''));
 	}
 
-	public function testNonexistingObject()
+	public function testNonexistingObject(): void
 	{
 		$factory = new SimpleSentryFactory(new SentryIdentificatorParser());
 

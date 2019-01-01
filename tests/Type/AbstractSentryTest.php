@@ -14,7 +14,7 @@ use Consistence\Sentry\Metadata\Visibility;
 class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testSupportedAccess()
+	public function testSupportedAccess(): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 
@@ -24,7 +24,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		], $sentry->getSupportedAccess());
 	}
 
-	public function testDefaultMethodNames()
+	public function testDefaultMethodNames(): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 
@@ -32,7 +32,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame('setFoo', $sentry->getDefaultMethodName(new SentryAccess('set'), 'foo'));
 	}
 
-	public function testDefaultMethodNameUnsupportedSentryAccess()
+	public function testDefaultMethodNameUnsupportedSentryAccess(): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class, [], 'MockAbstractSentryTest');
 
@@ -46,7 +46,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		}
 	}
 
-	public function testTargetAssociationAccessForAccess()
+	public function testTargetAssociationAccessForAccess(): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 
@@ -56,7 +56,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		));
 	}
 
-	public function testGenerateGet()
+	public function testGenerateGet(): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 		$getMethod = new SentryMethod(
@@ -90,7 +90,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	}
 
 
-	public function testGenerateObjectGet()
+	public function testGenerateObjectGet(): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 		$getMethod = new SentryMethod(
@@ -123,7 +123,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $getMethod));
 	}
 
-	public function testGenerateSet()
+	public function testGenerateSet(): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 		$setMethod = new SentryMethod(
@@ -156,7 +156,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $setMethod));
 	}
 
-	public function testGenerateObjectSet()
+	public function testGenerateObjectSet(): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 		$setMethod = new SentryMethod(
@@ -189,7 +189,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $setMethod));
 	}
 
-	public function testGenerateUnsupportedSentryAccess()
+	public function testGenerateUnsupportedSentryAccess(): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 		$xxxSentryAccess = new SentryAccess('xxx');

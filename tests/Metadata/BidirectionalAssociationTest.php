@@ -7,7 +7,7 @@ namespace Consistence\Sentry\Metadata;
 class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testCreate()
+	public function testCreate(): void
 	{
 		$sentryMethods = [
 			new SentryMethod(
@@ -28,7 +28,7 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 		$this->assertTrue($bidirectionalAssociation->getTargetType()->equalsValue(BidirectionalAssociationType::ONE));
 	}
 
-	public function testGetTargetMethodForType()
+	public function testGetTargetMethodForType(): void
 	{
 		$sentryMethods = [
 			new SentryMethod(
@@ -58,7 +58,7 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 		$this->assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
 	}
 
-	public function testGetTargetMethodForTypeLooserVisibility()
+	public function testGetTargetMethodForTypeLooserVisibility(): void
 	{
 		$sentryMethods = [
 			new SentryMethod(
@@ -83,7 +83,7 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 		$this->assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
 	}
 
-	public function testGetTargetMethodForTypeRequiredVisibilityNotFound()
+	public function testGetTargetMethodForTypeRequiredVisibilityNotFound(): void
 	{
 		$sentryMethods = [
 			new SentryMethod(
@@ -112,7 +112,7 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 		}
 	}
 
-	public function testGetTargetMethodForTypePickByVisibility()
+	public function testGetTargetMethodForTypePickByVisibility(): void
 	{
 		$sentryMethods = [
 			new SentryMethod(
@@ -142,7 +142,7 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 		$this->assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
 	}
 
-	public function testGetTargetMethodForTypeMultipleSentryAccessPickByOrder()
+	public function testGetTargetMethodForTypeMultipleSentryAccessPickByOrder(): void
 	{
 		$sentryMethods = [
 			new SentryMethod(

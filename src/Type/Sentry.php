@@ -17,7 +17,7 @@ interface Sentry
 	 *
 	 * @return \Consistence\Sentry\Metadata\SentryAccess[]
 	 */
-	public function getSupportedAccess();
+	public function getSupportedAccess(): iterable;
 
 	/**
 	 * Generate code for a SentryMethod
@@ -44,6 +44,6 @@ interface Sentry
 	 * @param \Consistence\Sentry\Metadata\BidirectionalAssociationType $bidirectionalAssociationType
 	 * @return \Consistence\Sentry\Metadata\SentryAccess[]
 	 */
-	public function getTargetAssociationAccessForAccess(SentryAccess $sentryAccess, BidirectionalAssociationType $bidirectionalAssociationType);
+	public function getTargetAssociationAccessForAccess(SentryAccess $sentryAccess, BidirectionalAssociationType $bidirectionalAssociationType): iterable;
 
 }

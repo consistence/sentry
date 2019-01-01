@@ -7,7 +7,7 @@ namespace Consistence\Sentry\Metadata;
 class SentryMethodTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testCreate()
+	public function testCreate(): void
 	{
 		$sentryMethod = new SentryMethod(
 			new SentryAccess('get'),

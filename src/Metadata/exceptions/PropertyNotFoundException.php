@@ -10,15 +10,10 @@ class PropertyNotFoundException extends \Consistence\PhpException
 	/** @var string */
 	private $className;
 
-	/** @var string */
+	/** @var string|null */
 	private $propertyName;
 
-	/**
-	 * @param string $className
-	 * @param string|null $propertyName
-	 * @param \Throwable|null $previous
-	 */
-	public function __construct(string $className, $propertyName, \Throwable $previous = null)
+	public function __construct(string $className, ?string $propertyName, ?\Throwable $previous = null)
 	{
 		$message = sprintf('Property %s not found on class %s', $propertyName, $className);
 		parent::__construct($message, $previous);
@@ -31,10 +26,7 @@ class PropertyNotFoundException extends \Consistence\PhpException
 		return $this->className;
 	}
 
-	/**
-	 * @return string|null
-	 */
-	public function getPropertyName()
+	public function getPropertyName(): ?string
 	{
 		return $this->propertyName;
 	}

@@ -15,7 +15,7 @@ class SentryAccessNotSupportedException extends \Consistence\PhpException
 	/** @var string */
 	private $sentryClassName;
 
-	public function __construct(SentryAccess $sentryAccess, string $sentryClassName, \Throwable $previous = null)
+	public function __construct(SentryAccess $sentryAccess, string $sentryClassName, ?\Throwable $previous = null)
 	{
 		parent::__construct(
 			sprintf('SentryAccess %s is not supported by %s', $sentryAccess->getName(), $sentryClassName),

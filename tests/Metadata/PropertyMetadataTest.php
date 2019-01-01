@@ -7,7 +7,7 @@ namespace Consistence\Sentry\Metadata;
 class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testCreate()
+	public function testCreate(): void
 	{
 		$targetClass = 'BarClass';
 		$sentryIdentificator = new SentryIdentificator($targetClass);
@@ -49,7 +49,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($bidirectionalAssociation, $property->getBidirectionalAssociation());
 	}
 
-	public function testCreateScalar()
+	public function testCreateScalar(): void
 	{
 		$sentryIdentificator = new SentryIdentificator('int');
 		$property = new PropertyMetadata(
@@ -71,7 +71,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 		$this->assertNull($property->getBidirectionalAssociation());
 	}
 
-	public function testGetSentryMethodByAccess()
+	public function testGetSentryMethodByAccess(): void
 	{
 		$targetClass = 'BarClass';
 		$sentryIdentificator = new SentryIdentificator($targetClass);
@@ -104,7 +104,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 		));
 	}
 
-	public function testGetSentryMethodByAccessNotFound()
+	public function testGetSentryMethodByAccessNotFound(): void
 	{
 		$targetClass = 'BarClass';
 		$sentryIdentificator = new SentryIdentificator($targetClass);
@@ -133,7 +133,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 		);
 	}
 
-	public function testGetSentryMethodByNameAndRequiredVisibility()
+	public function testGetSentryMethodByNameAndRequiredVisibility(): void
 	{
 		$sentryIdentificator = new SentryIdentificator('string');
 		$fooMethod = new SentryMethod(
@@ -157,7 +157,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 		));
 	}
 
-	public function testGetSentryMethodByNameAndRequiredVisibilityMethodNotFound()
+	public function testGetSentryMethodByNameAndRequiredVisibilityMethodNotFound(): void
 	{
 		$property = new PropertyMetadata(
 			'fooProperty',
@@ -182,7 +182,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 		}
 	}
 
-	public function testGetSentryMethodByNameAndRequiredVisibilityCaseInsensitive()
+	public function testGetSentryMethodByNameAndRequiredVisibilityCaseInsensitive(): void
 	{
 		$sentryIdentificator = new SentryIdentificator('string');
 		$fooMethod = new SentryMethod(
@@ -206,7 +206,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 		));
 	}
 
-	public function testGetDefinedSentryAccess()
+	public function testGetDefinedSentryAccess(): void
 	{
 		$targetClass = 'BarClass';
 		$sentryIdentificator = new SentryIdentificator($targetClass);

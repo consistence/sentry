@@ -14,14 +14,14 @@ use Doctrine\Common\Inflector\Inflector;
 class CollectionType extends \Consistence\Sentry\Type\AbstractSentry
 {
 
-	const ADD = 'add';
-	const CONTAINS = 'contains';
-	const REMOVE = 'remove';
+	public const ADD = 'add';
+	public const CONTAINS = 'contains';
+	public const REMOVE = 'remove';
 
 	/**
 	 * @return \Consistence\Sentry\Metadata\SentryAccess[]
 	 */
-	public function getSupportedAccess()
+	public function getSupportedAccess(): array
 	{
 		return [
 			new SentryAccess(self::GET),

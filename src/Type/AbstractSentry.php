@@ -16,13 +16,13 @@ use Consistence\Type\ArrayType\ArrayType;
 abstract class AbstractSentry extends \Consistence\ObjectPrototype implements \Consistence\Sentry\Type\Sentry
 {
 
-	const GET = 'get';
-	const SET = 'set';
+	public const GET = 'get';
+	public const SET = 'set';
 
 	/**
 	 * @return \Consistence\Sentry\Metadata\SentryAccess[]
 	 */
-	public function getSupportedAccess()
+	public function getSupportedAccess(): array
 	{
 		return [
 			new SentryAccess(self::GET),
@@ -46,7 +46,7 @@ abstract class AbstractSentry extends \Consistence\ObjectPrototype implements \C
 		return $this->$callMethod($property, $sentryMethod);
 	}
 
-	protected function checkSupportedSentryAccess(PropertyMetadata $property, SentryAccess $requiredSentryAccess)
+	protected function checkSupportedSentryAccess(PropertyMetadata $property, SentryAccess $requiredSentryAccess): void
 	{
 		try {
 			ArrayType::getValueByCallback(
@@ -79,7 +79,7 @@ abstract class AbstractSentry extends \Consistence\ObjectPrototype implements \C
 	 * @param \Consistence\Sentry\Metadata\BidirectionalAssociationType $bidirectionalAssociationType
 	 * @return \Consistence\Sentry\Metadata\SentryAccess[]
 	 */
-	public function getTargetAssociationAccessForAccess(SentryAccess $sentryAccess, BidirectionalAssociationType $bidirectionalAssociationType)
+	public function getTargetAssociationAccessForAccess(SentryAccess $sentryAccess, BidirectionalAssociationType $bidirectionalAssociationType): array
 	{
 		return [];
 	}

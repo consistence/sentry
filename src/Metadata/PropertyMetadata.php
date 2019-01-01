@@ -46,7 +46,7 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 		SentryIdentificator $sentryIdentificator,
 		bool $nullable,
 		array $sentryMethods,
-		BidirectionalAssociation $bidirectionalAssociation = null
+		?BidirectionalAssociation $bidirectionalAssociation = null
 	)
 	{
 		$this->name = $name;
@@ -91,10 +91,7 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 		return $this->sentryMethods;
 	}
 
-	/**
-	 * @return \Consistence\Sentry\Metadata\BidirectionalAssociation|null
-	 */
-	public function getBidirectionalAssociation()
+	public function getBidirectionalAssociation(): ?BidirectionalAssociation
 	{
 		return $this->bidirectionalAssociation;
 	}
@@ -155,7 +152,7 @@ class PropertyMetadata extends \Consistence\ObjectPrototype
 	/**
 	 * @return \Consistence\Sentry\Metadata\SentryAccess[]
 	 */
-	public function getDefinedSentryAccess()
+	public function getDefinedSentryAccess(): array
 	{
 		$sentryAccess = [];
 		foreach ($this->getSentryMethods() as $sentryMethod) {
