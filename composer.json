@@ -3,7 +3,7 @@
 	"description": "-",
 	"license": "MIT",
 	"require": {
-		"consistence/consistence": "~1.0",
+		"consistence/consistence": "~2.0",
 		"doctrine/inflector": "~1.0"
 	},
 	"require-dev": {

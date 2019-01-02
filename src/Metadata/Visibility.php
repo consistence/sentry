@@ -11,8 +11,7 @@ class Visibility extends \Consistence\Enum\Enum
 	public const VISIBILITY_PROTECTED = 'protected';
 	public const VISIBILITY_PRIVATE = 'private';
 
-	/** @var int[] */
-	private static $comparationValues = [
+	private const COMPARATION_VALUES = [
 		self::VISIBILITY_PRIVATE => 1,
 		self::VISIBILITY_PROTECTED => 2,
 		self::VISIBILITY_PUBLIC => 3,
@@ -25,7 +24,7 @@ class Visibility extends \Consistence\Enum\Enum
 
 	public function isLooserOrEqualTo(self $visibility): bool
 	{
-		return self::$comparationValues[$this->getValue()] >= self::$comparationValues[$visibility->getValue()];
+		return self::COMPARATION_VALUES[$this->getValue()] >= self::COMPARATION_VALUES[$visibility->getValue()];
 	}
 
 	/**
