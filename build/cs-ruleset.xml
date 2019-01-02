@@ -3,10 +3,10 @@
 	<rule ref="../vendor/consistence/coding-standard/Consistence/ruleset.xml"/>
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
 		<properties>
-			<property name="rootNamespaces" type="array" value="
-				src => Consistence\Sentry,
-				tests => Consistence\Sentry,
-			"/>
+			<property name="rootNamespaces" type="array">
+				<element key="src" value="Consistence\Sentry"/>
+				<element key="tests" value="Consistence\Sentry"/>
+			</property>
 		</properties>
 		<exclude-pattern>*/data/*.php</exclude-pattern>
 		<exclude-pattern>*/exceptions/*Exception.php</exclude-pattern>
