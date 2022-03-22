@@ -33,8 +33,8 @@ class MetadataSourceTest extends \PHPUnit\Framework\TestCase
 			$this->fail();
 		} catch (\Consistence\Sentry\MetadataSource\ClassMetadataCouldNotBeCreatedException $e) {
 			$this->assertSame($classReflection, $e->getClassReflection());
-			$this->assertContains(FooClass::class, $e->getMessage());
-			$this->assertContains('test', $e->getMessage());
+			$this->assertStringContainsString(FooClass::class, $e->getMessage());
+			$this->assertStringContainsString('test', $e->getMessage());
 		}
 	}
 
