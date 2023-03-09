@@ -61,20 +61,27 @@ class SimpleSentryFactoryTest extends \PHPUnit\Framework\TestCase
 	public function testNoSentry(): void
 	{
 		$factory = new SimpleSentryFactory(new SentryIdentificatorParser());
+		$sentryIdentificator = new SentryIdentificator('');
 
-		$this->expectException(\Consistence\Sentry\Factory\NoSentryForIdentificatorException::class);
-
-		$factory->getSentry(new SentryIdentificator(''));
+		try {
+			$factory->getSentry($sentryIdentificator);
+			Assert::fail('Exception expected');
+		} catch (\Consistence\Sentry\Factory\NoSentryForIdentificatorException $e) {
+			Assert::assertSame($sentryIdentificator, $e->getSentryIdentificator());
+		}
 	}
 
 	public function testNonexistingObject(): void
 	{
 		$factory = new SimpleSentryFactory(new SentryIdentificatorParser());
+		$sentryIdentificator = new SentryIdentificator('Foo\Bar');
 
-		$this->expectException(\Consistence\Sentry\Factory\NoSentryForIdentificatorException::class);
-		$this->expectExceptionMessage('Foo\Bar');
-
-		$factory->getSentry(new SentryIdentificator('Foo\Bar'));
+		try {
+			$factory->getSentry($sentryIdentificator);
+			Assert::fail('Exception expected');
+		} catch (\Consistence\Sentry\Factory\NoSentryForIdentificatorException $e) {
+			Assert::assertSame($sentryIdentificator, $e->getSentryIdentificator());
+		}
 	}
 
 }

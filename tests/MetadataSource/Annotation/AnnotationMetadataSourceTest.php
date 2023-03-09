@@ -283,10 +283,15 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 			$annotationProvider
 		);
 
-		$this->expectException(\Consistence\Sentry\MetadataSource\ClassMetadataCouldNotBeCreatedException::class);
-		$this->expectExceptionMessage('SentryAware');
+		$reflectionClass = new ReflectionClass($this);
 
-		$metadataSource->getMetadataForClass(new ReflectionClass($this));
+		try {
+			$metadataSource->getMetadataForClass($reflectionClass);
+			Assert::fail('Exception expected');
+		} catch (\Consistence\Sentry\MetadataSource\ClassMetadataCouldNotBeCreatedException $e) {
+			Assert::assertSame($reflectionClass, $e->getClassReflection());
+			Assert::assertStringContainsString('SentryAware', $e->getMessage());
+		}
 	}
 
 	public function testInvalidSentryIdentificator(): void

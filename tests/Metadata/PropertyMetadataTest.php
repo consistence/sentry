@@ -115,9 +115,11 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 			'setFoo',
 			Visibility::get(Visibility::VISIBILITY_PRIVATE)
 		);
+		$className = 'FooClass';
+		$propertyName = 'fooProperty';
 		$property = new PropertyMetadata(
-			'fooProperty',
-			'FooClass',
+			$propertyName,
+			$className,
 			$targetClass,
 			$sentryIdentificator,
 			false,
@@ -127,12 +129,19 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 			null
 		);
 
-		$this->expectException(\Consistence\Sentry\Metadata\NoSuitableMethodException::class);
+		$sentryAccess = new SentryAccess('set');
 
-		$property->getSentryMethodByAccessAndRequiredVisibility(
-			new SentryAccess('set'),
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
+		try {
+			$property->getSentryMethodByAccessAndRequiredVisibility(
+				$sentryAccess,
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
+			Assert::fail('Exception expected');
+		} catch (\Consistence\Sentry\Metadata\NoSuitableMethodException $e) {
+			Assert::assertSame($className, $e->getClassName());
+			Assert::assertSame($propertyName, $e->getPropertyName());
+			Assert::assertSame($sentryAccess, $e->getSentryAccess());
+		}
 	}
 
 	public function testGetSentryMethodByNameAndRequiredVisibility(): void
