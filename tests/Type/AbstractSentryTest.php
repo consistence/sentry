@@ -10,6 +10,7 @@ use Consistence\Sentry\Metadata\SentryAccess;
 use Consistence\Sentry\Metadata\SentryIdentificator;
 use Consistence\Sentry\Metadata\SentryMethod;
 use Consistence\Sentry\Metadata\Visibility;
+use PHPUnit\Framework\Assert;
 
 class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 {
@@ -18,7 +19,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 
-		$this->assertEquals([
+		Assert::assertEquals([
 			new SentryAccess('get'),
 			new SentryAccess('set'),
 		], $sentry->getSupportedAccess());
@@ -28,8 +29,8 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 
-		$this->assertSame('getFoo', $sentry->getDefaultMethodName(new SentryAccess('get'), 'foo'));
-		$this->assertSame('setFoo', $sentry->getDefaultMethodName(new SentryAccess('set'), 'foo'));
+		Assert::assertSame('getFoo', $sentry->getDefaultMethodName(new SentryAccess('get'), 'foo'));
+		Assert::assertSame('setFoo', $sentry->getDefaultMethodName(new SentryAccess('set'), 'foo'));
 	}
 
 	public function testDefaultMethodNameUnsupportedSentryAccess(): void
@@ -39,10 +40,10 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$sentryAccess = new SentryAccess('xxx');
 		try {
 			$sentry->getDefaultMethodName($sentryAccess, 'foo');
-			$this->fail();
+			Assert::fail();
 		} catch (\Consistence\Sentry\Type\SentryAccessNotSupportedException $e) {
-			$this->assertSame($sentryAccess, $e->getSentryAccess());
-			$this->assertSame('MockAbstractSentryTest', $e->getSentryClassName());
+			Assert::assertSame($sentryAccess, $e->getSentryAccess());
+			Assert::assertSame('MockAbstractSentryTest', $e->getSentryClassName());
 		}
 	}
 
@@ -50,7 +51,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 
-		$this->assertEmpty($sentry->getTargetAssociationAccessForAccess(
+		Assert::assertEmpty($sentry->getTargetAssociationAccessForAccess(
 			new SentryAccess('get'),
 			BidirectionalAssociationType::get(BidirectionalAssociationType::ONE)
 		));
@@ -86,7 +87,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	{
 		return $this->fooProperty;
 	}';
-		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $getMethod));
+		Assert::assertSame($method, $sentry->generateMethod($propertyMetadata, $getMethod));
 	}
 
 	public function testGenerateObjectGet(): void
@@ -119,7 +120,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	{
 		return $this->fooProperty;
 	}';
-		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $getMethod));
+		Assert::assertSame($method, $sentry->generateMethod($propertyMetadata, $getMethod));
 	}
 
 	public function testGenerateSet(): void
@@ -152,7 +153,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	{
 		$this->fooProperty = $newValue;
 	}';
-		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $setMethod));
+		Assert::assertSame($method, $sentry->generateMethod($propertyMetadata, $setMethod));
 	}
 
 	public function testGenerateObjectSet(): void
@@ -185,7 +186,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	{
 		$this->fooProperty = $newValue;
 	}';
-		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $setMethod));
+		Assert::assertSame($method, $sentry->generateMethod($propertyMetadata, $setMethod));
 	}
 
 	public function testGenerateUnsupportedSentryAccess(): void
@@ -212,11 +213,11 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$args = [];
 		try {
 			$sentry->generateMethod($propertyMetadata, $xxxMethod, $args);
-			$this->fail();
+			Assert::fail();
 		} catch (\Consistence\Sentry\Type\SentryAccessNotSupportedForPropertyException $e) {
-			$this->assertSame($propertyMetadata, $e->getProperty());
-			$this->assertSame($xxxSentryAccess, $e->getSentryAccess());
-			$this->assertSame(get_class($sentry), $e->getSentryClassName());
+			Assert::assertSame($propertyMetadata, $e->getProperty());
+			Assert::assertSame($xxxSentryAccess, $e->getSentryAccess());
+			Assert::assertSame(get_class($sentry), $e->getSentryClassName());
 		}
 	}
 

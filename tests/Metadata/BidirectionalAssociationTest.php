@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Consistence\Sentry\Metadata;
 
+use PHPUnit\Framework\Assert;
+
 class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 {
 
@@ -23,9 +25,9 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 			$sentryMethods
 		);
 
-		$this->assertSame('FooClass', $bidirectionalAssociation->getTargetClass());
-		$this->assertSame('fooProperty', $bidirectionalAssociation->getTargetProperty());
-		$this->assertTrue($bidirectionalAssociation->getTargetType()->equalsValue(BidirectionalAssociationType::ONE));
+		Assert::assertSame('FooClass', $bidirectionalAssociation->getTargetClass());
+		Assert::assertSame('fooProperty', $bidirectionalAssociation->getTargetProperty());
+		Assert::assertTrue($bidirectionalAssociation->getTargetType()->equalsValue(BidirectionalAssociationType::ONE));
 	}
 
 	public function testGetTargetMethodForType(): void
@@ -53,9 +55,9 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 			new SentryAccess('set'),
 			Visibility::get(Visibility::VISIBILITY_PUBLIC)
 		);
-		$this->assertSame('setFoo', $targetMethod->getMethodName());
-		$this->assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
-		$this->assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
+		Assert::assertSame('setFoo', $targetMethod->getMethodName());
+		Assert::assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
+		Assert::assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
 	}
 
 	public function testGetTargetMethodForTypeLooserVisibility(): void
@@ -78,9 +80,9 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 			new SentryAccess('set'),
 			Visibility::get(Visibility::VISIBILITY_PRIVATE)
 		);
-		$this->assertSame('setFoo', $targetMethod->getMethodName());
-		$this->assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
-		$this->assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
+		Assert::assertSame('setFoo', $targetMethod->getMethodName());
+		Assert::assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
+		Assert::assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
 	}
 
 	public function testGetTargetMethodForTypeRequiredVisibilityNotFound(): void
@@ -104,11 +106,11 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 				new SentryAccess('set'),
 				Visibility::get(Visibility::VISIBILITY_PUBLIC)
 			);
-			$this->fail();
+			Assert::fail();
 		} catch (\Consistence\Sentry\Metadata\NoSuitableMethodException $e) {
-			$this->assertSame('FooClass', $e->getClassName());
-			$this->assertSame('fooProperty', $e->getPropertyName());
-			$this->assertTrue($e->getSentryAccess()->equals(new SentryAccess('set')));
+			Assert::assertSame('FooClass', $e->getClassName());
+			Assert::assertSame('fooProperty', $e->getPropertyName());
+			Assert::assertTrue($e->getSentryAccess()->equals(new SentryAccess('set')));
 		}
 	}
 
@@ -137,9 +139,9 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 			new SentryAccess('set'),
 			Visibility::get(Visibility::VISIBILITY_PUBLIC)
 		);
-		$this->assertSame('setPublic', $targetMethod->getMethodName());
-		$this->assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
-		$this->assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
+		Assert::assertSame('setPublic', $targetMethod->getMethodName());
+		Assert::assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
+		Assert::assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
 	}
 
 	public function testGetTargetMethodForTypeMultipleSentryAccessPickByOrder(): void
@@ -167,9 +169,9 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 			new SentryAccess('set'),
 			Visibility::get(Visibility::VISIBILITY_PUBLIC)
 		);
-		$this->assertSame('setFirst', $targetMethod->getMethodName());
-		$this->assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
-		$this->assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
+		Assert::assertSame('setFirst', $targetMethod->getMethodName());
+		Assert::assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
+		Assert::assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
 	}
 
 }

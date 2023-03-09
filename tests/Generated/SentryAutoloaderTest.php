@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Consistence\Sentry\Generated;
 
+use PHPUnit\Framework\Assert;
 use org\bovigo\vfs\vfsStream;
 
 class SentryAutoloaderTest extends \PHPUnit\Framework\TestCase
@@ -21,19 +22,19 @@ class SentryAutoloaderTest extends \PHPUnit\Framework\TestCase
 
 		$generator = $this->createMock(SentryGenerator::class);
 		$generator
-			->expects($this->once())
+			->expects(self::once())
 			->method('generateAll')
-			->will($this->returnValue($classMap));
+			->will(self::returnValue($classMap));
 
 		$autoloader = new SentryAutoloader($generator, $targetPath);
 
-		$this->assertFalse($autoloader->isClassMapReady());
+		Assert::assertFalse($autoloader->isClassMapReady());
 
 		$autoloader->rebuild();
 
-		$this->assertTrue($autoloader->isClassMapReady());
+		Assert::assertTrue($autoloader->isClassMapReady());
 
-		$this->assertEquals($classMap, require $targetPath);
+		Assert::assertEquals($classMap, require $targetPath);
 	}
 
 }

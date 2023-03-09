@@ -9,6 +9,7 @@ use Consistence\Sentry\SentryIdentificatorParser\SentryIdentificatorParser;
 use Consistence\Sentry\Type\CollectionType;
 use Consistence\Sentry\Type\Sentry;
 use Consistence\Sentry\Type\SimpleType;
+use PHPUnit\Framework\Assert;
 
 class SimpleSentryFactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -47,14 +48,14 @@ class SimpleSentryFactoryTest extends \PHPUnit\Framework\TestCase
 	public function testGetSentry(SentryIdentificator $sentryIdentificator, Sentry $sentry): void
 	{
 		$factory = new SimpleSentryFactory(new SentryIdentificatorParser());
-		$this->assertTrue($factory->getSentry($sentryIdentificator) instanceof $sentry);
+		Assert::assertTrue($factory->getSentry($sentryIdentificator) instanceof $sentry);
 	}
 
 	public function testSameSentryInstance(): void
 	{
 		$factory = new SimpleSentryFactory(new SentryIdentificatorParser());
 		$sentry = $factory->getSentry(new SentryIdentificator('string'));
-		$this->assertSame($sentry, $factory->getSentry(new SentryIdentificator('string')));
+		Assert::assertSame($sentry, $factory->getSentry(new SentryIdentificator('string')));
 	}
 
 	public function testNoSentry(): void

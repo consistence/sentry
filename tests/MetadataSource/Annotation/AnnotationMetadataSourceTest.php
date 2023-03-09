@@ -14,6 +14,7 @@ use Consistence\Sentry\Metadata\Visibility;
 use Consistence\Sentry\MetadataSource\FooClass;
 use Consistence\Sentry\SentryIdentificatorParser\SentryIdentificatorParser;
 use Consistence\Sentry\Type\SimpleType;
+use PHPUnit\Framework\Assert;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -44,21 +45,21 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 
 		$sentryFactory = $this->createMock(SentryFactory::class);
 		$sentryFactory
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentry')
 			->with($sentryIdentificator)
-			->will($this->returnValue(new SimpleType()));
+			->will(self::returnValue(new SimpleType()));
 
 		$annotationProvider = $this->createMock(AnnotationProvider::class);
 		$annotationProvider
-			->expects($this->once())
+			->expects(self::once())
 			->method('getPropertyAnnotation')
-			->with($classReflection->getProperty($propertyName), $this->isType('string'))
-			->will($this->returnValue($sentryIdentificatorAnnotation));
+			->with($classReflection->getProperty($propertyName), Assert::isType('string'))
+			->will(self::returnValue($sentryIdentificatorAnnotation));
 		$annotationProvider
-			->expects($this->exactly(2))
+			->expects(self::exactly(2))
 			->method('getPropertyAnnotations')
-			->will($this->returnCallback($getAnnotationsCallback));
+			->will(self::returnCallback($getAnnotationsCallback));
 
 		$metadataSource = new AnnotationMetadataSource(
 			$sentryFactory,
@@ -67,22 +68,22 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		);
 		$classMetadata = $metadataSource->getMetadataForClass($classReflection);
 
-		$this->assertSame($className, $classMetadata->getName());
+		Assert::assertSame($className, $classMetadata->getName());
 		$properties = $classMetadata->getProperties();
-		$this->assertCount(1, $properties);
+		Assert::assertCount(1, $properties);
 		$fooProperty = $properties[0];
-		$this->assertSame($propertyName, $fooProperty->getName());
-		$this->assertSame($className, $fooProperty->getClassName());
-		$this->assertSame($type, $fooProperty->getType());
-		$this->assertTrue($sentryIdentificator->equals($fooProperty->getSentryIdentificator()));
-		$this->assertFalse($fooProperty->isNullable());
+		Assert::assertSame($propertyName, $fooProperty->getName());
+		Assert::assertSame($className, $fooProperty->getClassName());
+		Assert::assertSame($type, $fooProperty->getType());
+		Assert::assertTrue($sentryIdentificator->equals($fooProperty->getSentryIdentificator()));
+		Assert::assertFalse($fooProperty->isNullable());
 		$sentryMethods = $fooProperty->getSentryMethods();
-		$this->assertCount(1, $sentryMethods);
+		Assert::assertCount(1, $sentryMethods);
 		$getMethod = $sentryMethods[0];
-		$this->assertSame('getFooProperty', $getMethod->getMethodName());
-		$this->assertSame(Visibility::get(Visibility::VISIBILITY_PUBLIC), $getMethod->getMethodVisibility());
-		$this->assertTrue($getMethod->getSentryAccess()->equals(new SentryAccess('get')));
-		$this->assertNull($fooProperty->getBidirectionalAssociation());
+		Assert::assertSame('getFooProperty', $getMethod->getMethodName());
+		Assert::assertSame(Visibility::get(Visibility::VISIBILITY_PUBLIC), $getMethod->getMethodVisibility());
+		Assert::assertTrue($getMethod->getSentryAccess()->equals(new SentryAccess('get')));
+		Assert::assertNull($fooProperty->getBidirectionalAssociation());
 	}
 
 	public function testCustomMethodName(): void
@@ -111,21 +112,21 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 
 		$sentryFactory = $this->createMock(SentryFactory::class);
 		$sentryFactory
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentry')
 			->with($sentryIdentificator)
-			->will($this->returnValue(new SimpleType()));
+			->will(self::returnValue(new SimpleType()));
 
 		$annotationProvider = $this->createMock(AnnotationProvider::class);
 		$annotationProvider
-			->expects($this->once())
+			->expects(self::once())
 			->method('getPropertyAnnotation')
-			->with($classReflection->getProperty($propertyName), $this->isType('string'))
-			->will($this->returnValue($sentryIdentificatorAnnotation));
+			->with($classReflection->getProperty($propertyName), Assert::isType('string'))
+			->will(self::returnValue($sentryIdentificatorAnnotation));
 		$annotationProvider
-			->expects($this->exactly(2))
+			->expects(self::exactly(2))
 			->method('getPropertyAnnotations')
-			->will($this->returnCallback($getAnnotationsCallback));
+			->will(self::returnCallback($getAnnotationsCallback));
 
 		$metadataSource = new AnnotationMetadataSource(
 			$sentryFactory,
@@ -134,14 +135,14 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		);
 		$classMetadata = $metadataSource->getMetadataForClass($classReflection);
 
-		$this->assertSame($className, $classMetadata->getName());
+		Assert::assertSame($className, $classMetadata->getName());
 		$properties = $classMetadata->getProperties();
-		$this->assertCount(1, $properties);
+		Assert::assertCount(1, $properties);
 		$fooProperty = $properties[0];
 		$sentryMethods = $fooProperty->getSentryMethods();
-		$this->assertCount(1, $sentryMethods);
+		Assert::assertCount(1, $sentryMethods);
 		$getMethod = $sentryMethods[0];
-		$this->assertSame('test', $getMethod->getMethodName());
+		Assert::assertSame('test', $getMethod->getMethodName());
 	}
 
 	public function testCustomMethodVisibility(): void
@@ -170,21 +171,21 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 
 		$sentryFactory = $this->createMock(SentryFactory::class);
 		$sentryFactory
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentry')
 			->with($sentryIdentificator)
-			->will($this->returnValue(new SimpleType()));
+			->will(self::returnValue(new SimpleType()));
 
 		$annotationProvider = $this->createMock(AnnotationProvider::class);
 		$annotationProvider
-			->expects($this->once())
+			->expects(self::once())
 			->method('getPropertyAnnotation')
-			->with($classReflection->getProperty($propertyName), $this->isType('string'))
-			->will($this->returnValue($sentryIdentificatorAnnotation));
+			->with($classReflection->getProperty($propertyName), Assert::isType('string'))
+			->will(self::returnValue($sentryIdentificatorAnnotation));
 		$annotationProvider
-			->expects($this->exactly(2))
+			->expects(self::exactly(2))
 			->method('getPropertyAnnotations')
-			->will($this->returnCallback($getAnnotationsCallback));
+			->will(self::returnCallback($getAnnotationsCallback));
 
 		$metadataSource = new AnnotationMetadataSource(
 			$sentryFactory,
@@ -193,14 +194,14 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		);
 		$classMetadata = $metadataSource->getMetadataForClass($classReflection);
 
-		$this->assertSame($className, $classMetadata->getName());
+		Assert::assertSame($className, $classMetadata->getName());
 		$properties = $classMetadata->getProperties();
-		$this->assertCount(1, $properties);
+		Assert::assertCount(1, $properties);
 		$fooProperty = $properties[0];
 		$sentryMethods = $fooProperty->getSentryMethods();
-		$this->assertCount(1, $sentryMethods);
+		Assert::assertCount(1, $sentryMethods);
 		$getMethod = $sentryMethods[0];
-		$this->assertSame(Visibility::get(Visibility::VISIBILITY_PRIVATE), $getMethod->getMethodVisibility());
+		Assert::assertSame(Visibility::get(Visibility::VISIBILITY_PRIVATE), $getMethod->getMethodVisibility());
 	}
 
 	public function testGetMultipleMethods(): void
@@ -239,21 +240,21 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 
 		$sentryFactory = $this->createMock(SentryFactory::class);
 		$sentryFactory
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentry')
 			->with($sentryIdentificator)
-			->will($this->returnValue(new SimpleType()));
+			->will(self::returnValue(new SimpleType()));
 
 		$annotationProvider = $this->createMock(AnnotationProvider::class);
 		$annotationProvider
-			->expects($this->once())
+			->expects(self::once())
 			->method('getPropertyAnnotation')
-			->with($classReflection->getProperty($propertyName), $this->isType('string'))
-			->will($this->returnValue($sentryIdentificatorAnnotation));
+			->with($classReflection->getProperty($propertyName), Assert::isType('string'))
+			->will(self::returnValue($sentryIdentificatorAnnotation));
 		$annotationProvider
-			->expects($this->exactly(2))
+			->expects(self::exactly(2))
 			->method('getPropertyAnnotations')
-			->will($this->returnCallback($getAnnotationsCallback));
+			->will(self::returnCallback($getAnnotationsCallback));
 
 		$metadataSource = new AnnotationMetadataSource(
 			$sentryFactory,
@@ -262,12 +263,12 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		);
 		$classMetadata = $metadataSource->getMetadataForClass($classReflection);
 
-		$this->assertSame($className, $classMetadata->getName());
+		Assert::assertSame($className, $classMetadata->getName());
 		$properties = $classMetadata->getProperties();
-		$this->assertCount(1, $properties);
+		Assert::assertCount(1, $properties);
 		$fooProperty = $properties[0];
 		$sentryMethods = $fooProperty->getSentryMethods();
-		$this->assertCount(4, $sentryMethods);
+		Assert::assertCount(4, $sentryMethods);
 	}
 
 	public function testClassIsNotSentryAware(): void
@@ -301,10 +302,10 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 
 		$annotationProvider = $this->createMock(AnnotationProvider::class);
 		$annotationProvider
-			->expects($this->once())
+			->expects(self::once())
 			->method('getPropertyAnnotation')
 			->with($classReflection->getProperty('fooProperty'), AnnotationMetadataSource::IDENTIFICATOR_ANNOTATION)
-			->will($this->returnValue($sentryIdentificatorAnnotation));
+			->will(self::returnValue($sentryIdentificatorAnnotation));
 
 		$metadataSource = new AnnotationMetadataSource(
 			$sentryFactory,
@@ -313,7 +314,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		);
 
 		$classMetadata = $metadataSource->getMetadataForClass($classReflection);
-		$this->assertEmpty($classMetadata->getProperties());
+		Assert::assertEmpty($classMetadata->getProperties());
 	}
 
 	public function testMissingSentryIdentificator(): void
@@ -325,10 +326,10 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 
 		$annotationProvider = $this->createMock(AnnotationProvider::class);
 		$annotationProvider
-			->expects($this->once())
+			->expects(self::once())
 			->method('getPropertyAnnotation')
 			->with($propertyReflection, AnnotationMetadataSource::IDENTIFICATOR_ANNOTATION)
-			->will($this->throwException(new \Consistence\Annotation\AnnotationNotFoundException(
+			->will(self::throwException(new \Consistence\Annotation\AnnotationNotFoundException(
 				AnnotationMetadataSource::IDENTIFICATOR_ANNOTATION,
 				$propertyReflection
 			)));
@@ -340,7 +341,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		);
 
 		$classMetadata = $metadataSource->getMetadataForClass($classReflection);
-		$this->assertEmpty($classMetadata->getProperties());
+		Assert::assertEmpty($classMetadata->getProperties());
 	}
 
 	public function testNoSentryFound(): void
@@ -350,10 +351,10 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 
 		$sentryFactory = $this->createMock(SentryFactory::class);
 		$sentryFactory
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentry')
 			->with($sentryIdentificator)
-			->will($this->throwException(new \Consistence\Sentry\Factory\NoSentryForIdentificatorException($sentryIdentificator)));
+			->will(self::throwException(new \Consistence\Sentry\Factory\NoSentryForIdentificatorException($sentryIdentificator)));
 
 		$sentryIdentificatorAnnotation = Annotation::createAnnotationWithValue(
 			AnnotationMetadataSource::IDENTIFICATOR_ANNOTATION,
@@ -362,10 +363,10 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 
 		$annotationProvider = $this->createMock(AnnotationProvider::class);
 		$annotationProvider
-			->expects($this->once())
+			->expects(self::once())
 			->method('getPropertyAnnotation')
 			->with($classReflection->getProperty('fooProperty'), AnnotationMetadataSource::IDENTIFICATOR_ANNOTATION)
-			->will($this->returnValue($sentryIdentificatorAnnotation));
+			->will(self::returnValue($sentryIdentificatorAnnotation));
 
 		$metadataSource = new AnnotationMetadataSource(
 			$sentryFactory,
@@ -374,7 +375,7 @@ class AnnotationMetadataSourceTest extends \PHPUnit\Framework\TestCase
 		);
 
 		$classMetadata = $metadataSource->getMetadataForClass($classReflection);
-		$this->assertEmpty($classMetadata->getProperties());
+		Assert::assertEmpty($classMetadata->getProperties());
 	}
 
 }

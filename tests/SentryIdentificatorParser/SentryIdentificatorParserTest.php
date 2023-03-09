@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Consistence\Sentry\SentryIdentificatorParser;
 
 use Consistence\Sentry\Metadata\SentryIdentificator;
+use PHPUnit\Framework\Assert;
 
 class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 {
@@ -68,12 +69,12 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	{
 		$parser = new SentryIdentificatorParser();
 		$result = $parser->parse($sentryIdentificator);
-		$this->assertInstanceOf(SentryIdentificatorParseResult::class, $result);
-		$this->assertSame($sentryIdentificator, $result->getSentryIdentificator());
-		$this->assertSame($expectedType, $result->getType());
-		$this->assertSame($expectedMany, $result->isMany());
-		$this->assertSame($expectedNullable, $result->isNullable());
-		$this->assertSame($sourceClass, $result->getSourceClass());
+		Assert::assertInstanceOf(SentryIdentificatorParseResult::class, $result);
+		Assert::assertSame($sentryIdentificator, $result->getSentryIdentificator());
+		Assert::assertSame($expectedType, $result->getType());
+		Assert::assertSame($expectedMany, $result->isMany());
+		Assert::assertSame($expectedNullable, $result->isNullable());
+		Assert::assertSame($sourceClass, $result->getSourceClass());
 	}
 
 	/**
@@ -87,9 +88,9 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 		$sentryIdentificator = new SentryIdentificator($pattern);
 		try {
 			$parser->parse($sentryIdentificator);
-			$this->fail();
+			Assert::fail();
 		} catch (\Consistence\Sentry\SentryIdentificatorParser\PatternDoesNotMatchException $e) {
-			$this->assertSame($sentryIdentificator, $e->getSentryIdentificator());
+			Assert::assertSame($sentryIdentificator, $e->getSentryIdentificator());
 		}
 	}
 

@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Consistence\Sentry\Metadata;
 
+use PHPUnit\Framework\Assert;
+
 class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 {
 
@@ -40,13 +42,13 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 			$bidirectionalAssociation
 		);
 
-		$this->assertSame('fooProperty', $property->getName());
-		$this->assertSame('FooClass', $property->getClassName());
-		$this->assertSame($targetClass, $property->getType());
-		$this->assertSame($sentryIdentificator, $property->getSentryIdentificator());
-		$this->assertSame(false, $property->isNullable());
-		$this->assertSame($sentryMethods, $property->getSentryMethods());
-		$this->assertSame($bidirectionalAssociation, $property->getBidirectionalAssociation());
+		Assert::assertSame('fooProperty', $property->getName());
+		Assert::assertSame('FooClass', $property->getClassName());
+		Assert::assertSame($targetClass, $property->getType());
+		Assert::assertSame($sentryIdentificator, $property->getSentryIdentificator());
+		Assert::assertSame(false, $property->isNullable());
+		Assert::assertSame($sentryMethods, $property->getSentryMethods());
+		Assert::assertSame($bidirectionalAssociation, $property->getBidirectionalAssociation());
 	}
 
 	public function testCreateScalar(): void
@@ -62,13 +64,13 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 			null
 		);
 
-		$this->assertSame('fooProperty', $property->getName());
-		$this->assertSame('FooClass', $property->getClassName());
-		$this->assertSame('int', $property->getType());
-		$this->assertSame($sentryIdentificator, $property->getSentryIdentificator());
-		$this->assertSame(false, $property->isNullable());
-		$this->assertEmpty($property->getSentryMethods());
-		$this->assertNull($property->getBidirectionalAssociation());
+		Assert::assertSame('fooProperty', $property->getName());
+		Assert::assertSame('FooClass', $property->getClassName());
+		Assert::assertSame('int', $property->getType());
+		Assert::assertSame($sentryIdentificator, $property->getSentryIdentificator());
+		Assert::assertSame(false, $property->isNullable());
+		Assert::assertEmpty($property->getSentryMethods());
+		Assert::assertNull($property->getBidirectionalAssociation());
 	}
 
 	public function testGetSentryMethodByAccess(): void
@@ -98,7 +100,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 			null
 		);
 
-		$this->assertSame($setMethod, $property->getSentryMethodByAccessAndRequiredVisibility(
+		Assert::assertSame($setMethod, $property->getSentryMethodByAccessAndRequiredVisibility(
 			new SentryAccess('set'),
 			Visibility::get(Visibility::VISIBILITY_PRIVATE)
 		));
@@ -151,7 +153,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 			null
 		);
 
-		$this->assertSame($fooMethod, $property->getSentryMethodByNameAndRequiredVisibility(
+		Assert::assertSame($fooMethod, $property->getSentryMethodByNameAndRequiredVisibility(
 			'fooMethod',
 			Visibility::get(Visibility::VISIBILITY_PRIVATE)
 		));
@@ -174,11 +176,11 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 				'fooMethod',
 				Visibility::get(Visibility::VISIBILITY_PUBLIC)
 			);
-			$this->fail();
+			Assert::fail();
 		} catch (\Consistence\Sentry\Metadata\MethodNotFoundForPropertyException $e) {
-			$this->assertSame('FooClass', $e->getClassName());
-			$this->assertSame('fooProperty', $e->getPropertyName());
-			$this->assertSame('fooMethod', $e->getMethodName());
+			Assert::assertSame('FooClass', $e->getClassName());
+			Assert::assertSame('fooProperty', $e->getPropertyName());
+			Assert::assertSame('fooMethod', $e->getMethodName());
 		}
 	}
 
@@ -200,7 +202,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 			null
 		);
 
-		$this->assertSame($fooMethod, $property->getSentryMethodByNameAndRequiredVisibility(
+		Assert::assertSame($fooMethod, $property->getSentryMethodByNameAndRequiredVisibility(
 			'FOOmethod',
 			Visibility::get(Visibility::VISIBILITY_PRIVATE)
 		));
@@ -233,7 +235,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 			null
 		);
 
-		$this->assertEquals([new SentryAccess('set')], $property->getDefinedSentryAccess());
+		Assert::assertEquals([new SentryAccess('set')], $property->getDefinedSentryAccess());
 	}
 
 }

@@ -9,6 +9,7 @@ use Consistence\Sentry\Metadata\SentryAccess;
 use Consistence\Sentry\Metadata\SentryIdentificator;
 use Consistence\Sentry\Metadata\SentryMethod;
 use Consistence\Sentry\Metadata\Visibility;
+use PHPUnit\Framework\Assert;
 
 class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -43,7 +44,7 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 	{
 		return $this->fooProperty;
 	}';
-		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $getMethod));
+		Assert::assertSame($method, $integerSentry->generateMethod($propertyMetadata, $getMethod));
 	}
 
 	public function testGenerateNullableGet(): void
@@ -76,7 +77,7 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 	{
 		return $this->fooProperty;
 	}';
-		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $getMethod));
+		Assert::assertSame($method, $integerSentry->generateMethod($propertyMetadata, $getMethod));
 	}
 
 	public function testGenerateSet(): void
@@ -110,7 +111,7 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		\Consistence\Type\Type::checkType($newValue, \'int\');
 		$this->fooProperty = $newValue;
 	}';
-		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $setMethod));
+		Assert::assertSame($method, $integerSentry->generateMethod($propertyMetadata, $setMethod));
 	}
 
 	public function testGenerateSetNullable(): void
@@ -144,7 +145,7 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 		\Consistence\Type\Type::checkType($newValue, \'int|null\');
 		$this->fooProperty = $newValue;
 	}';
-		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $setMethod));
+		Assert::assertSame($method, $integerSentry->generateMethod($propertyMetadata, $setMethod));
 	}
 
 }

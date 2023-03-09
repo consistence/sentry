@@ -9,6 +9,7 @@ use Consistence\Sentry\Metadata\SentryAccess;
 use Consistence\Sentry\Metadata\SentryIdentificator;
 use Consistence\Sentry\Metadata\SentryMethod;
 use Consistence\Sentry\Metadata\Visibility;
+use PHPUnit\Framework\Assert;
 
 class CollectionTest extends \PHPUnit\Framework\TestCase
 {
@@ -17,7 +18,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 	{
 		$collection = new CollectionType();
 
-		$this->assertEquals([
+		Assert::assertEquals([
 			new SentryAccess('get'),
 			new SentryAccess('set'),
 			new SentryAccess('add'),
@@ -30,11 +31,11 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 	{
 		$collection = new CollectionType();
 
-		$this->assertSame('getChildren', $collection->getDefaultMethodName(new SentryAccess('get'), 'children'));
-		$this->assertSame('setChildren', $collection->getDefaultMethodName(new SentryAccess('set'), 'children'));
-		$this->assertSame('addChild', $collection->getDefaultMethodName(new SentryAccess('add'), 'children'));
-		$this->assertSame('removeChild', $collection->getDefaultMethodName(new SentryAccess('remove'), 'children'));
-		$this->assertSame('containsChild', $collection->getDefaultMethodName(new SentryAccess('contains'), 'children'));
+		Assert::assertSame('getChildren', $collection->getDefaultMethodName(new SentryAccess('get'), 'children'));
+		Assert::assertSame('setChildren', $collection->getDefaultMethodName(new SentryAccess('set'), 'children'));
+		Assert::assertSame('addChild', $collection->getDefaultMethodName(new SentryAccess('add'), 'children'));
+		Assert::assertSame('removeChild', $collection->getDefaultMethodName(new SentryAccess('remove'), 'children'));
+		Assert::assertSame('containsChild', $collection->getDefaultMethodName(new SentryAccess('contains'), 'children'));
 	}
 
 	public function testGenerateGet(): void
@@ -67,7 +68,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 	{
 		return $this->children;
 	}';
-		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $getMethod));
+		Assert::assertSame($method, $collection->generateMethod($propertyMetadata, $getMethod));
 	}
 
 	public function testGenerateSet(): void
@@ -108,7 +109,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 			}
 		}
 	}';
-		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $setMethod));
+		Assert::assertSame($method, $collection->generateMethod($propertyMetadata, $setMethod));
 	}
 
 	public function testGenerateContains(): void
@@ -143,7 +144,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		\Consistence\Type\Type::checkType($value, \'int\');
 		return \Consistence\Type\ArrayType\ArrayType::containsValue($this->children, $value);
 	}';
-		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $containsMethod));
+		Assert::assertSame($method, $collection->generateMethod($propertyMetadata, $containsMethod));
 	}
 
 	public function testGenerateAdd(): void
@@ -185,7 +186,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
 		return false;
 	}';
-		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $addMethod));
+		Assert::assertSame($method, $collection->generateMethod($propertyMetadata, $addMethod));
 	}
 
 	public function testGenerateRemove(): void
@@ -220,7 +221,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		\Consistence\Type\Type::checkType($value, \'int\');
 		return \Consistence\Type\ArrayType\ArrayType::removeValue($this->children, $value);
 	}';
-		$this->assertSame($method, $collection->generateMethod($propertyMetadata, $removeMethod));
+		Assert::assertSame($method, $collection->generateMethod($propertyMetadata, $removeMethod));
 	}
 
 }
