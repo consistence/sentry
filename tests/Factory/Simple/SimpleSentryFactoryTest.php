@@ -17,7 +17,7 @@ class SimpleSentryFactoryTest extends \PHPUnit\Framework\TestCase
 	/**
 	 * @return mixed[][]
 	 */
-	public function sentryIdentificatorToSentryProvider(): array
+	public function sentryIdentificatorToSentryDataProvider(): array
 	{
 		return [
 			[new SentryIdentificator('string'), new SimpleType()],
@@ -40,7 +40,7 @@ class SimpleSentryFactoryTest extends \PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @dataProvider sentryIdentificatorToSentryProvider
+	 * @dataProvider sentryIdentificatorToSentryDataProvider
 	 *
 	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
 	 * @param \Consistence\Sentry\Type\Sentry $sentry

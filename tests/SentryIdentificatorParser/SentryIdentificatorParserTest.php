@@ -13,7 +13,7 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	/**
 	 * @return mixed[][]
 	 */
-	public function matchesProvider(): array
+	public function matchesDataProvider(): array
 	{
 		return [
 			[new SentryIdentificator('string'), 'string', false, false, null],
@@ -42,7 +42,7 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	/**
 	 * @return string[][]
 	 */
-	public function doesNotMatchProvider(): array
+	public function doesNotMatchDataProvider(): array
 	{
 		return [
 			[''],
@@ -51,7 +51,7 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @dataProvider matchesProvider
+	 * @dataProvider matchesDataProvider
 	 *
 	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
 	 * @param string $expectedType
@@ -78,7 +78,7 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @dataProvider doesNotMatchProvider
+	 * @dataProvider doesNotMatchDataProvider
 	 *
 	 * @param string $pattern
 	 */
