@@ -9,34 +9,33 @@ use Consistence\Sentry\SentryIdentificatorParser\SentryIdentificatorParser;
 use Consistence\Sentry\Type\CollectionType;
 use Consistence\Sentry\Type\Sentry;
 use Consistence\Sentry\Type\SimpleType;
+use Generator;
 use PHPUnit\Framework\Assert;
 
 class SimpleSentryFactoryTest extends \PHPUnit\Framework\TestCase
 {
 
 	/**
-	 * @return mixed[][]
+	 * @return mixed[][]|\Generator
 	 */
-	public function sentryIdentificatorToSentryDataProvider(): array
+	public function sentryIdentificatorToSentryDataProvider(): Generator
 	{
-		return [
-			[new SentryIdentificator('string'), new SimpleType()],
-			[new SentryIdentificator('int'), new SimpleType()],
-			[new SentryIdentificator('bool'), new SimpleType()],
-			[new SentryIdentificator('float'), new SimpleType()],
-			[new SentryIdentificator('integer'), new SimpleType()],
-			[new SentryIdentificator('boolean'), new SimpleType()],
-			[new SentryIdentificator('mixed'), new SimpleType()],
-			[new SentryIdentificator('DateTimeImmutable'), new SimpleType()],
-			[new SentryIdentificator('string[]'), new CollectionType()],
-			[new SentryIdentificator('int[]'), new CollectionType()],
-			[new SentryIdentificator('bool[]'), new CollectionType()],
-			[new SentryIdentificator('float[]'), new CollectionType()],
-			[new SentryIdentificator('integer[]'), new CollectionType()],
-			[new SentryIdentificator('boolean[]'), new CollectionType()],
-			[new SentryIdentificator('mixed[]'), new CollectionType()],
-			[new SentryIdentificator('DateTimeImmutable[]'), new CollectionType()],
-		];
+		yield [new SentryIdentificator('string'), new SimpleType()];
+		yield [new SentryIdentificator('int'), new SimpleType()];
+		yield [new SentryIdentificator('bool'), new SimpleType()];
+		yield [new SentryIdentificator('float'), new SimpleType()];
+		yield [new SentryIdentificator('integer'), new SimpleType()];
+		yield [new SentryIdentificator('boolean'), new SimpleType()];
+		yield [new SentryIdentificator('mixed'), new SimpleType()];
+		yield [new SentryIdentificator('DateTimeImmutable'), new SimpleType()];
+		yield [new SentryIdentificator('string[]'), new CollectionType()];
+		yield [new SentryIdentificator('int[]'), new CollectionType()];
+		yield [new SentryIdentificator('bool[]'), new CollectionType()];
+		yield [new SentryIdentificator('float[]'), new CollectionType()];
+		yield [new SentryIdentificator('integer[]'), new CollectionType()];
+		yield [new SentryIdentificator('boolean[]'), new CollectionType()];
+		yield [new SentryIdentificator('mixed[]'), new CollectionType()];
+		yield [new SentryIdentificator('DateTimeImmutable[]'), new CollectionType()];
 	}
 
 	/**

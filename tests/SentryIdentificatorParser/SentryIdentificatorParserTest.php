@@ -5,49 +5,46 @@ declare(strict_types = 1);
 namespace Consistence\Sentry\SentryIdentificatorParser;
 
 use Consistence\Sentry\Metadata\SentryIdentificator;
+use Generator;
 use PHPUnit\Framework\Assert;
 
 class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 {
 
 	/**
-	 * @return mixed[][]
+	 * @return mixed[][]|\Generator
 	 */
-	public function matchesDataProvider(): array
+	public function matchesDataProvider(): Generator
 	{
-		return [
-			[new SentryIdentificator('string'), 'string', false, false, null],
-			[new SentryIdentificator('string[]'), 'string', true, false, null],
-			[new SentryIdentificator('string|NULL'), 'string', false, true, null],
-			[new SentryIdentificator('string|null'), 'string', false, true, null],
-			[new SentryIdentificator('string[]|NULL'), 'string', true, true, null],
-			[new SentryIdentificator('string[]|null'), 'string', true, true, null],
-			[new SentryIdentificator('string[][]'), 'string', true, false, null],
-			[new SentryIdentificator('string[][]|null'), 'string', true, true, null],
-			[new SentryIdentificator('Foo'), 'Foo', false, false, null],
-			[new SentryIdentificator('\Foo'), 'Foo', false, false, null],
-			[new SentryIdentificator('Foo\Bar'), 'Foo\Bar', false, false, null],
-			[new SentryIdentificator('\Foo\Bar'), 'Foo\Bar', false, false, null],
-			[new SentryIdentificator('\Foo\Bar[]'), 'Foo\Bar', true, false, null],
-			[new SentryIdentificator('\Foo\Bar[]|null'), 'Foo\Bar', true, true, null],
-			[new SentryIdentificator('\Foo\Bar foobar'), 'Foo\Bar', false, false, null],
-			[new SentryIdentificator('\Foo\Bar nullable'), 'Foo\Bar', false, false, null],
-			[new SentryIdentificator('\Collection of \Foo\Bar'), 'Collection', false, false, null],
-			[new SentryIdentificator('Foo::Bar'), 'Bar', false, false, 'Foo'],
-			[new SentryIdentificator('\Foo::\Bar'), 'Bar', false, false, 'Foo'],
-			[new SentryIdentificator('Long\Class\Name\Which\Tests\The\Backtracking\Limit::Bar'), 'Bar', false, false, 'Long\Class\Name\Which\Tests\The\Backtracking\Limit'],
-		];
+		yield [new SentryIdentificator('string'), 'string', false, false, null];
+		yield [new SentryIdentificator('string[]'), 'string', true, false, null];
+		yield [new SentryIdentificator('string|NULL'), 'string', false, true, null];
+		yield [new SentryIdentificator('string|null'), 'string', false, true, null];
+		yield [new SentryIdentificator('string[]|NULL'), 'string', true, true, null];
+		yield [new SentryIdentificator('string[]|null'), 'string', true, true, null];
+		yield [new SentryIdentificator('string[][]'), 'string', true, false, null];
+		yield [new SentryIdentificator('string[][]|null'), 'string', true, true, null];
+		yield [new SentryIdentificator('Foo'), 'Foo', false, false, null];
+		yield [new SentryIdentificator('\Foo'), 'Foo', false, false, null];
+		yield [new SentryIdentificator('Foo\Bar'), 'Foo\Bar', false, false, null];
+		yield [new SentryIdentificator('\Foo\Bar'), 'Foo\Bar', false, false, null];
+		yield [new SentryIdentificator('\Foo\Bar[]'), 'Foo\Bar', true, false, null];
+		yield [new SentryIdentificator('\Foo\Bar[]|null'), 'Foo\Bar', true, true, null];
+		yield [new SentryIdentificator('\Foo\Bar foobar'), 'Foo\Bar', false, false, null];
+		yield [new SentryIdentificator('\Foo\Bar nullable'), 'Foo\Bar', false, false, null];
+		yield [new SentryIdentificator('\Collection of \Foo\Bar'), 'Collection', false, false, null];
+		yield [new SentryIdentificator('Foo::Bar'), 'Bar', false, false, 'Foo'];
+		yield [new SentryIdentificator('\Foo::\Bar'), 'Bar', false, false, 'Foo'];
+		yield [new SentryIdentificator('Long\Class\Name\Which\Tests\The\Backtracking\Limit::Bar'), 'Bar', false, false, 'Long\Class\Name\Which\Tests\The\Backtracking\Limit'];
 	}
 
 	/**
-	 * @return string[][]
+	 * @return string[][]|\Generator
 	 */
-	public function doesNotMatchDataProvider(): array
+	public function doesNotMatchDataProvider(): Generator
 	{
-		return [
-			[''],
-			['Long\Class\Name\Which\Tests\The\Backtracking\Limit::'],
-		];
+		yield [''];
+		yield ['Long\Class\Name\Which\Tests\The\Backtracking\Limit::'];
 	}
 
 	/**
