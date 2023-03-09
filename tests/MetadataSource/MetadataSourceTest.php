@@ -31,7 +31,7 @@ class MetadataSourceTest extends \PHPUnit\Framework\TestCase
 
 		try {
 			$factory->getMetadataForClass($classReflection);
-			Assert::fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\MetadataSource\ClassMetadataCouldNotBeCreatedException $e) {
 			Assert::assertSame($classReflection, $e->getClassReflection());
 			Assert::assertStringContainsString(FooClass::class, $e->getMessage());

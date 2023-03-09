@@ -40,7 +40,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$sentryAccess = new SentryAccess('xxx');
 		try {
 			$sentry->getDefaultMethodName($sentryAccess, 'foo');
-			Assert::fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Type\SentryAccessNotSupportedException $e) {
 			Assert::assertSame($sentryAccess, $e->getSentryAccess());
 			Assert::assertSame('MockAbstractSentryTest', $e->getSentryClassName());
@@ -213,7 +213,7 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$args = [];
 		try {
 			$sentry->generateMethod($propertyMetadata, $xxxMethod, $args);
-			Assert::fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Type\SentryAccessNotSupportedForPropertyException $e) {
 			Assert::assertSame($propertyMetadata, $e->getProperty());
 			Assert::assertSame($xxxSentryAccess, $e->getSentryAccess());

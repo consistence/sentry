@@ -83,7 +83,7 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 				'fooMethod',
 				Visibility::get(Visibility::VISIBILITY_PUBLIC)
 			);
-			Assert::fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Metadata\MethodNotFoundException $e) {
 			Assert::assertSame('FooClass', $e->getClassName());
 			Assert::assertSame('fooMethod', $e->getMethodName());
@@ -116,7 +116,7 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 
 		try {
 			$classMetadata->getPropertyByName($propertyName);
-			Assert::fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Metadata\PropertyNotFoundException $e) {
 			Assert::assertSame($className, $e->getClassName());
 			Assert::assertSame($propertyName, $e->getPropertyName());

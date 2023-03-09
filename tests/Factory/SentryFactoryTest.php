@@ -31,7 +31,7 @@ class SentryFactoryTest extends \PHPUnit\Framework\TestCase
 
 		try {
 			$factory->getSentry($sentryIdentificator);
-			Assert::fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Factory\NoSentryForIdentificatorException $e) {
 			Assert::assertSame($sentryIdentificator, $e->getSentryIdentificator());
 		}

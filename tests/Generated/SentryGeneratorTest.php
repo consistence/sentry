@@ -134,7 +134,7 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 
 		try {
 			$generator->generateClass($classReflection);
-			Assert::fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Generated\NoMethodsToBeGeneratedException $e) {
 			Assert::assertSame($classMetadata, $e->getClassMetadata());
 		}
@@ -175,7 +175,7 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 
 		try {
 			$generator->generateClass($classReflection);
-			Assert::fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Generated\NoMethodsToBeGeneratedException $e) {
 			Assert::assertSame($classMetadata, $e->getClassMetadata());
 		}

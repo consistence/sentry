@@ -88,7 +88,7 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 		$sentryIdentificator = new SentryIdentificator($pattern);
 		try {
 			$parser->parse($sentryIdentificator);
-			Assert::fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\SentryIdentificatorParser\PatternDoesNotMatchException $e) {
 			Assert::assertSame($sentryIdentificator, $e->getSentryIdentificator());
 		}

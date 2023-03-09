@@ -106,7 +106,7 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 				new SentryAccess('set'),
 				Visibility::get(Visibility::VISIBILITY_PUBLIC)
 			);
-			Assert::fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Metadata\NoSuitableMethodException $e) {
 			Assert::assertSame('FooClass', $e->getClassName());
 			Assert::assertSame('fooProperty', $e->getPropertyName());

@@ -176,7 +176,7 @@ class PropertyMetadataTest extends \PHPUnit\Framework\TestCase
 				'fooMethod',
 				Visibility::get(Visibility::VISIBILITY_PUBLIC)
 			);
-			Assert::fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Metadata\MethodNotFoundForPropertyException $e) {
 			Assert::assertSame('FooClass', $e->getClassName());
 			Assert::assertSame('fooProperty', $e->getPropertyName());
