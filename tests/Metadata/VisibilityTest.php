@@ -47,7 +47,7 @@ class VisibilityTest extends \PHPUnit\Framework\TestCase
 
 	public function testGetRequiredVisibilitySameClass(): void
 	{
-		Assert::assertEquals(
+		Assert::assertSame(
 			Visibility::get(Visibility::VISIBILITY_PRIVATE),
 			Visibility::getRequiredVisibility(FooClass::class, FooClass::class)
 		);
@@ -55,7 +55,7 @@ class VisibilityTest extends \PHPUnit\Framework\TestCase
 
 	public function testGetRequiredVisibilityClassExtends(): void
 	{
-		Assert::assertEquals(
+		Assert::assertSame(
 			Visibility::get(Visibility::VISIBILITY_PROTECTED),
 			Visibility::getRequiredVisibility(FooClass::class, BarClass::class)
 		);
@@ -63,7 +63,7 @@ class VisibilityTest extends \PHPUnit\Framework\TestCase
 
 	public function testGetRequiredVisibilityClassExtended(): void
 	{
-		Assert::assertEquals(
+		Assert::assertSame(
 			Visibility::get(Visibility::VISIBILITY_PROTECTED),
 			Visibility::getRequiredVisibility(BarClass::class, FooClass::class)
 		);
@@ -71,7 +71,7 @@ class VisibilityTest extends \PHPUnit\Framework\TestCase
 
 	public function testGetRequiredVisibilityNoRelationClasses(): void
 	{
-		Assert::assertEquals(
+		Assert::assertSame(
 			Visibility::get(Visibility::VISIBILITY_PUBLIC),
 			Visibility::getRequiredVisibility(FooClass::class, BazClass::class)
 		);
