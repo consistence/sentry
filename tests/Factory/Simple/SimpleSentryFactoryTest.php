@@ -20,67 +20,67 @@ class SimpleSentryFactoryTest extends \PHPUnit\Framework\TestCase
 	 */
 	public function sentryIdentificatorToSentryDataProvider(): Generator
 	{
-		yield [
+		yield 'string' => [
 			'sentryIdentificator' => new SentryIdentificator('string'),
 			'sentry' => new SimpleType(),
 		];
-		yield [
+		yield 'int' => [
 			'sentryIdentificator' => new SentryIdentificator('int'),
 			'sentry' => new SimpleType(),
 		];
-		yield [
+		yield 'bool' => [
 			'sentryIdentificator' => new SentryIdentificator('bool'),
 			'sentry' => new SimpleType(),
 		];
-		yield [
+		yield 'float' => [
 			'sentryIdentificator' => new SentryIdentificator('float'),
 			'sentry' => new SimpleType(),
 		];
-		yield [
+		yield 'integer' => [
 			'sentryIdentificator' => new SentryIdentificator('integer'),
 			'sentry' => new SimpleType(),
 		];
-		yield [
+		yield 'boolean' => [
 			'sentryIdentificator' => new SentryIdentificator('boolean'),
 			'sentry' => new SimpleType(),
 		];
-		yield [
+		yield 'mixed' => [
 			'sentryIdentificator' => new SentryIdentificator('mixed'),
 			'sentry' => new SimpleType(),
 		];
-		yield [
+		yield 'object' => [
 			'sentryIdentificator' => new SentryIdentificator('DateTimeImmutable'),
 			'sentry' => new SimpleType(),
 		];
-		yield [
+		yield 'string array' => [
 			'sentryIdentificator' => new SentryIdentificator('string[]'),
 			'sentry' => new CollectionType(),
 		];
-		yield [
+		yield 'int array' => [
 			'sentryIdentificator' => new SentryIdentificator('int[]'),
 			'sentry' => new CollectionType(),
 		];
-		yield [
+		yield 'bool array' => [
 			'sentryIdentificator' => new SentryIdentificator('bool[]'),
 			'sentry' => new CollectionType(),
 		];
-		yield [
+		yield 'float array' => [
 			'sentryIdentificator' => new SentryIdentificator('float[]'),
 			'sentry' => new CollectionType(),
 		];
-		yield [
+		yield 'integer array' => [
 			'sentryIdentificator' => new SentryIdentificator('integer[]'),
 			'sentry' => new CollectionType(),
 		];
-		yield [
+		yield 'boolean array' => [
 			'sentryIdentificator' => new SentryIdentificator('boolean[]'),
 			'sentry' => new CollectionType(),
 		];
-		yield [
+		yield 'mixed array' => [
 			'sentryIdentificator' => new SentryIdentificator('mixed[]'),
 			'sentry' => new CollectionType(),
 		];
-		yield [
+		yield 'object array' => [
 			'sentryIdentificator' => new SentryIdentificator('DateTimeImmutable[]'),
 			'sentry' => new CollectionType(),
 		];
