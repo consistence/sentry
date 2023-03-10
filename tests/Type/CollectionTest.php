@@ -82,27 +82,32 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		Assert::assertSame($expectedDefaultMethodName, $collection->getDefaultMethodName($sentryAccess, $propertyName));
 	}
 
-	public function testGenerateGet(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function generateMethodDataProvider(): Generator
 	{
-		$collection = new CollectionType();
-		$getMethod = new SentryMethod(
-			new SentryAccess('get'),
-			'getFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'children',
-			FooClass::class,
-			'int',
-			new SentryIdentificator('int[]'),
-			false,
-			[
-				$getMethod,
-			],
-			null
-		);
+		yield 'get' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('get'),
+				'getFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'children',
+					FooClass::class,
+					'int',
+					new SentryIdentificator('int[]'),
+					false,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated int collection getter
 	 *
@@ -111,31 +116,31 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 	public function getFoo()
 	{
 		return $this->children;
-	}';
-		Assert::assertSame($method, $collection->generateMethod($propertyMetadata, $getMethod));
-	}
+	}',
+			];
+		})();
 
-	public function testGenerateSet(): void
-	{
-		$collection = new CollectionType();
-		$setMethod = new SentryMethod(
-			new SentryAccess('set'),
-			'setFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'children',
-			FooClass::class,
-			'int',
-			new SentryIdentificator('int[]'),
-			false,
-			[
-				$setMethod,
-			],
-			null
-		);
+		yield 'set' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('set'),
+				'setFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'children',
+					FooClass::class,
+					'int',
+					new SentryIdentificator('int[]'),
+					false,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated int collection setter
 	 *
@@ -152,31 +157,31 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 				$collection[] = $el;
 			}
 		}
-	}';
-		Assert::assertSame($method, $collection->generateMethod($propertyMetadata, $setMethod));
-	}
+	}',
+			];
+		})();
 
-	public function testGenerateContains(): void
-	{
-		$collection = new CollectionType();
-		$containsMethod = new SentryMethod(
-			new SentryAccess('contains'),
-			'containsFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'children',
-			FooClass::class,
-			'int',
-			new SentryIdentificator('int[]'),
-			false,
-			[
-				$containsMethod,
-			],
-			null
-		);
+		yield 'contains' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('contains'),
+				'containsFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'children',
+					FooClass::class,
+					'int',
+					new SentryIdentificator('int[]'),
+					false,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated int collection contains
 	 *
@@ -187,31 +192,31 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 	{
 		\Consistence\Type\Type::checkType($value, \'int\');
 		return \Consistence\Type\ArrayType\ArrayType::containsValue($this->children, $value);
-	}';
-		Assert::assertSame($method, $collection->generateMethod($propertyMetadata, $containsMethod));
-	}
+	}',
+			];
+		})();
 
-	public function testGenerateAdd(): void
-	{
-		$collection = new CollectionType();
-		$addMethod = new SentryMethod(
-			new SentryAccess('add'),
-			'addFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'children',
-			FooClass::class,
-			'int',
-			new SentryIdentificator('int[]'),
-			false,
-			[
-				$addMethod,
-			],
-			null
-		);
+		yield 'add' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('add'),
+				'addFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'children',
+					FooClass::class,
+					'int',
+					new SentryIdentificator('int[]'),
+					false,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated int collection add
 	 *
@@ -229,31 +234,31 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		}
 
 		return false;
-	}';
-		Assert::assertSame($method, $collection->generateMethod($propertyMetadata, $addMethod));
-	}
+	}',
+			];
+		})();
 
-	public function testGenerateRemove(): void
-	{
-		$collection = new CollectionType();
-		$removeMethod = new SentryMethod(
-			new SentryAccess('remove'),
-			'removeFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'children',
-			FooClass::class,
-			'int',
-			new SentryIdentificator('int[]'),
-			false,
-			[
-				$removeMethod,
-			],
-			null
-		);
+		yield 'remove' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('remove'),
+				'removeFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'children',
+					FooClass::class,
+					'int',
+					new SentryIdentificator('int[]'),
+					false,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated int collection remove
 	 *
@@ -264,8 +269,27 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 	{
 		\Consistence\Type\Type::checkType($value, \'int\');
 		return \Consistence\Type\ArrayType\ArrayType::removeValue($this->children, $value);
-	}';
-		Assert::assertSame($method, $collection->generateMethod($propertyMetadata, $removeMethod));
+	}',
+			];
+		})();
+	}
+
+	/**
+	 * @dataProvider generateMethodDataProvider
+	 *
+	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $propertyMetadata
+	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
+	 * @param string $expectedGeneratedMethod
+	 */
+	public function testGenerateMethod(
+		PropertyMetadata $propertyMetadata,
+		SentryMethod $sentryMethod,
+		string $expectedGeneratedMethod
+	): void
+	{
+		$collection = new CollectionType();
+
+		Assert::assertSame($expectedGeneratedMethod, $collection->generateMethod($propertyMetadata, $sentryMethod));
 	}
 
 }

@@ -43,60 +43,97 @@ class VisibilityTest extends \PHPUnit\Framework\TestCase
 		Assert::assertSame('public', Visibility::get(Visibility::VISIBILITY_PUBLIC)->getName());
 	}
 
-	public function testLooserOrEqualVisibilityPublic(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function isLooserOrEqualToDataProvider(): Generator
 	{
-		$public = Visibility::get(Visibility::VISIBILITY_PUBLIC);
-		Assert::assertTrue($public->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PUBLIC)));
-		Assert::assertTrue($public->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PROTECTED)));
-		Assert::assertTrue($public->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PRIVATE)));
+		yield 'public' => [
+			'visibility' => Visibility::get(Visibility::VISIBILITY_PUBLIC),
+			'expectedIsLooserOrEqualToPublic' => true,
+			'expectedIsLooserOrEqualToProtected' => true,
+			'expectedIsLooserOrEqualToPrivate' => true,
+		];
+
+		yield 'protected' => [
+			'visibility' => Visibility::get(Visibility::VISIBILITY_PROTECTED),
+			'expectedIsLooserOrEqualToPublic' => false,
+			'expectedIsLooserOrEqualToProtected' => true,
+			'expectedIsLooserOrEqualToPrivate' => true,
+		];
+
+		yield 'private' => [
+			'visibility' => Visibility::get(Visibility::VISIBILITY_PRIVATE),
+			'expectedIsLooserOrEqualToPublic' => false,
+			'expectedIsLooserOrEqualToProtected' => false,
+			'expectedIsLooserOrEqualToPrivate' => true,
+		];
 	}
 
-	public function testLooserOrEqualVisibilityProtected(): void
+	/**
+	 * @dataProvider isLooserOrEqualToDataProvider
+	 *
+	 * @param \Consistence\Sentry\Metadata\Visibility $visibility
+	 * @param bool $expectedIsLooserOrEqualToPublic
+	 * @param bool $expectedIsLooserOrEqualToProtected
+	 * @param bool $expectedIsLooserOrEqualToPrivate
+	 */
+	public function testIsLooserOrEqualTo(
+		Visibility $visibility,
+		bool $expectedIsLooserOrEqualToPublic,
+		bool $expectedIsLooserOrEqualToProtected,
+		bool $expectedIsLooserOrEqualToPrivate
+	): void
 	{
-		$protected = Visibility::get(Visibility::VISIBILITY_PROTECTED);
-		Assert::assertFalse($protected->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PUBLIC)));
-		Assert::assertTrue($protected->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PROTECTED)));
-		Assert::assertTrue($protected->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PRIVATE)));
+		Assert::assertSame($expectedIsLooserOrEqualToPublic, $visibility->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PUBLIC)));
+		Assert::assertSame($expectedIsLooserOrEqualToProtected, $visibility->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PROTECTED)));
+		Assert::assertSame($expectedIsLooserOrEqualToPrivate, $visibility->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PRIVATE)));
 	}
 
-	public function testLooserOrEqualVisibilityPrivate(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function getRequiredVisibilityDataProvider(): Generator
 	{
-		$private = Visibility::get(Visibility::VISIBILITY_PRIVATE);
-		Assert::assertFalse($private->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PUBLIC)));
-		Assert::assertFalse($private->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PROTECTED)));
-		Assert::assertTrue($private->isLooserOrEqualTo(Visibility::get(Visibility::VISIBILITY_PRIVATE)));
+		yield 'same class' => [
+			'targetClassFqn' => FooClass::class,
+			'originClassFqn' => FooClass::class,
+			'expectedRequiredVisibility' => Visibility::get(Visibility::VISIBILITY_PRIVATE),
+		];
+
+		yield 'class extends' => [
+			'targetClassFqn' => FooClass::class,
+			'originClassFqn' => BarClass::class,
+			'expectedRequiredVisibility' => Visibility::get(Visibility::VISIBILITY_PROTECTED),
+		];
+
+		yield 'class extended' => [
+			'targetClassFqn' => BarClass::class,
+			'originClassFqn' => FooClass::class,
+			'expectedRequiredVisibility' => Visibility::get(Visibility::VISIBILITY_PROTECTED),
+		];
+
+		yield 'no relation classes' => [
+			'targetClassFqn' => FooClass::class,
+			'originClassFqn' => BazClass::class,
+			'expectedRequiredVisibility' => Visibility::get(Visibility::VISIBILITY_PUBLIC),
+		];
 	}
 
-	public function testGetRequiredVisibilitySameClass(): void
+	/**
+	 * @dataProvider getRequiredVisibilityDataProvider
+	 *
+	 * @param string $targetClassFqn
+	 * @param string $originClassFqn
+	 * @param \Consistence\Sentry\Metadata\Visibility $expectedRequiredVisibility
+	 */
+	public function testGetRequiredVisibility(
+		string $targetClassFqn,
+		string $originClassFqn,
+		Visibility $expectedRequiredVisibility
+	): void
 	{
-		Assert::assertSame(
-			Visibility::get(Visibility::VISIBILITY_PRIVATE),
-			Visibility::getRequiredVisibility(FooClass::class, FooClass::class)
-		);
-	}
-
-	public function testGetRequiredVisibilityClassExtends(): void
-	{
-		Assert::assertSame(
-			Visibility::get(Visibility::VISIBILITY_PROTECTED),
-			Visibility::getRequiredVisibility(FooClass::class, BarClass::class)
-		);
-	}
-
-	public function testGetRequiredVisibilityClassExtended(): void
-	{
-		Assert::assertSame(
-			Visibility::get(Visibility::VISIBILITY_PROTECTED),
-			Visibility::getRequiredVisibility(BarClass::class, FooClass::class)
-		);
-	}
-
-	public function testGetRequiredVisibilityNoRelationClasses(): void
-	{
-		Assert::assertSame(
-			Visibility::get(Visibility::VISIBILITY_PUBLIC),
-			Visibility::getRequiredVisibility(FooClass::class, BazClass::class)
-		);
+		Assert::assertSame($expectedRequiredVisibility, Visibility::getRequiredVisibility($targetClassFqn, $originClassFqn));
 	}
 
 }
