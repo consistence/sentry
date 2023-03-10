@@ -89,7 +89,6 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $getMethod));
 	}
 
-
 	public function testGenerateObjectGet(): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
