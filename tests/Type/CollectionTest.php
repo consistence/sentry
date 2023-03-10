@@ -9,6 +9,7 @@ use Consistence\Sentry\Metadata\SentryAccess;
 use Consistence\Sentry\Metadata\SentryIdentificator;
 use Consistence\Sentry\Metadata\SentryMethod;
 use Consistence\Sentry\Metadata\Visibility;
+use Generator;
 use PHPUnit\Framework\Assert;
 
 class CollectionTest extends \PHPUnit\Framework\TestCase
@@ -27,15 +28,58 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 		], $collection->getSupportedAccess());
 	}
 
-	public function testDefaultMethodNames(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function getDefaultMethodNameDataProvider(): Generator
+	{
+		yield 'get' => [
+			'sentryAccess' => new SentryAccess('get'),
+			'propertyName' => 'children',
+			'expectedDefaultMethodName' => 'getChildren',
+		];
+
+		yield 'set' => [
+			'sentryAccess' => new SentryAccess('set'),
+			'propertyName' => 'children',
+			'expectedDefaultMethodName' => 'setChildren',
+		];
+
+		yield 'add' => [
+			'sentryAccess' => new SentryAccess('add'),
+			'propertyName' => 'children',
+			'expectedDefaultMethodName' => 'addChild',
+		];
+
+		yield 'remove' => [
+			'sentryAccess' => new SentryAccess('remove'),
+			'propertyName' => 'children',
+			'expectedDefaultMethodName' => 'removeChild',
+		];
+
+		yield 'contains' => [
+			'sentryAccess' => new SentryAccess('contains'),
+			'propertyName' => 'children',
+			'expectedDefaultMethodName' => 'containsChild',
+		];
+	}
+
+	/**
+	 * @dataProvider getDefaultMethodNameDataProvider
+	 *
+	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
+	 * @param string $propertyName
+	 * @param string $expectedDefaultMethodName
+	 */
+	public function testGetDefaultMethodName(
+		SentryAccess $sentryAccess,
+		string $propertyName,
+		string $expectedDefaultMethodName
+	): void
 	{
 		$collection = new CollectionType();
 
-		Assert::assertSame('getChildren', $collection->getDefaultMethodName(new SentryAccess('get'), 'children'));
-		Assert::assertSame('setChildren', $collection->getDefaultMethodName(new SentryAccess('set'), 'children'));
-		Assert::assertSame('addChild', $collection->getDefaultMethodName(new SentryAccess('add'), 'children'));
-		Assert::assertSame('removeChild', $collection->getDefaultMethodName(new SentryAccess('remove'), 'children'));
-		Assert::assertSame('containsChild', $collection->getDefaultMethodName(new SentryAccess('contains'), 'children'));
+		Assert::assertSame($expectedDefaultMethodName, $collection->getDefaultMethodName($sentryAccess, $propertyName));
 	}
 
 	public function testGenerateGet(): void

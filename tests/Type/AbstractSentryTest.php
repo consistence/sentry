@@ -10,6 +10,7 @@ use Consistence\Sentry\Metadata\SentryAccess;
 use Consistence\Sentry\Metadata\SentryIdentificator;
 use Consistence\Sentry\Metadata\SentryMethod;
 use Consistence\Sentry\Metadata\Visibility;
+use Generator;
 use PHPUnit\Framework\Assert;
 
 class AbstractSentryTest extends \PHPUnit\Framework\TestCase
@@ -25,12 +26,40 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		], $sentry->getSupportedAccess());
 	}
 
-	public function testDefaultMethodNames(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function getDefaultMethodNameDataProvider(): Generator
+	{
+		yield 'get' => [
+			'sentryAccess' => new SentryAccess('get'),
+			'propertyName' => 'foo',
+			'expectedDefaultMethodName' => 'getFoo',
+		];
+
+		yield 'set' => [
+			'sentryAccess' => new SentryAccess('set'),
+			'propertyName' => 'foo',
+			'expectedDefaultMethodName' => 'setFoo',
+		];
+	}
+
+	/**
+	 * @dataProvider getDefaultMethodNameDataProvider
+	 *
+	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
+	 * @param string $propertyName
+	 * @param string $expectedDefaultMethodName
+	 */
+	public function testGetDefaultMethodName(
+		SentryAccess $sentryAccess,
+		string $propertyName,
+		string $expectedDefaultMethodName
+	): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 
-		Assert::assertSame('getFoo', $sentry->getDefaultMethodName(new SentryAccess('get'), 'foo'));
-		Assert::assertSame('setFoo', $sentry->getDefaultMethodName(new SentryAccess('set'), 'foo'));
+		Assert::assertSame($expectedDefaultMethodName, $sentry->getDefaultMethodName($sentryAccess, $propertyName));
 	}
 
 	public function testDefaultMethodNameUnsupportedSentryAccess(): void

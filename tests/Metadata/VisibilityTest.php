@@ -4,16 +4,38 @@ declare(strict_types = 1);
 
 namespace Consistence\Sentry\Metadata;
 
+use Generator;
 use PHPUnit\Framework\Assert;
 
 class VisibilityTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testCreate(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function validVisibilityValueDataProvider(): Generator
 	{
-		Assert::assertInstanceOf(Visibility::class, Visibility::get(Visibility::VISIBILITY_PRIVATE));
-		Assert::assertInstanceOf(Visibility::class, Visibility::get(Visibility::VISIBILITY_PROTECTED));
-		Assert::assertInstanceOf(Visibility::class, Visibility::get(Visibility::VISIBILITY_PUBLIC));
+		yield 'private' => [
+			'value' => Visibility::VISIBILITY_PRIVATE,
+		];
+
+		yield 'protected' => [
+			'value' => Visibility::VISIBILITY_PROTECTED,
+		];
+
+		yield 'public' => [
+			'value' => Visibility::VISIBILITY_PUBLIC,
+		];
+	}
+
+	/**
+	 * @dataProvider validVisibilityValueDataProvider
+	 *
+	 * @param mixed $value
+	 */
+	public function testCreate($value): void
+	{
+		Assert::assertInstanceOf(Visibility::class, Visibility::get($value));
 	}
 
 	public function testGetName(): void
