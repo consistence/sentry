@@ -17,144 +17,144 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	public function matchesDataProvider(): Generator
 	{
 		yield [
-			new SentryIdentificator('string'),
-			'string',
-			false,
-			false,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('string'),
+			'expectedType' => 'string',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('string[]'),
-			'string',
-			true,
-			false,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('string[]'),
+			'expectedType' => 'string',
+			'expectedMany' => true,
+			'expectedNullable' => false,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('string|NULL'),
-			'string',
-			false,
-			true,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('string|NULL'),
+			'expectedType' => 'string',
+			'expectedMany' => false,
+			'expectedNullable' => true,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('string|null'),
-			'string',
-			false,
-			true,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('string|null'),
+			'expectedType' => 'string',
+			'expectedMany' => false,
+			'expectedNullable' => true,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('string[]|NULL'),
-			'string',
-			true,
-			true,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('string[]|NULL'),
+			'expectedType' => 'string',
+			'expectedMany' => true,
+			'expectedNullable' => true,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('string[]|null'),
-			'string',
-			true,
-			true,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('string[]|null'),
+			'expectedType' => 'string',
+			'expectedMany' => true,
+			'expectedNullable' => true,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('string[][]'),
-			'string',
-			true,
-			false,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('string[][]'),
+			'expectedType' => 'string',
+			'expectedMany' => true,
+			'expectedNullable' => false,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('string[][]|null'),
-			'string',
-			true,
-			true,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('string[][]|null'),
+			'expectedType' => 'string',
+			'expectedMany' => true,
+			'expectedNullable' => true,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('Foo'),
-			'Foo',
-			false,
-			false,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('Foo'),
+			'expectedType' => 'Foo',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('\Foo'),
-			'Foo',
-			false,
-			false,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('\Foo'),
+			'expectedType' => 'Foo',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('Foo\Bar'),
-			'Foo\Bar',
-			false,
-			false,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('Foo\Bar'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('\Foo\Bar'),
-			'Foo\Bar',
-			false,
-			false,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('\Foo\Bar'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('\Foo\Bar[]'),
-			'Foo\Bar',
-			true,
-			false,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('\Foo\Bar[]'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => true,
+			'expectedNullable' => false,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('\Foo\Bar[]|null'),
-			'Foo\Bar',
-			true,
-			true,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('\Foo\Bar[]|null'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => true,
+			'expectedNullable' => true,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('\Foo\Bar foobar'),
-			'Foo\Bar',
-			false,
-			false,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('\Foo\Bar foobar'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('\Foo\Bar nullable'),
-			'Foo\Bar',
-			false,
-			false,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('\Foo\Bar nullable'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('\Collection of \Foo\Bar'),
-			'Collection',
-			false,
-			false,
-			null,
+			'sentryIdentificator' => new SentryIdentificator('\Collection of \Foo\Bar'),
+			'expectedType' => 'Collection',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
 		];
 		yield [
-			new SentryIdentificator('Foo::Bar'),
-			'Bar',
-			false,
-			false,
-			'Foo',
+			'sentryIdentificator' => new SentryIdentificator('Foo::Bar'),
+			'expectedType' => 'Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => 'Foo',
 		];
 		yield [
-			new SentryIdentificator('\Foo::\Bar'),
-			'Bar',
-			false,
-			false,
-			'Foo',
+			'sentryIdentificator' => new SentryIdentificator('\Foo::\Bar'),
+			'expectedType' => 'Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => 'Foo',
 		];
 		yield [
-			new SentryIdentificator('Long\Class\Name\Which\Tests\The\Backtracking\Limit::Bar'),
-			'Bar',
-			false,
-			false,
-			'Long\Class\Name\Which\Tests\The\Backtracking\Limit',
+			'sentryIdentificator' => new SentryIdentificator('Long\Class\Name\Which\Tests\The\Backtracking\Limit::Bar'),
+			'expectedType' => 'Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => 'Long\Class\Name\Which\Tests\The\Backtracking\Limit',
 		];
 	}
 
@@ -164,10 +164,10 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	public function doesNotMatchDataProvider(): Generator
 	{
 		yield [
-			'',
+			'pattern' => '',
 		];
 		yield [
-			'Long\Class\Name\Which\Tests\The\Backtracking\Limit::',
+			'pattern' => 'Long\Class\Name\Which\Tests\The\Backtracking\Limit::',
 		];
 	}
 
