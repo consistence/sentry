@@ -16,26 +16,146 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	 */
 	public function matchesDataProvider(): Generator
 	{
-		yield [new SentryIdentificator('string'), 'string', false, false, null];
-		yield [new SentryIdentificator('string[]'), 'string', true, false, null];
-		yield [new SentryIdentificator('string|NULL'), 'string', false, true, null];
-		yield [new SentryIdentificator('string|null'), 'string', false, true, null];
-		yield [new SentryIdentificator('string[]|NULL'), 'string', true, true, null];
-		yield [new SentryIdentificator('string[]|null'), 'string', true, true, null];
-		yield [new SentryIdentificator('string[][]'), 'string', true, false, null];
-		yield [new SentryIdentificator('string[][]|null'), 'string', true, true, null];
-		yield [new SentryIdentificator('Foo'), 'Foo', false, false, null];
-		yield [new SentryIdentificator('\Foo'), 'Foo', false, false, null];
-		yield [new SentryIdentificator('Foo\Bar'), 'Foo\Bar', false, false, null];
-		yield [new SentryIdentificator('\Foo\Bar'), 'Foo\Bar', false, false, null];
-		yield [new SentryIdentificator('\Foo\Bar[]'), 'Foo\Bar', true, false, null];
-		yield [new SentryIdentificator('\Foo\Bar[]|null'), 'Foo\Bar', true, true, null];
-		yield [new SentryIdentificator('\Foo\Bar foobar'), 'Foo\Bar', false, false, null];
-		yield [new SentryIdentificator('\Foo\Bar nullable'), 'Foo\Bar', false, false, null];
-		yield [new SentryIdentificator('\Collection of \Foo\Bar'), 'Collection', false, false, null];
-		yield [new SentryIdentificator('Foo::Bar'), 'Bar', false, false, 'Foo'];
-		yield [new SentryIdentificator('\Foo::\Bar'), 'Bar', false, false, 'Foo'];
-		yield [new SentryIdentificator('Long\Class\Name\Which\Tests\The\Backtracking\Limit::Bar'), 'Bar', false, false, 'Long\Class\Name\Which\Tests\The\Backtracking\Limit'];
+		yield [
+			new SentryIdentificator('string'),
+			'string',
+			false,
+			false,
+			null,
+		];
+		yield [
+			new SentryIdentificator('string[]'),
+			'string',
+			true,
+			false,
+			null,
+		];
+		yield [
+			new SentryIdentificator('string|NULL'),
+			'string',
+			false,
+			true,
+			null,
+		];
+		yield [
+			new SentryIdentificator('string|null'),
+			'string',
+			false,
+			true,
+			null,
+		];
+		yield [
+			new SentryIdentificator('string[]|NULL'),
+			'string',
+			true,
+			true,
+			null,
+		];
+		yield [
+			new SentryIdentificator('string[]|null'),
+			'string',
+			true,
+			true,
+			null,
+		];
+		yield [
+			new SentryIdentificator('string[][]'),
+			'string',
+			true,
+			false,
+			null,
+		];
+		yield [
+			new SentryIdentificator('string[][]|null'),
+			'string',
+			true,
+			true,
+			null,
+		];
+		yield [
+			new SentryIdentificator('Foo'),
+			'Foo',
+			false,
+			false,
+			null,
+		];
+		yield [
+			new SentryIdentificator('\Foo'),
+			'Foo',
+			false,
+			false,
+			null,
+		];
+		yield [
+			new SentryIdentificator('Foo\Bar'),
+			'Foo\Bar',
+			false,
+			false,
+			null,
+		];
+		yield [
+			new SentryIdentificator('\Foo\Bar'),
+			'Foo\Bar',
+			false,
+			false,
+			null,
+		];
+		yield [
+			new SentryIdentificator('\Foo\Bar[]'),
+			'Foo\Bar',
+			true,
+			false,
+			null,
+		];
+		yield [
+			new SentryIdentificator('\Foo\Bar[]|null'),
+			'Foo\Bar',
+			true,
+			true,
+			null,
+		];
+		yield [
+			new SentryIdentificator('\Foo\Bar foobar'),
+			'Foo\Bar',
+			false,
+			false,
+			null,
+		];
+		yield [
+			new SentryIdentificator('\Foo\Bar nullable'),
+			'Foo\Bar',
+			false,
+			false,
+			null,
+		];
+		yield [
+			new SentryIdentificator('\Collection of \Foo\Bar'),
+			'Collection',
+			false,
+			false,
+			null,
+		];
+		yield [
+			new SentryIdentificator('Foo::Bar'),
+			'Bar',
+			false,
+			false,
+			'Foo',
+		];
+		yield [
+			new SentryIdentificator('\Foo::\Bar'),
+			'Bar',
+			false,
+			false,
+			'Foo',
+		];
+		yield [
+			new SentryIdentificator('Long\Class\Name\Which\Tests\The\Backtracking\Limit::Bar'),
+			'Bar',
+			false,
+			false,
+			'Long\Class\Name\Which\Tests\The\Backtracking\Limit',
+		];
 	}
 
 	/**
@@ -43,8 +163,12 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	 */
 	public function doesNotMatchDataProvider(): Generator
 	{
-		yield [''];
-		yield ['Long\Class\Name\Which\Tests\The\Backtracking\Limit::'];
+		yield [
+			'',
+		];
+		yield [
+			'Long\Class\Name\Which\Tests\The\Backtracking\Limit::',
+		];
 	}
 
 	/**

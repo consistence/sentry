@@ -20,22 +20,70 @@ class SimpleSentryFactoryTest extends \PHPUnit\Framework\TestCase
 	 */
 	public function sentryIdentificatorToSentryDataProvider(): Generator
 	{
-		yield [new SentryIdentificator('string'), new SimpleType()];
-		yield [new SentryIdentificator('int'), new SimpleType()];
-		yield [new SentryIdentificator('bool'), new SimpleType()];
-		yield [new SentryIdentificator('float'), new SimpleType()];
-		yield [new SentryIdentificator('integer'), new SimpleType()];
-		yield [new SentryIdentificator('boolean'), new SimpleType()];
-		yield [new SentryIdentificator('mixed'), new SimpleType()];
-		yield [new SentryIdentificator('DateTimeImmutable'), new SimpleType()];
-		yield [new SentryIdentificator('string[]'), new CollectionType()];
-		yield [new SentryIdentificator('int[]'), new CollectionType()];
-		yield [new SentryIdentificator('bool[]'), new CollectionType()];
-		yield [new SentryIdentificator('float[]'), new CollectionType()];
-		yield [new SentryIdentificator('integer[]'), new CollectionType()];
-		yield [new SentryIdentificator('boolean[]'), new CollectionType()];
-		yield [new SentryIdentificator('mixed[]'), new CollectionType()];
-		yield [new SentryIdentificator('DateTimeImmutable[]'), new CollectionType()];
+		yield [
+			new SentryIdentificator('string'),
+			new SimpleType(),
+		];
+		yield [
+			new SentryIdentificator('int'),
+			new SimpleType(),
+		];
+		yield [
+			new SentryIdentificator('bool'),
+			new SimpleType(),
+		];
+		yield [
+			new SentryIdentificator('float'),
+			new SimpleType(),
+		];
+		yield [
+			new SentryIdentificator('integer'),
+			new SimpleType(),
+		];
+		yield [
+			new SentryIdentificator('boolean'),
+			new SimpleType(),
+		];
+		yield [
+			new SentryIdentificator('mixed'),
+			new SimpleType(),
+		];
+		yield [
+			new SentryIdentificator('DateTimeImmutable'),
+			new SimpleType(),
+		];
+		yield [
+			new SentryIdentificator('string[]'),
+			new CollectionType(),
+		];
+		yield [
+			new SentryIdentificator('int[]'),
+			new CollectionType(),
+		];
+		yield [
+			new SentryIdentificator('bool[]'),
+			new CollectionType(),
+		];
+		yield [
+			new SentryIdentificator('float[]'),
+			new CollectionType(),
+		];
+		yield [
+			new SentryIdentificator('integer[]'),
+			new CollectionType(),
+		];
+		yield [
+			new SentryIdentificator('boolean[]'),
+			new CollectionType(),
+		];
+		yield [
+			new SentryIdentificator('mixed[]'),
+			new CollectionType(),
+		];
+		yield [
+			new SentryIdentificator('DateTimeImmutable[]'),
+			new CollectionType(),
+		];
 	}
 
 	/**
