@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Consistence\Sentry\Metadata;
 
+use PHPUnit\Framework\Assert;
+
 class SentryMethodTest extends \PHPUnit\Framework\TestCase
 {
 
@@ -15,9 +17,9 @@ class SentryMethodTest extends \PHPUnit\Framework\TestCase
 			Visibility::get(Visibility::VISIBILITY_PUBLIC)
 		);
 
-		$this->assertTrue($sentryMethod->getSentryAccess()->equals(new SentryAccess('get')));
-		$this->assertSame('foo', $sentryMethod->getMethodName());
-		$this->assertSame(Visibility::get(Visibility::VISIBILITY_PUBLIC), $sentryMethod->getMethodVisibility());
+		Assert::assertTrue($sentryMethod->getSentryAccess()->equals(new SentryAccess('get')));
+		Assert::assertSame('foo', $sentryMethod->getMethodName());
+		Assert::assertSame(Visibility::get(Visibility::VISIBILITY_PUBLIC), $sentryMethod->getMethodVisibility());
 	}
 
 }

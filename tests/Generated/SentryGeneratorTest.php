@@ -12,6 +12,7 @@ use Consistence\Sentry\Metadata\SentryIdentificator;
 use Consistence\Sentry\Metadata\SentryMethod;
 use Consistence\Sentry\MetadataSource\MetadataSource;
 use Consistence\Sentry\Type\Sentry;
+use PHPUnit\Framework\Assert;
 use ReflectionClass;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\visitor\vfsStreamStructureVisitor;
@@ -33,40 +34,40 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 
 		$fooProperty = $this->createMock(PropertyMetadata::class);
 		$fooProperty
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentryIdentificator')
-			->will($this->returnValue($sentryIdentificator));
+			->will(self::returnValue($sentryIdentificator));
 		$fooProperty
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentryMethods')
-			->will($this->returnValue([$fooMethod]));
+			->will(self::returnValue([$fooMethod]));
 
 		$classMetadata = $this->createMock(ClassMetadata::class);
 		$classMetadata
-			->expects($this->once())
+			->expects(self::once())
 			->method('getProperties')
-			->will($this->returnValue([$fooProperty]));
+			->will(self::returnValue([$fooProperty]));
 
 		$metadataSource = $this->createMock(MetadataSource::class);
 		$metadataSource
-			->expects($this->once())
+			->expects(self::once())
 			->method('getMetadataForClass')
 			->with($classReflection)
-			->will($this->returnValue($classMetadata));
+			->will(self::returnValue($classMetadata));
 
 		$sentry = $this->createMock(Sentry::class);
 		$sentry
-			->expects($this->once())
+			->expects(self::once())
 			->method('generateMethod')
-			->with($this->identicalTo($fooProperty), $this->identicalTo($fooMethod))
-			->will($this->returnValue('function test() {}'));
+			->with(Assert::identicalTo($fooProperty), Assert::identicalTo($fooMethod))
+			->will(self::returnValue('function test() {}'));
 
 		$sentryFactory = $this->createMock(SentryFactory::class);
 		$sentryFactory
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentry')
-			->with($this->identicalTo($sentryIdentificator))
-			->will($this->returnValue($sentry));
+			->with(Assert::identicalTo($sentryIdentificator))
+			->will(self::returnValue($sentry));
 
 		$generator = new SentryGenerator(
 			$classFinder,
@@ -76,7 +77,7 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 		);
 
 		$fileName = $generator->generateClass($classReflection);
-		$this->assertFileExists($fileName);
+		Assert::assertFileExists($fileName);
 	}
 
 	public function testGenerateClassSkipMethodNameCaseInsensitive(): void
@@ -91,38 +92,38 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 
 		$fooMethod = $this->createMock(SentryMethod::class);
 		$fooMethod
-			->expects($this->once())
+			->expects(self::once())
 			->method('getMethodName')
-			->will($this->returnValue('GETskipPROPERTY'));
+			->will(self::returnValue('GETskipPROPERTY'));
 
 		$fooProperty = $this->createMock(PropertyMetadata::class);
 		$fooProperty
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentryIdentificator')
-			->will($this->returnValue($sentryIdentificator));
+			->will(self::returnValue($sentryIdentificator));
 		$fooProperty
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentryMethods')
-			->will($this->returnValue([$fooMethod]));
+			->will(self::returnValue([$fooMethod]));
 
 		$classMetadata = $this->createMock(ClassMetadata::class);
 		$classMetadata
-			->expects($this->once())
+			->expects(self::once())
 			->method('getProperties')
-			->will($this->returnValue([$fooProperty]));
+			->will(self::returnValue([$fooProperty]));
 
 		$metadataSource = $this->createMock(MetadataSource::class);
 		$metadataSource
-			->expects($this->once())
+			->expects(self::once())
 			->method('getMetadataForClass')
 			->with($classReflection)
-			->will($this->returnValue($classMetadata));
+			->will(self::returnValue($classMetadata));
 
 		$sentryFactory = $this->createMock(SentryFactory::class);
 		$sentryFactory
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentry')
-			->with($this->identicalTo($sentryIdentificator));
+			->with(Assert::identicalTo($sentryIdentificator));
 
 		$generator = new SentryGenerator(
 			$classFinder,
@@ -133,9 +134,9 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 
 		try {
 			$generator->generateClass($classReflection);
-			$this->fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Generated\NoMethodsToBeGeneratedException $e) {
-			$this->assertSame($classMetadata, $e->getClassMetadata());
+			Assert::assertSame($classMetadata, $e->getClassMetadata());
 		}
 	}
 
@@ -149,20 +150,20 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 
 		$classMetadata = $this->createMock(ClassMetadata::class);
 		$classMetadata
-			->expects($this->once())
+			->expects(self::once())
 			->method('getProperties')
-			->will($this->returnValue([]));
+			->will(self::returnValue([]));
 
 		$metadataSource = $this->createMock(MetadataSource::class);
 		$metadataSource
-			->expects($this->once())
+			->expects(self::once())
 			->method('getMetadataForClass')
 			->with($classReflection)
-			->will($this->returnValue($classMetadata));
+			->will(self::returnValue($classMetadata));
 
 		$sentryFactory = $this->createMock(SentryFactory::class);
 		$sentryFactory
-			->expects($this->never())
+			->expects(self::never())
 			->method('getSentry');
 
 		$generator = new SentryGenerator(
@@ -174,9 +175,9 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 
 		try {
 			$generator->generateClass($classReflection);
-			$this->fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Generated\NoMethodsToBeGeneratedException $e) {
-			$this->assertSame($classMetadata, $e->getClassMetadata());
+			Assert::assertSame($classMetadata, $e->getClassMetadata());
 		}
 	}
 
@@ -188,9 +189,9 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 
 		$classFinder = $this->createMock(ClassFinder::class);
 		$classFinder
-			->expects($this->once())
+			->expects(self::once())
 			->method('findByInterface')
-			->will($this->returnValue([FooClass::class]));
+			->will(self::returnValue([FooClass::class]));
 
 		$sentryIdentificator = new SentryIdentificator('string');
 
@@ -198,40 +199,40 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 
 		$fooProperty = $this->createMock(PropertyMetadata::class);
 		$fooProperty
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentryIdentificator')
-			->will($this->returnValue($sentryIdentificator));
+			->will(self::returnValue($sentryIdentificator));
 		$fooProperty
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentryMethods')
-			->will($this->returnValue([$fooMethod]));
+			->will(self::returnValue([$fooMethod]));
 
 		$classMetadata = $this->createMock(ClassMetadata::class);
 		$classMetadata
-			->expects($this->once())
+			->expects(self::once())
 			->method('getProperties')
-			->will($this->returnValue([$fooProperty]));
+			->will(self::returnValue([$fooProperty]));
 
 		$metadataSource = $this->createMock(MetadataSource::class);
 		$metadataSource
-			->expects($this->once())
+			->expects(self::once())
 			->method('getMetadataForClass')
 			->with($classReflection)
-			->will($this->returnValue($classMetadata));
+			->will(self::returnValue($classMetadata));
 
 		$sentry = $this->createMock(Sentry::class);
 		$sentry
-			->expects($this->once())
+			->expects(self::once())
 			->method('generateMethod')
-			->with($this->identicalTo($fooProperty), $this->identicalTo($fooMethod))
-			->will($this->returnValue('function test() {}'));
+			->with(Assert::identicalTo($fooProperty), Assert::identicalTo($fooMethod))
+			->will(self::returnValue('function test() {}'));
 
 		$sentryFactory = $this->createMock(SentryFactory::class);
 		$sentryFactory
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentry')
-			->with($this->identicalTo($sentryIdentificator))
-			->will($this->returnValue($sentry));
+			->with(Assert::identicalTo($sentryIdentificator))
+			->will(self::returnValue($sentry));
 
 		$generator = new SentryGenerator(
 			$classFinder,
@@ -241,11 +242,11 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 		);
 
 		$generated = $generator->generateAll();
-		$this->assertCount(1, $generated);
+		Assert::assertCount(1, $generated);
 
 		$structure = vfsStream::inspect(new vfsStreamStructureVisitor())->getStructure();
-		$this->assertCount(1, $structure['sentry']);
-		$this->assertTrue(isset($structure['sentry']['Consistence_Sentry_Generated_FooClass.php']));
+		Assert::assertCount(1, $structure['sentry']);
+		Assert::assertTrue(isset($structure['sentry']['Consistence_Sentry_Generated_FooClass.php']));
 	}
 
 	public function testGenerateAllNoMethods(): void
@@ -256,26 +257,26 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 
 		$classFinder = $this->createMock(ClassFinder::class);
 		$classFinder
-			->expects($this->once())
+			->expects(self::once())
 			->method('findByInterface')
-			->will($this->returnValue([FooClass::class]));
+			->will(self::returnValue([FooClass::class]));
 
 		$classMetadata = $this->createMock(ClassMetadata::class);
 		$classMetadata
-			->expects($this->once())
+			->expects(self::once())
 			->method('getProperties')
-			->will($this->returnValue([]));
+			->will(self::returnValue([]));
 
 		$metadataSource = $this->createMock(MetadataSource::class);
 		$metadataSource
-			->expects($this->once())
+			->expects(self::once())
 			->method('getMetadataForClass')
 			->with($classReflection)
-			->will($this->returnValue($classMetadata));
+			->will(self::returnValue($classMetadata));
 
 		$sentryFactory = $this->createMock(SentryFactory::class);
 		$sentryFactory
-			->expects($this->never())
+			->expects(self::never())
 			->method('getSentry');
 
 		$generator = new SentryGenerator(
@@ -286,10 +287,10 @@ class SentryGeneratorTest extends \PHPUnit\Framework\TestCase
 		);
 
 		$generated = $generator->generateAll();
-		$this->assertCount(0, $generated);
+		Assert::assertCount(0, $generated);
 
 		$structure = vfsStream::inspect(new vfsStreamStructureVisitor())->getStructure();
-		$this->assertCount(0, $structure['sentry']);
+		Assert::assertCount(0, $structure['sentry']);
 	}
 
 }

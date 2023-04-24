@@ -5,52 +5,174 @@ declare(strict_types = 1);
 namespace Consistence\Sentry\SentryIdentificatorParser;
 
 use Consistence\Sentry\Metadata\SentryIdentificator;
+use Generator;
+use PHPUnit\Framework\Assert;
 
 class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 {
 
 	/**
-	 * @return mixed[][]
+	 * @return mixed[][]|\Generator
 	 */
-	public function matchesProvider(): array
+	public function matchesDataProvider(): Generator
 	{
-		return [
-			[new SentryIdentificator('string'), 'string', false, false, null],
-			[new SentryIdentificator('string[]'), 'string', true, false, null],
-			[new SentryIdentificator('string|NULL'), 'string', false, true, null],
-			[new SentryIdentificator('string|null'), 'string', false, true, null],
-			[new SentryIdentificator('string[]|NULL'), 'string', true, true, null],
-			[new SentryIdentificator('string[]|null'), 'string', true, true, null],
-			[new SentryIdentificator('string[][]'), 'string', true, false, null],
-			[new SentryIdentificator('string[][]|null'), 'string', true, true, null],
-			[new SentryIdentificator('Foo'), 'Foo', false, false, null],
-			[new SentryIdentificator('\Foo'), 'Foo', false, false, null],
-			[new SentryIdentificator('Foo\Bar'), 'Foo\Bar', false, false, null],
-			[new SentryIdentificator('\Foo\Bar'), 'Foo\Bar', false, false, null],
-			[new SentryIdentificator('\Foo\Bar[]'), 'Foo\Bar', true, false, null],
-			[new SentryIdentificator('\Foo\Bar[]|null'), 'Foo\Bar', true, true, null],
-			[new SentryIdentificator('\Foo\Bar foobar'), 'Foo\Bar', false, false, null],
-			[new SentryIdentificator('\Foo\Bar nullable'), 'Foo\Bar', false, false, null],
-			[new SentryIdentificator('\Collection of \Foo\Bar'), 'Collection', false, false, null],
-			[new SentryIdentificator('Foo::Bar'), 'Bar', false, false, 'Foo'],
-			[new SentryIdentificator('\Foo::\Bar'), 'Bar', false, false, 'Foo'],
-			[new SentryIdentificator('Long\Class\Name\Which\Tests\The\Backtracking\Limit::Bar'), 'Bar', false, false, 'Long\Class\Name\Which\Tests\The\Backtracking\Limit'],
+		yield 'string' => [
+			'sentryIdentificator' => new SentryIdentificator('string'),
+			'expectedType' => 'string',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
+		];
+		yield 'array of strings' => [
+			'sentryIdentificator' => new SentryIdentificator('string[]'),
+			'expectedType' => 'string',
+			'expectedMany' => true,
+			'expectedNullable' => false,
+			'sourceClass' => null,
+		];
+		yield 'nullable string, uppercase NULL' => [
+			'sentryIdentificator' => new SentryIdentificator('string|NULL'),
+			'expectedType' => 'string',
+			'expectedMany' => false,
+			'expectedNullable' => true,
+			'sourceClass' => null,
+		];
+		yield 'nullable string, lowercase null' => [
+			'sentryIdentificator' => new SentryIdentificator('string|null'),
+			'expectedType' => 'string',
+			'expectedMany' => false,
+			'expectedNullable' => true,
+			'sourceClass' => null,
+		];
+		yield 'nullable array of strings, uppercase NULL' => [
+			'sentryIdentificator' => new SentryIdentificator('string[]|NULL'),
+			'expectedType' => 'string',
+			'expectedMany' => true,
+			'expectedNullable' => true,
+			'sourceClass' => null,
+		];
+		yield 'nullable array of strings, lowercase null' => [
+			'sentryIdentificator' => new SentryIdentificator('string[]|null'),
+			'expectedType' => 'string',
+			'expectedMany' => true,
+			'expectedNullable' => true,
+			'sourceClass' => null,
+		];
+		yield 'two-dimensional array of strings' => [
+			'sentryIdentificator' => new SentryIdentificator('string[][]'),
+			'expectedType' => 'string',
+			'expectedMany' => true,
+			'expectedNullable' => false,
+			'sourceClass' => null,
+		];
+		yield 'nullable two-dimensional array of strings, lowercase null' => [
+			'sentryIdentificator' => new SentryIdentificator('string[][]|null'),
+			'expectedType' => 'string',
+			'expectedMany' => true,
+			'expectedNullable' => true,
+			'sourceClass' => null,
+		];
+		yield 'object of class without leading backslash' => [
+			'sentryIdentificator' => new SentryIdentificator('Foo'),
+			'expectedType' => 'Foo',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
+		];
+		yield 'object of class with leading backslash' => [
+			'sentryIdentificator' => new SentryIdentificator('\Foo'),
+			'expectedType' => 'Foo',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
+		];
+		yield 'object of namespaced class without leading backslash' => [
+			'sentryIdentificator' => new SentryIdentificator('Foo\Bar'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
+		];
+		yield 'object of namespaced class with leading backslash' => [
+			'sentryIdentificator' => new SentryIdentificator('\Foo\Bar'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
+		];
+		yield 'array of objects of namespaced class with leading backslash' => [
+			'sentryIdentificator' => new SentryIdentificator('\Foo\Bar[]'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => true,
+			'expectedNullable' => false,
+			'sourceClass' => null,
+		];
+		yield 'nullable array of objects of namespaced class with leading backslash, lowercase null' => [
+			'sentryIdentificator' => new SentryIdentificator('\Foo\Bar[]|null'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => true,
+			'expectedNullable' => true,
+			'sourceClass' => null,
+		];
+		yield 'object of namespaced class with leading backslash followed by name' => [
+			'sentryIdentificator' => new SentryIdentificator('\Foo\Bar foobar'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
+		];
+		yield 'object of namespaced class with leading backslash followed by nullable keyword' => [
+			'sentryIdentificator' => new SentryIdentificator('\Foo\Bar nullable'),
+			'expectedType' => 'Foo\Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
+		];
+		yield 'object of Collection class with leading backslash followed by elements type' => [
+			'sentryIdentificator' => new SentryIdentificator('\Collection of \Foo\Bar'),
+			'expectedType' => 'Collection',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => null,
+		];
+		yield 'object of class with source class, both without leading backslash' => [
+			'sentryIdentificator' => new SentryIdentificator('Foo::Bar'),
+			'expectedType' => 'Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => 'Foo',
+		];
+		yield 'object of class with source class, both with leading backslash' => [
+			'sentryIdentificator' => new SentryIdentificator('\Foo::\Bar'),
+			'expectedType' => 'Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => 'Foo',
+		];
+		yield 'object of class with namespaced source class, both without leading backslash' => [
+			'sentryIdentificator' => new SentryIdentificator('Long\Class\Name\Which\Tests\The\Backtracking\Limit::Bar'),
+			'expectedType' => 'Bar',
+			'expectedMany' => false,
+			'expectedNullable' => false,
+			'sourceClass' => 'Long\Class\Name\Which\Tests\The\Backtracking\Limit',
 		];
 	}
 
 	/**
-	 * @return string[][]
+	 * @return string[][]|\Generator
 	 */
-	public function doesNotMatchProvider(): array
+	public function doesNotMatchDataProvider(): Generator
 	{
-		return [
-			[''],
-			['Long\Class\Name\Which\Tests\The\Backtracking\Limit::'],
+		yield 'empty string' => [
+			'pattern' => '',
+		];
+		yield 'namespaced source class without object' => [
+			'pattern' => 'Long\Class\Name\Which\Tests\The\Backtracking\Limit::',
 		];
 	}
 
 	/**
-	 * @dataProvider matchesProvider
+	 * @dataProvider matchesDataProvider
 	 *
 	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $sentryIdentificator
 	 * @param string $expectedType
@@ -68,16 +190,16 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 	{
 		$parser = new SentryIdentificatorParser();
 		$result = $parser->parse($sentryIdentificator);
-		$this->assertInstanceOf(SentryIdentificatorParseResult::class, $result);
-		$this->assertSame($sentryIdentificator, $result->getSentryIdentificator());
-		$this->assertSame($expectedType, $result->getType());
-		$this->assertSame($expectedMany, $result->isMany());
-		$this->assertSame($expectedNullable, $result->isNullable());
-		$this->assertSame($sourceClass, $result->getSourceClass());
+		Assert::assertInstanceOf(SentryIdentificatorParseResult::class, $result);
+		Assert::assertSame($sentryIdentificator, $result->getSentryIdentificator());
+		Assert::assertSame($expectedType, $result->getType());
+		Assert::assertSame($expectedMany, $result->isMany());
+		Assert::assertSame($expectedNullable, $result->isNullable());
+		Assert::assertSame($sourceClass, $result->getSourceClass());
 	}
 
 	/**
-	 * @dataProvider doesNotMatchProvider
+	 * @dataProvider doesNotMatchDataProvider
 	 *
 	 * @param string $pattern
 	 */
@@ -87,9 +209,9 @@ class SentryIdentificatorParserTest extends \PHPUnit\Framework\TestCase
 		$sentryIdentificator = new SentryIdentificator($pattern);
 		try {
 			$parser->parse($sentryIdentificator);
-			$this->fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\SentryIdentificatorParser\PatternDoesNotMatchException $e) {
-			$this->assertSame($sentryIdentificator, $e->getSentryIdentificator());
+			Assert::assertSame($sentryIdentificator, $e->getSentryIdentificator());
 		}
 	}
 

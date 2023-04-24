@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Consistence\Sentry\Metadata;
 
+use Generator;
+use PHPUnit\Framework\Assert;
+
 class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 {
 
@@ -23,25 +26,93 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 			$sentryMethods
 		);
 
-		$this->assertSame('FooClass', $bidirectionalAssociation->getTargetClass());
-		$this->assertSame('fooProperty', $bidirectionalAssociation->getTargetProperty());
-		$this->assertTrue($bidirectionalAssociation->getTargetType()->equalsValue(BidirectionalAssociationType::ONE));
+		Assert::assertSame('FooClass', $bidirectionalAssociation->getTargetClass());
+		Assert::assertSame('fooProperty', $bidirectionalAssociation->getTargetProperty());
+		Assert::assertTrue($bidirectionalAssociation->getTargetType()->equalsValue(BidirectionalAssociationType::ONE));
 	}
 
-	public function testGetTargetMethodForType(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function getTargetMethodForTypeDataProvider(): Generator
 	{
-		$sentryMethods = [
-			new SentryMethod(
-				new SentryAccess('get'),
-				'getFoo',
-				Visibility::get(Visibility::VISIBILITY_PUBLIC)
-			),
-			new SentryMethod(
-				new SentryAccess('set'),
-				'setFoo',
-				Visibility::get(Visibility::VISIBILITY_PUBLIC)
-			),
+		yield 'two public methods with different SentryAccess type' => [
+			'sentryMethods' => [
+				new SentryMethod(
+					new SentryAccess('get'),
+					'getFoo',
+					Visibility::get(Visibility::VISIBILITY_PUBLIC)
+				),
+				new SentryMethod(
+					new SentryAccess('set'),
+					'setFoo',
+					Visibility::get(Visibility::VISIBILITY_PUBLIC)
+				),
+			],
+			'visibility' => Visibility::get(Visibility::VISIBILITY_PUBLIC),
+			'expectedMethodName' => 'setFoo',
 		];
+
+		yield 'single public method, looser visibility' => [
+			'sentryMethods' => [
+				new SentryMethod(
+					new SentryAccess('set'),
+					'setFoo',
+					Visibility::get(Visibility::VISIBILITY_PUBLIC)
+				),
+			],
+			'visibility' => Visibility::get(Visibility::VISIBILITY_PRIVATE),
+			'expectedMethodName' => 'setFoo',
+		];
+
+		yield 'one public and one private method with same SentryAccess type, pick by visibility' => [
+			'sentryMethods' => [
+				new SentryMethod(
+					new SentryAccess('set'),
+					'setPrivate',
+					Visibility::get(Visibility::VISIBILITY_PRIVATE)
+				),
+				new SentryMethod(
+					new SentryAccess('set'),
+					'setPublic',
+					Visibility::get(Visibility::VISIBILITY_PUBLIC)
+				),
+			],
+			'visibility' => Visibility::get(Visibility::VISIBILITY_PUBLIC),
+			'expectedMethodName' => 'setPublic',
+		];
+
+		yield 'two public methods with same SentryAccess type, pick by order' => [
+			'sentryMethods' => [
+				new SentryMethod(
+					new SentryAccess('set'),
+					'setFirst',
+					Visibility::get(Visibility::VISIBILITY_PUBLIC)
+				),
+				new SentryMethod(
+					new SentryAccess('set'),
+					'setSecond',
+					Visibility::get(Visibility::VISIBILITY_PUBLIC)
+				),
+			],
+			'visibility' => Visibility::get(Visibility::VISIBILITY_PUBLIC),
+			'expectedMethodName' => 'setFirst',
+		];
+	}
+
+	/**
+	 * @dataProvider getTargetMethodForTypeDataProvider
+	 *
+	 * @param \Consistence\Sentry\Metadata\SentryMethod[] $sentryMethods
+	 * @param \Consistence\Sentry\Metadata\Visibility $visibility
+	 * @param string $expectedMethodName
+	 */
+	public function testGetTargetMethodForType(
+		array $sentryMethods,
+		Visibility $visibility,
+		string $expectedMethodName
+	): void
+	{
 		$bidirectionalAssociation = new BidirectionalAssociation(
 			'FooClass',
 			'fooProperty',
@@ -51,36 +122,11 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 
 		$targetMethod = $bidirectionalAssociation->getTargetMethodForType(
 			new SentryAccess('set'),
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			$visibility
 		);
-		$this->assertSame('setFoo', $targetMethod->getMethodName());
-		$this->assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
-		$this->assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
-	}
-
-	public function testGetTargetMethodForTypeLooserVisibility(): void
-	{
-		$sentryMethods = [
-			new SentryMethod(
-				new SentryAccess('set'),
-				'setFoo',
-				Visibility::get(Visibility::VISIBILITY_PUBLIC)
-			),
-		];
-		$bidirectionalAssociation = new BidirectionalAssociation(
-			'FooClass',
-			'fooProperty',
-			BidirectionalAssociationType::get(BidirectionalAssociationType::ONE),
-			$sentryMethods
-		);
-
-		$targetMethod = $bidirectionalAssociation->getTargetMethodForType(
-			new SentryAccess('set'),
-			Visibility::get(Visibility::VISIBILITY_PRIVATE)
-		);
-		$this->assertSame('setFoo', $targetMethod->getMethodName());
-		$this->assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
-		$this->assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
+		Assert::assertSame($expectedMethodName, $targetMethod->getMethodName());
+		Assert::assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
+		Assert::assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
 	}
 
 	public function testGetTargetMethodForTypeRequiredVisibilityNotFound(): void
@@ -104,72 +150,12 @@ class BidirectionalAssociationTest extends \PHPUnit\Framework\TestCase
 				new SentryAccess('set'),
 				Visibility::get(Visibility::VISIBILITY_PUBLIC)
 			);
-			$this->fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Metadata\NoSuitableMethodException $e) {
-			$this->assertSame('FooClass', $e->getClassName());
-			$this->assertSame('fooProperty', $e->getPropertyName());
-			$this->assertTrue($e->getSentryAccess()->equals(new SentryAccess('set')));
+			Assert::assertSame('FooClass', $e->getClassName());
+			Assert::assertSame('fooProperty', $e->getPropertyName());
+			Assert::assertTrue($e->getSentryAccess()->equals(new SentryAccess('set')));
 		}
-	}
-
-	public function testGetTargetMethodForTypePickByVisibility(): void
-	{
-		$sentryMethods = [
-			new SentryMethod(
-				new SentryAccess('set'),
-				'setPrivate',
-				Visibility::get(Visibility::VISIBILITY_PRIVATE)
-			),
-			new SentryMethod(
-				new SentryAccess('set'),
-				'setPublic',
-				Visibility::get(Visibility::VISIBILITY_PUBLIC)
-			),
-		];
-		$bidirectionalAssociation = new BidirectionalAssociation(
-			'FooClass',
-			'fooProperty',
-			BidirectionalAssociationType::get(BidirectionalAssociationType::ONE),
-			$sentryMethods
-		);
-
-		$targetMethod = $bidirectionalAssociation->getTargetMethodForType(
-			new SentryAccess('set'),
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$this->assertSame('setPublic', $targetMethod->getMethodName());
-		$this->assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
-		$this->assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
-	}
-
-	public function testGetTargetMethodForTypeMultipleSentryAccessPickByOrder(): void
-	{
-		$sentryMethods = [
-			new SentryMethod(
-				new SentryAccess('set'),
-				'setFirst',
-				Visibility::get(Visibility::VISIBILITY_PUBLIC)
-			),
-			new SentryMethod(
-				new SentryAccess('set'),
-				'setSecond',
-				Visibility::get(Visibility::VISIBILITY_PUBLIC)
-			),
-		];
-		$bidirectionalAssociation = new BidirectionalAssociation(
-			'FooClass',
-			'fooProperty',
-			BidirectionalAssociationType::get(BidirectionalAssociationType::ONE),
-			$sentryMethods
-		);
-
-		$targetMethod = $bidirectionalAssociation->getTargetMethodForType(
-			new SentryAccess('set'),
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$this->assertSame('setFirst', $targetMethod->getMethodName());
-		$this->assertTrue($targetMethod->getMethodVisibility()->equalsValue(Visibility::VISIBILITY_PUBLIC));
-		$this->assertTrue($targetMethod->getSentryAccess()->equals(new SentryAccess('set')));
 	}
 
 }

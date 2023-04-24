@@ -4,34 +4,68 @@ declare(strict_types = 1);
 
 namespace Consistence\Sentry\Metadata;
 
+use Generator;
+use PHPUnit\Framework\Assert;
 use stdClass;
 
 class SentryIdentificatorTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testCreate(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function createDataProvider(): Generator
 	{
-		$sentryIdentificator = new SentryIdentificator('foo');
-		$this->assertSame('foo', $sentryIdentificator->getId());
+		yield 'id is string' => [
+			'id' => 'foo',
+		];
+		yield 'is is object' => [
+			'id' => new stdClass(),
+		];
 	}
 
-	public function testCreateObjectId(): void
+	/**
+	 * @dataProvider createDataProvider
+	 *
+	 * @param mixed $id
+	 */
+	public function testCreate($id): void
 	{
-		$object = new stdClass();
-		$sentryIdentificator = new SentryIdentificator($object);
-		$this->assertSame($object, $sentryIdentificator->getId());
+		$sentryIdentificator = new SentryIdentificator($id);
+		Assert::assertSame($id, $sentryIdentificator->getId());
 	}
 
-	public function testEquals(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function equalsDataProvider(): Generator
 	{
-		$sentryIdentificator = new SentryIdentificator('foo');
-		$this->assertTrue($sentryIdentificator->equals(new SentryIdentificator('foo')));
+		yield 'same name' => [
+			'firstSentryIdentificator' => new SentryIdentificator('foo'),
+			'secondSentryIdentificator' => new SentryIdentificator('foo'),
+			'expectedEquals' => true,
+		];
+		yield 'different name' => [
+			'firstSentryIdentificator' => new SentryIdentificator('foo'),
+			'secondSentryIdentificator' => new SentryIdentificator('bar'),
+			'expectedEquals' => false,
+		];
 	}
 
-	public function testNotEquals(): void
+	/**
+	 * @dataProvider equalsDataProvider
+	 *
+	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $firstSentryIdentificator
+	 * @param \Consistence\Sentry\Metadata\SentryIdentificator $secondSentryIdentificator
+	 * @param bool $expectedEquals
+	 */
+	public function testEquals(
+		SentryIdentificator $firstSentryIdentificator,
+		SentryIdentificator $secondSentryIdentificator,
+		bool $expectedEquals
+	): void
 	{
-		$sentryIdentificator = new SentryIdentificator('foo');
-		$this->assertFalse($sentryIdentificator->equals(new SentryIdentificator('bar')));
+		Assert::assertSame($expectedEquals, $firstSentryIdentificator->equals($secondSentryIdentificator));
 	}
 
 }
