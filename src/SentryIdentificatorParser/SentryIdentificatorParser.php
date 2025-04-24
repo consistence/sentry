@@ -24,8 +24,8 @@ class SentryIdentificatorParser extends \Consistence\ObjectPrototype
 	{
 		$pattern
 			= '~^'
-			. '(\\\?(?P<' . self::MATCH_SOURCE_CLASS . '>(?:\\\?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)++)' . self::SOURCE_CLASS_SEPARATOR . ')?'
-			. '\\\?(?P<' . self::MATCH_TYPE . '>(?:\\\?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)++)'
+			. '(\\\?(?P<' . self::MATCH_SOURCE_CLASS . '>(?:\\\?[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)++)' . self::SOURCE_CLASS_SEPARATOR . ')?'
+			. '\\\?(?P<' . self::MATCH_TYPE . '>(?:\\\?[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)++)'
 			. '(?P<' . self::MATCH_MANY . '>\[\])*'
 			. '(?:\|(?P<' . self::MATCH_NULLABLE . '>(?:null)|(?:NULL)))?'
 			. '(\s|$)~';
