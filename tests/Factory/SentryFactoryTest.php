@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Consistence\Sentry\Factory;
 
 use Consistence\Sentry\Metadata\SentryIdentificator;
+use PHPUnit\Framework\Assert;
 
 class SentryFactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -13,7 +14,7 @@ class SentryFactoryTest extends \PHPUnit\Framework\TestCase
 	{
 		$factory = $this->createMock(SentryFactory::class);
 		$factory
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentry');
 
 		$factory->getSentry(new SentryIdentificator('string'));
@@ -24,15 +25,15 @@ class SentryFactoryTest extends \PHPUnit\Framework\TestCase
 		$sentryIdentificator = new SentryIdentificator('string');
 		$factory = $this->createMock(SentryFactory::class);
 		$factory
-			->expects($this->once())
+			->expects(self::once())
 			->method('getSentry')
-			->will($this->throwException(new \Consistence\Sentry\Factory\NoSentryForIdentificatorException($sentryIdentificator)));
+			->will(self::throwException(new \Consistence\Sentry\Factory\NoSentryForIdentificatorException($sentryIdentificator)));
 
 		try {
 			$factory->getSentry($sentryIdentificator);
-			$this->fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Factory\NoSentryForIdentificatorException $e) {
-			$this->assertSame($sentryIdentificator, $e->getSentryIdentificator());
+			Assert::assertSame($sentryIdentificator, $e->getSentryIdentificator());
 		}
 	}
 

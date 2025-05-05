@@ -10,6 +10,8 @@ use Consistence\Sentry\Metadata\SentryAccess;
 use Consistence\Sentry\Metadata\SentryIdentificator;
 use Consistence\Sentry\Metadata\SentryMethod;
 use Consistence\Sentry\Metadata\Visibility;
+use Generator;
+use PHPUnit\Framework\Assert;
 
 class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 {
@@ -18,18 +20,46 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 
-		$this->assertEquals([
+		Assert::assertEquals([
 			new SentryAccess('get'),
 			new SentryAccess('set'),
 		], $sentry->getSupportedAccess());
 	}
 
-	public function testDefaultMethodNames(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function getDefaultMethodNameDataProvider(): Generator
+	{
+		yield 'get' => [
+			'sentryAccess' => new SentryAccess('get'),
+			'propertyName' => 'foo',
+			'expectedDefaultMethodName' => 'getFoo',
+		];
+
+		yield 'set' => [
+			'sentryAccess' => new SentryAccess('set'),
+			'propertyName' => 'foo',
+			'expectedDefaultMethodName' => 'setFoo',
+		];
+	}
+
+	/**
+	 * @dataProvider getDefaultMethodNameDataProvider
+	 *
+	 * @param \Consistence\Sentry\Metadata\SentryAccess $sentryAccess
+	 * @param string $propertyName
+	 * @param string $expectedDefaultMethodName
+	 */
+	public function testGetDefaultMethodName(
+		SentryAccess $sentryAccess,
+		string $propertyName,
+		string $expectedDefaultMethodName
+	): void
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 
-		$this->assertSame('getFoo', $sentry->getDefaultMethodName(new SentryAccess('get'), 'foo'));
-		$this->assertSame('setFoo', $sentry->getDefaultMethodName(new SentryAccess('set'), 'foo'));
+		Assert::assertSame($expectedDefaultMethodName, $sentry->getDefaultMethodName($sentryAccess, $propertyName));
 	}
 
 	public function testDefaultMethodNameUnsupportedSentryAccess(): void
@@ -39,10 +69,10 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$sentryAccess = new SentryAccess('xxx');
 		try {
 			$sentry->getDefaultMethodName($sentryAccess, 'foo');
-			$this->fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Type\SentryAccessNotSupportedException $e) {
-			$this->assertSame($sentryAccess, $e->getSentryAccess());
-			$this->assertSame('MockAbstractSentryTest', $e->getSentryClassName());
+			Assert::assertSame($sentryAccess, $e->getSentryAccess());
+			Assert::assertSame('MockAbstractSentryTest', $e->getSentryClassName());
 		}
 	}
 
@@ -50,33 +80,38 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	{
 		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
 
-		$this->assertEmpty($sentry->getTargetAssociationAccessForAccess(
+		Assert::assertEmpty($sentry->getTargetAssociationAccessForAccess(
 			new SentryAccess('get'),
 			BidirectionalAssociationType::get(BidirectionalAssociationType::ONE)
 		));
 	}
 
-	public function testGenerateGet(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function generateMethodDataProvider(): Generator
 	{
-		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
-		$getMethod = new SentryMethod(
-			new SentryAccess('get'),
-			'getFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'fooProperty',
-			FooClass::class,
-			'int',
-			new SentryIdentificator('int'),
-			false,
-			[
-				$getMethod,
-			],
-			null
-		);
+		yield 'get scalar' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('get'),
+				'getFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'fooProperty',
+					FooClass::class,
+					'int',
+					new SentryIdentificator('int'),
+					false,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated int getter
 	 *
@@ -85,32 +120,31 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	public function getFoo()
 	{
 		return $this->fooProperty;
-	}';
-		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $getMethod));
-	}
+	}',
+			];
+		})();
 
+		yield 'get object' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('get'),
+				'getFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-	public function testGenerateObjectGet(): void
-	{
-		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
-		$getMethod = new SentryMethod(
-			new SentryAccess('get'),
-			'getFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'fooProperty',
-			FooClass::class,
-			'stdClass',
-			new SentryIdentificator('stdClass'),
-			false,
-			[
-				$getMethod,
-			],
-			null
-		);
-
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'fooProperty',
+					FooClass::class,
+					'stdClass',
+					new SentryIdentificator('stdClass'),
+					false,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated stdClass getter
 	 *
@@ -119,31 +153,31 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	public function getFoo()
 	{
 		return $this->fooProperty;
-	}';
-		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $getMethod));
-	}
+	}',
+			];
+		})();
 
-	public function testGenerateSet(): void
-	{
-		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
-		$setMethod = new SentryMethod(
-			new SentryAccess('set'),
-			'setFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'fooProperty',
-			FooClass::class,
-			'int',
-			new SentryIdentificator('int'),
-			false,
-			[
-				$setMethod,
-			],
-			null
-		);
+		yield 'set scalar' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('set'),
+				'setFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'fooProperty',
+					FooClass::class,
+					'int',
+					new SentryIdentificator('int'),
+					false,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated int setter
 	 *
@@ -152,31 +186,31 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	public function setFoo($newValue)
 	{
 		$this->fooProperty = $newValue;
-	}';
-		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $setMethod));
-	}
+	}',
+			];
+		})();
 
-	public function testGenerateObjectSet(): void
-	{
-		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
-		$setMethod = new SentryMethod(
-			new SentryAccess('set'),
-			'setFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'fooProperty',
-			FooClass::class,
-			'stdClass',
-			new SentryIdentificator('stdClass'),
-			false,
-			[
-				$setMethod,
-			],
-			null
-		);
+		yield 'set object' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('set'),
+				'setFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'fooProperty',
+					FooClass::class,
+					'stdClass',
+					new SentryIdentificator('stdClass'),
+					false,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated stdClass setter
 	 *
@@ -185,8 +219,27 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 	public function setFoo($newValue)
 	{
 		$this->fooProperty = $newValue;
-	}';
-		$this->assertSame($method, $sentry->generateMethod($propertyMetadata, $setMethod));
+	}',
+			];
+		})();
+	}
+
+	/**
+	 * @dataProvider generateMethodDataProvider
+	 *
+	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $propertyMetadata
+	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
+	 * @param string $expectedGeneratedMethod
+	 */
+	public function testGenerateMethod(
+		PropertyMetadata $propertyMetadata,
+		SentryMethod $sentryMethod,
+		string $expectedGeneratedMethod
+	): void
+	{
+		$sentry = $this->getMockForAbstractClass(AbstractSentry::class);
+
+		Assert::assertSame($expectedGeneratedMethod, $sentry->generateMethod($propertyMetadata, $sentryMethod));
 	}
 
 	public function testGenerateUnsupportedSentryAccess(): void
@@ -213,11 +266,11 @@ class AbstractSentryTest extends \PHPUnit\Framework\TestCase
 		$args = [];
 		try {
 			$sentry->generateMethod($propertyMetadata, $xxxMethod, $args);
-			$this->fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Type\SentryAccessNotSupportedForPropertyException $e) {
-			$this->assertSame($propertyMetadata, $e->getProperty());
-			$this->assertSame($xxxSentryAccess, $e->getSentryAccess());
-			$this->assertSame(get_class($sentry), $e->getSentryClassName());
+			Assert::assertSame($propertyMetadata, $e->getProperty());
+			Assert::assertSame($xxxSentryAccess, $e->getSentryAccess());
+			Assert::assertSame(get_class($sentry), $e->getSentryClassName());
 		}
 	}
 

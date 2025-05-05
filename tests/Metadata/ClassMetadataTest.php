@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Consistence\Sentry\Metadata;
 
+use PHPUnit\Framework\Assert;
+
 class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 {
 
@@ -25,8 +27,8 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 			'FooClass',
 			$properties
 		);
-		$this->assertSame('FooClass', $classMetadata->getName());
-		$this->assertSame($properties, $classMetadata->getProperties());
+		Assert::assertSame('FooClass', $classMetadata->getName());
+		Assert::assertSame($properties, $classMetadata->getProperties());
 	}
 
 	public function testGetSentryMethodByNameAndRequiredVisibility(): void
@@ -55,9 +57,9 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 			'fooMethod',
 			Visibility::get(Visibility::VISIBILITY_PRIVATE)
 		);
-		$this->assertInstanceOf(SentryMethodSearchResult::class, $searchResult);
-		$this->assertSame($fooProperty, $searchResult->getProperty());
-		$this->assertSame($fooMethod, $searchResult->getSentryMethod());
+		Assert::assertInstanceOf(SentryMethodSearchResult::class, $searchResult);
+		Assert::assertSame($fooProperty, $searchResult->getProperty());
+		Assert::assertSame($fooMethod, $searchResult->getSentryMethod());
 	}
 
 	public function testGetSentryMethodByNameAndRequiredVisibilityMethodNotFound(): void
@@ -81,10 +83,10 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 				'fooMethod',
 				Visibility::get(Visibility::VISIBILITY_PUBLIC)
 			);
-			$this->fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Metadata\MethodNotFoundException $e) {
-			$this->assertSame('FooClass', $e->getClassName());
-			$this->assertSame('fooMethod', $e->getMethodName());
+			Assert::assertSame('FooClass', $e->getClassName());
+			Assert::assertSame('fooMethod', $e->getMethodName());
 		}
 	}
 
@@ -103,7 +105,7 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 		);
 
 		$classMetadata = new ClassMetadata('FooClass', [$fooProperty]);
-		$this->assertSame($fooProperty, $classMetadata->getPropertyByName($propertyName));
+		Assert::assertSame($fooProperty, $classMetadata->getPropertyByName($propertyName));
 	}
 
 	public function testGetPropertyByNameNotFound(): void
@@ -114,10 +116,10 @@ class ClassMetadataTest extends \PHPUnit\Framework\TestCase
 
 		try {
 			$classMetadata->getPropertyByName($propertyName);
-			$this->fail();
+			Assert::fail('Exception expected');
 		} catch (\Consistence\Sentry\Metadata\PropertyNotFoundException $e) {
-			$this->assertSame($className, $e->getClassName());
-			$this->assertSame($propertyName, $e->getPropertyName());
+			Assert::assertSame($className, $e->getClassName());
+			Assert::assertSame($propertyName, $e->getPropertyName());
 		}
 	}
 

@@ -4,25 +4,49 @@ declare(strict_types = 1);
 
 namespace Consistence\Sentry\Metadata;
 
+use Generator;
+use PHPUnit\Framework\Assert;
+
 class SentryAccessTest extends \PHPUnit\Framework\TestCase
 {
 
 	public function testCreate(): void
 	{
 		$sentryAccess = new SentryAccess('foo');
-		$this->assertSame('foo', $sentryAccess->getName());
+		Assert::assertSame('foo', $sentryAccess->getName());
 	}
 
-	public function testEquals(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function equalsDataProvider(): Generator
 	{
-		$sentryAccess = new SentryAccess('foo');
-		$this->assertTrue($sentryAccess->equals(new SentryAccess('foo')));
+		yield 'same name' => [
+			'firstSentryAccess' => new SentryAccess('foo'),
+			'secondSentryAccess' => new SentryAccess('foo'),
+			'expectedEquals' => true,
+		];
+		yield 'different name' => [
+			'firstSentryAccess' => new SentryAccess('foo'),
+			'secondSentryAccess' => new SentryAccess('bar'),
+			'expectedEquals' => false,
+		];
 	}
 
-	public function testNotEquals(): void
+	/**
+	 * @dataProvider equalsDataProvider
+	 *
+	 * @param \Consistence\Sentry\Metadata\SentryAccess $firstSentryAccess
+	 * @param \Consistence\Sentry\Metadata\SentryAccess $secondSentryAccess
+	 * @param bool $expectedEquals
+	 */
+	public function testEquals(
+		SentryAccess $firstSentryAccess,
+		SentryAccess $secondSentryAccess,
+		bool $expectedEquals
+	): void
 	{
-		$sentryAccess = new SentryAccess('foo');
-		$this->assertFalse($sentryAccess->equals(new SentryAccess('bar')));
+		Assert::assertSame($expectedEquals, $firstSentryAccess->equals($secondSentryAccess));
 	}
 
 }

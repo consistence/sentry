@@ -9,31 +9,38 @@ use Consistence\Sentry\Metadata\SentryAccess;
 use Consistence\Sentry\Metadata\SentryIdentificator;
 use Consistence\Sentry\Metadata\SentryMethod;
 use Consistence\Sentry\Metadata\Visibility;
+use Generator;
+use PHPUnit\Framework\Assert;
 
 class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testGenerateGet(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function generateMethodDataProvider(): Generator
 	{
-		$integerSentry = new SimpleType();
-		$getMethod = new SentryMethod(
-			new SentryAccess('get'),
-			'getFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'fooProperty',
-			FooClass::class,
-			'int',
-			new SentryIdentificator('int'),
-			false,
-			[
-				$getMethod,
-			],
-			null
-		);
+		yield 'get' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('get'),
+				'getFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'fooProperty',
+					FooClass::class,
+					'int',
+					new SentryIdentificator('int'),
+					false,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated int getter
 	 *
@@ -42,31 +49,31 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 	public function getFoo()
 	{
 		return $this->fooProperty;
-	}';
-		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $getMethod));
-	}
+	}',
+			];
+		})();
 
-	public function testGenerateNullableGet(): void
-	{
-		$integerSentry = new SimpleType();
-		$getMethod = new SentryMethod(
-			new SentryAccess('get'),
-			'getFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'fooProperty',
-			FooClass::class,
-			'int',
-			new SentryIdentificator('int|null'),
-			true,
-			[
-				$getMethod,
-			],
-			null
-		);
+		yield 'get nullable' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('get'),
+				'getFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'fooProperty',
+					FooClass::class,
+					'int',
+					new SentryIdentificator('int|null'),
+					true,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated int getter
 	 *
@@ -75,31 +82,31 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 	public function getFoo()
 	{
 		return $this->fooProperty;
-	}';
-		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $getMethod));
-	}
+	}',
+			];
+		})();
 
-	public function testGenerateSet(): void
-	{
-		$integerSentry = new SimpleType();
-		$setMethod = new SentryMethod(
-			new SentryAccess('set'),
-			'setFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'fooProperty',
-			FooClass::class,
-			'int',
-			new SentryIdentificator('int'),
-			false,
-			[
-				$setMethod,
-			],
-			null
-		);
+		yield 'set' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('set'),
+				'setFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'fooProperty',
+					FooClass::class,
+					'int',
+					new SentryIdentificator('int'),
+					false,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated int setter
 	 *
@@ -109,31 +116,31 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 	{
 		\Consistence\Type\Type::checkType($newValue, \'int\');
 		$this->fooProperty = $newValue;
-	}';
-		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $setMethod));
-	}
+	}',
+			];
+		})();
 
-	public function testGenerateSetNullable(): void
-	{
-		$integerSentry = new SimpleType();
-		$setMethod = new SentryMethod(
-			new SentryAccess('set'),
-			'setFoo',
-			Visibility::get(Visibility::VISIBILITY_PUBLIC)
-		);
-		$propertyMetadata = new PropertyMetadata(
-			'fooProperty',
-			FooClass::class,
-			'int',
-			new SentryIdentificator('int|null'),
-			true,
-			[
-				$setMethod,
-			],
-			null
-		);
+		yield 'set nullable' => (function (): array {
+			$sentryMethod = new SentryMethod(
+				new SentryAccess('set'),
+				'setFoo',
+				Visibility::get(Visibility::VISIBILITY_PUBLIC)
+			);
 
-		$method = '
+			return [
+				'propertyMetadata' => new PropertyMetadata(
+					'fooProperty',
+					FooClass::class,
+					'int',
+					new SentryIdentificator('int|null'),
+					true,
+					[
+						$sentryMethod,
+					],
+					null
+				),
+				'sentryMethod' => $sentryMethod,
+				'expectedGeneratedMethod' => '
 	/**
 	 * Generated int setter
 	 *
@@ -143,8 +150,27 @@ class SimpleTypeTest extends \PHPUnit\Framework\TestCase
 	{
 		\Consistence\Type\Type::checkType($newValue, \'int|null\');
 		$this->fooProperty = $newValue;
-	}';
-		$this->assertSame($method, $integerSentry->generateMethod($propertyMetadata, $setMethod));
+	}',
+			];
+		})();
+	}
+
+	/**
+	 * @dataProvider generateMethodDataProvider
+	 *
+	 * @param \Consistence\Sentry\Metadata\PropertyMetadata $propertyMetadata
+	 * @param \Consistence\Sentry\Metadata\SentryMethod $sentryMethod
+	 * @param string $expectedGeneratedMethod
+	 */
+	public function testGenerateMethod(
+		PropertyMetadata $propertyMetadata,
+		SentryMethod $sentryMethod,
+		string $expectedGeneratedMethod
+	): void
+	{
+		$integerSentry = new SimpleType();
+
+		Assert::assertSame($expectedGeneratedMethod, $integerSentry->generateMethod($propertyMetadata, $sentryMethod));
 	}
 
 }
